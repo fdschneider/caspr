@@ -35,6 +35,40 @@ init_landscape <- function(states, cover, width = 50, height = 50) {
 }
 
 
+#' transfer landscape to matrix.
+#'
+#' @param x A landscape object.
+#'
+#' @return A matrix. 
+
+as.matrix.landscape <- function(x) {
+  matrix(x$cells, nrow = x$dim[1], byrow = TRUE)
+}
+
+
+
+#' generic S3 function
+#'
+
+as.landscape <- function (...) UseMethod("as.landscape")
+
+#' transfer matrix to landscape.
+#'
+#' @param x A matrix object with factorial content.
+#'
+#' @return A landscape object. 
+
+as.landscape.matrix <- function(x) {
+   structure(
+     list(
+       dim = c(width = dim(x)[1] , height = dim(x)[2]), 
+       cells = array(mt, dim = prod(dim(mt))
+     ),
+     class = "landscape"
+     )
+   )
+}
+
 #' Summary of landscape object.
 #' 
 #' @param x A landscape object
@@ -53,12 +87,6 @@ summary.landscape <- function(x) {
   out$local <- sapply(levels(x$cells), function(y) {mean(  (count(x,y)/4)[x$cells == y]  )})
   return(out)
 }
-
-
-print.landscape <- function(x) {
-  return(summary(x))
-}
-
 
 
 #' Plotting an objects of class "landscape"
