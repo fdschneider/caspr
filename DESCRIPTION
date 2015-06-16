@@ -1,11 +1,12 @@
 Package: caspr
 Type: Package
 Title: Cellular Automata for Spatial Pressure in R
-Version: 0.0.0.9000
+Version: 0.0.1
 Date: 2015-06-12
 Authors@R: person("Florian D.", "Schneider", 
     email = "florian.schneider@univ-montp2.fr", role = c("aut", "cre")) 
-Maintainer: Who to complain to <florian.schneider@univ-montp2.fr>
+Maintainer: Florian D. Schneider <florian.schneider@univ-montp2.fr>
+URL: https://github.com/fdschneider/caspr
 Description: The project package for a study on spatial indicators of 
     catastrophic shifts. Functions to run and analyse a set of cellular 
     automata models that implement a spatially explicit pressure. 
