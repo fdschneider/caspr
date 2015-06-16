@@ -18,15 +18,21 @@ vector of parameter values. Those will be combined full-factorially using
 \code{expand.grid()}. Will be checked against template parameters in
 \code{model}. If not provided, template parameters will be used.}
 
-\item{t_max}{Maximal number of timesteps. Model will be terminated even if unstable.}
+\item{t_max}{Maximal number of timesteps. Model will be terminated even if
+unstable.}
 
-\item{t_min}{Minimal number of timesteps before stability is evaluated and model might be terminated if transitory dynamics are surpassed.}
+\item{t_min}{Minimal number of timesteps before stability is evaluated and
+model might be terminated if transitory dynamics are surpassed.}
 
 \item{t_eval}{Timespan that is evaluated for stability.}
 
-\item{isstable}{Tolerance level for stability. Stability is reached if the difference in mean cover of the primary cell state (i.e. the first in the vector provided in \code{model$states}) over two subsequent timespans of length \code{t_eval} is smaller than \code{isstable}.}
+\item{isstable}{Tolerance level for stability. Stability is reached if the
+difference in mean cover of the primary cell state (i.e. the first in the
+vector provided in \code{model$states}) over two subsequent timespans of
+length \code{t_eval} is smaller than \code{isstable}.}
 
-\item{saveeach}{Timespan between timesteps at which a full snapshot of the landscape is saved into the output of the simulation.}
+\item{saveeach}{Timespan between timesteps at which a full snapshot of the
+landscape is saved into the output of the simulation.}
 
 \item{...}{Parameters handed over to update function in \code{model$update}.}
 }

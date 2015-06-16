@@ -5,14 +5,20 @@
 #'   values are: \code{musselbed}, \code{grazing}.
 #' @param parms A list of parameters with one or several parameters containing a
 #'   vector of parameter values. Those will be combined full-factorially using 
-#'   \code{expand.grid()}. Will be checked against template parameters in
+#'   \code{expand.grid()}. Will be checked against template parameters in 
 #'   \code{model}. If not provided, template parameters will be used.
-#' @param t_max Maximal number of timesteps. Model will be terminated even if unstable. 
-#' @param t_min Minimal number of timesteps before stability is evaluated and model might be terminated if transitory dynamics are surpassed. 
-#' @param t_eval Timespan that is evaluated for stability. 
-#' @param isstable Tolerance level for stability. Stability is reached if the difference in mean cover of the primary cell state (i.e. the first in the vector provided in \code{model$states}) over two subsequent timespans of length \code{t_eval} is smaller than \code{isstable}. 
-#' @param saveeach Timespan between timesteps at which a full snapshot of the landscape is saved into the output of the simulation. 
-#' @param ... Parameters handed over to update function in \code{model$update}. 
+#' @param t_max Maximal number of timesteps. Model will be terminated even if
+#'   unstable.
+#' @param t_min Minimal number of timesteps before stability is evaluated and
+#'   model might be terminated if transitory dynamics are surpassed.
+#' @param t_eval Timespan that is evaluated for stability.
+#' @param isstable Tolerance level for stability. Stability is reached if the
+#'   difference in mean cover of the primary cell state (i.e. the first in the
+#'   vector provided in \code{model$states}) over two subsequent timespans of
+#'   length \code{t_eval} is smaller than \code{isstable}.
+#' @param saveeach Timespan between timesteps at which a full snapshot of the
+#'   landscape is saved into the output of the simulation.
+#' @param ... Parameters handed over to update function in \code{model$update}.
 
 ca <- function(x, model = musselbed, parms = "default", t_max = 1000, t_min = 500, t_eval = 200, isstable = 0.00001, saveeach = 50, ... )  {
   
@@ -108,9 +114,18 @@ print.ca_result <- function(x) {
 }
 
 
-################################
-## plot function for 'ca_result' ##
-################################
+#' plot method for 'ca_result' objects
+#' 
+#' @param x An output object obtained from running function \code{ca()}.
+#' @param plotstates A logical vector of the same length as 
+#'   \code{x$model$states}. TRUE activates plotting of other cell state populations. 
+#' @param cols A vector of valid colors to replace the default color vector.
+#' @param lwd Line width for timeseries plot.
+#' @param ... Parameters handed to standard plot function, e.g. `bty`, `xlab`.
+#'   See \link{par}.
+#' @details This prompts a (series of) summary plot for the simulation run. By
+#' default this is a timeseries of the primary cell state (i.e. the first state
+#' given in \code{x$model$states}).
 
 plot.ca_result <- function(x, plotstates = c(TRUE, FALSE, FALSE), snapshots = FALSE, cols = x$model$cols , lwd = 1, ...) {
   
