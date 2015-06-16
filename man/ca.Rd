@@ -2,7 +2,7 @@
 % Please edit documentation in R/ca.R
 \name{ca}
 \alias{ca}
-\title{Run cellular automata simulation}
+\title{Run cellular automata simulation.}
 \usage{
 ca(x, model = musselbed, parms = "default", t_max = 1000, t_min = 500,
   t_eval = 200, isstable = 1e-05, saveeach = 50, ...)
@@ -36,7 +36,13 @@ landscape is saved into the output of the simulation.}
 
 \item{...}{Parameters handed over to update function in \code{model$update}.}
 }
+\value{
+The output is returned as a list object of class \code{ca_result}, containing a full timeseries of global and local cover as well as snapshots of the entire landscape (stored in \code{out$landscapes}).
+}
 \description{
-Run cellular automata simulation
+Run cellular automata simulation.
+}
+\details{
+Runs iterations of the update function \code{model$update()} on the initial landscape \code{x} until a steady state is reached (as defined by the tolerance level \code{isstable}), but max \code{t_max} timesteps. The function saves the full timeseries, i.e. a value for each timestep, of the global cover of each state as well as the average local cover of each state. Only for every \code{saveeach}th timestep, the full lattice is saved in a list within the output file (\code{result$snapshots} ).
 }
 

@@ -1,13 +1,17 @@
-## core functions
+# core functions
+# --------------
 
-
-######################
-## mapping function ##
-######################
-
-# required to vectorise the counting and plotting. 
-# returns a map of the landscape to translate it into a vector with boundaries and another one to back-translate it to a vector without boundaries into the global environment. Needs to be called only once for the dimensions of the lattice. 
-
+#' Create vector maps for cellular automata updating
+#'
+#' @param width An integer number. The width of the lattice. 
+#' @param height An integer number. The height of the lattice. 
+#' @param boundary A character value representing the type of boundary conditions. Defaults to \code{"periodic"}.  
+#' @param i_matrix A matrix defining the interaction matrix to be evaluated. Defaults to 4-cell neighborhood. 
+#'
+#' @return Creates a map of the landscape object to translate it into a vector with boundaries (\code{x_with_border}) and another one to back-translate it to a vector without boundaries  (\code{x_to_evaluate}) into the global environment. This will automatically be called within \code{ca()}. 
+#' @export
+#'
+#' 
 
 mapping <- function(width, height, boundary = "periodic", i_matrix = matrix(c(0,1,0,1,NA,1,0,1,0), ncol = 3, byrow = TRUE)) {
   
@@ -19,8 +23,6 @@ mapping <- function(width, height, boundary = "periodic", i_matrix = matrix(c(0,
   X <- cbind(X[,width], X, X[,1] )  
   X <- rbind(X[height,], X, X[1,] ) 
   # transformation vector which adds the border to the lattice:
-  x_with_border <- as.integer(t(X))
-  
   assign("x_with_border", as.integer(t(X))  , envir = .GlobalEnv )
   
   # from the matrix X (with copied border cells), which cells are the actual cells (reverse transformation vector of the previous lines) 
@@ -56,7 +58,7 @@ count <- function(...) {
   UseMethod("count")
 }
   
-count0 <- function(y, x, neighbor) {
+count.integer <- function(y, x, neighbor) {
   neighbors <- numeric(length = length(interact))
   x_logical_with_border <- (x$cells %in% neighbor)[x_with_border]
   
@@ -65,7 +67,15 @@ count0 <- function(y, x, neighbor) {
   return(neighbors) 
 }
 
-count  <- function(x, neighbor) {
+#' Count neighbors.
+#'
+#' @param x A landscape object. 
+#' @param neighbor A character value. The state to count. 
+#'
+#' @return Returns a vector of the counts in the neighborhood specified by the \link{mapping}, by default the 4-cell neighborhood.
+#' 
+
+count.landscape <- function(x, neighbor) {
   
   neighbors <- numeric(length = prod(x$dim))
   x_logical_with_border <- (x$cells %in% neighbor)[x_with_border]
@@ -77,5 +87,7 @@ count  <- function(x, neighbor) {
 
 
 
+# helper functions
+# ----------------
 
 grayscale <- colorRampPalette(c("black", "white"), space = "rgb")

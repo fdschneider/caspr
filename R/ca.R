@@ -1,4 +1,4 @@
-#' Run cellular automata simulation
+#' Run cellular automata simulation.
 #' 
 #' @param x A landscape object.
 #' @param model A valid object of class 'ca_model'. Defaults to musselbed. Valid
@@ -19,6 +19,12 @@
 #' @param saveeach Timespan between timesteps at which a full snapshot of the
 #'   landscape is saved into the output of the simulation.
 #' @param ... Parameters handed over to update function in \code{model$update}.
+#'
+#' @return The output is returned as a list object of class \code{ca_result}, containing a full timeseries of global and local cover as well as snapshots of the entire landscape (stored in \code{out$landscapes}). 
+#' 
+#' @details Runs iterations of the update function \code{model$update()} on the initial landscape \code{x} until a steady state is reached (as defined by the tolerance level \code{isstable}), but max \code{t_max} timesteps. The function saves the full timeseries, i.e. a value for each timestep, of the global cover of each state as well as the average local cover of each state. Only for every \code{saveeach}th timestep, the full lattice is saved in a list within the output file (\code{result$snapshots} ).  
+#'
+#' 
 
 ca <- function(x, model = musselbed, parms = "default", t_max = 1000, t_min = 500, t_eval = 200, isstable = 0.00001, saveeach = 50, ... )  {
   
@@ -55,8 +61,8 @@ ca <- function(x, model = musselbed, parms = "default", t_max = 1000, t_min = 50
   result$local <- result$local[rep(1, t_min+1),] # preallocating memory
   
   result$snapshots <- snapshots
-  result$timeseries <- list()
-  result$timeseries <- lapply(1:n_snaps, function(i) x) # preallocating memory
+  result$landscapes <- list()
+  result$landscapes <- lapply(1:n_snaps, function(i) x) # preallocating memory
   
   # --------------- simulation -----------------
   
@@ -82,7 +88,7 @@ ca <- function(x, model = musselbed, parms = "default", t_max = 1000, t_min = 50
     x_old <- x_new # replace ghost matrix for next iteration
     
     if(i %in% snapshots$i) {  
-      result$timeseries[[match(i, snapshots$i)]] <- x_new
+      result$landscapes[[match(i, snapshots$i)]] <- x_new
     }
     
     
@@ -152,10 +158,13 @@ plot.ca_result <- function(x, plotstates = c(TRUE, FALSE, FALSE), snapshots = FA
 
 
 
-################################
-## get indicators of ca_result ##
-################################
-
+#' summary method for `ca_result`
+#'
+#' @param x 
+#'
+#' @return Returns a list \code{out} containing the model name, the final time, the mean cover  and standard deviation after transitory dynamics. 
+#'    
+#' 
 
 summary.ca_result <- function(x) {
   out <- list()
