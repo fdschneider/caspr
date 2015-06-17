@@ -13,5 +13,6 @@ Description: The project package for a study on spatial indicators of
 License: MIT + file LICENSE
 Imports: 
   foreach,
-  doSNOW,
   animation
+Suggests: testthat,
+          doSNOW,
