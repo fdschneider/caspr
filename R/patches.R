@@ -1,11 +1,14 @@
+#' Count patch sizes
+#'
+#' @param x A landscape object.
+#' @param state A character value. The state of interest to be counted.
+#'
+#' @return Returns a vector of patch sizes (number of cells) occuring in the landscape.
+#' 
+#' @details Might be replaced by a faster version implemented in C++. 
+#' 
 
-#########################################
-## count patches of a landscape object ##
-#########################################
-
-
-# get patch size and patchsize distribution
-patches <- function(x, state = levels(x$cells)[1], cumulative = TRUE) {
+patches <- function(x, state = levels(x$cells)[1]) {
   pattern <- x$cells
   pattern <- pattern %in% state
   map <- rep(NA, times = prod(x$dim))
