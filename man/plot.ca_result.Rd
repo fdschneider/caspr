@@ -4,8 +4,9 @@
 \alias{plot.ca_result}
 \title{plot method for 'ca_result' objects}
 \usage{
-\method{plot}{ca_result}(x, plotstates = c(TRUE, FALSE, FALSE),
-  snapshots = FALSE, cols = x$model$cols, lwd = 1, ...)
+\method{plot}{ca_result}(x, plotstates = c(TRUE, rep(FALSE,
+  length(x$model$states) - 1)), snapshots = FALSE, cols = x$model$cols,
+  lwd = 1, ...)
 }
 \arguments{
 \item{x}{An output object obtained from running function \code{ca()}.}

@@ -9,6 +9,7 @@ test_that('Landscape init works', {
                           c('q','p'), 
                           letters, # 26 states
                           c('pred','prey','empty'))) { 
+                            
         covers <- runif(length(states), 0, 1)
         test_landscape <- init_landscape(states, covers, width, height)
         

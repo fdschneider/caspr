@@ -28,42 +28,88 @@ Just a couple of guidelines for contributing code to the package:
 
 ## Objects and functions
 
-### object structure
-
-#### `landscape`
-
-#### `ca_model` 
-
-A model object is a list `x` that contains
-
-- `x$name`: the name of the model
-- `x$ref`: the original reference
-- `x$states`: the potential cell states
-- `x$cols`: colors for cell states
-- `x$parms`: a template for parameters or default parameters 
-- `x$update`: the update function, which takes a landscape object `x_old` and returns a landscape object `x_new`, representing the updating of one single timestep
-
-Those objects are not created by a function, but provided manually in separate files. If you add a model, please test the update function for valid output and optimize for speed. 
-
-#### `ca_result`
+In the following the objects and functions are described in the sequence of their use (somewhat). 
 
 
-### functions
+####  function `init_landscape(states, cover, width, height)`
 
-#### `init_landscape(states, cover, width, height)`
-
-returns an object `i` of class `landscape` that contains the dimensions (`x$dims`) and the cell contents in a character vector (`i$cells`). Specific method for functions `plot`, `summary` and `print` do exist, which means you can call:
+landscape objects are created using the function `init_landscape()` , e.g. 
 
 ```
-i <- init_landscape(c("1", "0"), c(0.2,0.8), 100, 100)
-i
-plot(i)
-summary(i)
+l <- init_landscape(c("1", "0"), c(0.2,0.8), 100, 100)
+``` 
+
+#### `landscape` object class
+
+A landscape object is a list `l` that contains
+
+- `l$dims` : a named vector of the default form `c(width = 50, height = 50)`
+- `l$cells` : a factorial vector of length `prod(l$dims)` that contains the state that each cell of the landscape matrix is in (row-wise from top to bottom). 
+
+Specific method for functions `plot`, `summary` and `print` do exist, which means you can call:
+
+```
+l
+plot(l)
+summary(l)
 ```
 
-#### `ca()`
+The vectorial storage of the grid is allowing for a speedy evaluation than with matrices, using the map vectors provided globally by executing `mapping(l$dims[1], l$dims[2])`. 
 
-#### `indicators()`
+For compatibility the landscape object can be translated into a matrix using `as.matrix(l)`. Any matrix of factorial content can be reverted into a landscape object using `as.landscape(l)`. 
+
+#### `ca_model` object class 
+
+A model object is a list `model` that contains
+
+- `model$name`: the name of the model
+- `model$ref`: the original reference
+- `model$states`: the potential cell states
+- `model$cols`: colors for cell states
+- `model$parms`: a template for parameters or default parameters 
+- `model$update`: the update function, which takes a landscape object `x_old` and returns a landscape object `x_new`, representing the updating of one single timestep
+
+Those objects are not created by a function, but provided manually in separate files. If you add a model, following `model_template.R`, please test the update function for valid output and optimize for speed. 
+
+(A method `print.ca_model` will be developed to quickly review a model's specifications.)
+
+#### function `ca(x, model, parms)` 
+
+The function `ca(x, model, parms)` runs a cellular automata simulation starting from the landscape object provided in `x` and using the update function provided by `model` with the parameter set `parms` (a list of parameters). Before running the model, the function validates the parameter set provided against the template stored in `model$parms`. 
+
+Further parameters can be used to adjust the timespan run and the snapshots of the landscape saved. 
+
+```
+l <- init_landscape(c("+", "0", "-"), c(0.2,0.7,0.1))
+p <- list(d = 0.4, r = 0.2, delta = 0.4) 
+r <- ca(l, musselbed, p)
+
+```
+
+After simulation, the function returns an object of class `ca_results`.  
+
+
+#### `ca_result` object class
+
+The result object `r` of a simulation contains the full timeseries of cover and selected snapshots of the full landscape. It has the structure:
+
+- `r$model`: the `ca_model` object used to run the simulation, including the provided parameter set.  
+- `r$time`: a vector of the distinct timesteps of the simulation
+- `r$evaluate`: the begin and end of a steady state period in the simulation run. 
+- `r$cover`: a data frame reporting the global cover with one column for each state of the model and one row for each timestep. Thus, `r$cover[1]` returns the timeseries of the primary cell state. 
+- `r$local`: a data frame reporting the average local cover of the cell states, i.e. the average probability that a state *i* is found in the neighborhood given that the focal cell is in state *i*. Thus, `r$local[1]` returns the timeseries of the primary cell state. 
+- `r$snapshots`: a registry table of the snapshots and at which point in time they were taken. 
+- `r$landscapes`: a list of landscape objects for the given snapshots.
+
+#### function `indicators()`
+
+#### `ca_indicators` object class
+
+#### function `carray()`
+
+## Contributors
+
+Alex Genin, Vishwesha Guttal, Sonia Kefi, Florian D. Schneider (maintainer)
 
 ## License
 
