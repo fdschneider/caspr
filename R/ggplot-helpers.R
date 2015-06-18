@@ -48,7 +48,6 @@ fortify.ca_result <- function(x) {
 #' library(ggplot2)
 #' ggplot(fortify(initial)) + 
 #'  geom_raster(aes(x,y,fill=state)) + 
-#'  facet_wrap( ~ time ) + 
 #'  scale_fill_manual(values=c('#111111','#FFFFFF'))
 #'
 fortify.landscape <- function(x) { 
