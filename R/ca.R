@@ -40,6 +40,7 @@ ca <- function(x, model = musselbed, parms = "default", t_max = 1000, t_min = 50
   mapping(x$dim[1], x$dim[2])
   xstats <- summary(x)
   states <- levels(x$cells)
+  
   # calculate timesteps for snapshots:
   n_snaps <- length(seq(t_min-2*t_eval,t_min,saveeach)) # number of snapshots over t_eval
   t_snaps <-  ceiling(t_max/(saveeach*n_snaps))*(n_snaps*saveeach)
@@ -133,7 +134,7 @@ print.ca_result <- function(x) {
 #' default this is a timeseries of the primary cell state (i.e. the first state
 #' given in \code{x$model$states}).
 
-plot.ca_result <- function(x, plotstates = c(TRUE, FALSE, FALSE), snapshots = FALSE, cols = x$model$cols , lwd = 1, ...) {
+plot.ca_result <- function(x, plotstates = c(TRUE, rep(FALSE, length(x$model$states)-1)), snapshots = FALSE, cols = x$model$cols , lwd = 1, ...) {
   
   if(snapshots) {
     
