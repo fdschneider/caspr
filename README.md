@@ -109,7 +109,7 @@ The result object `r` of a simulation contains the full timeseries of cover and 
 
 ## Contributors
 
-Florian D. Schneider, Alex Genin, Vishwesha Guttal, Sonia Kefi, Sumithra
+Alex Genin, Vishwesha Guttal, Sonia Kefi, Florian D. Schneider (maintainer)
 
 ## License
 
