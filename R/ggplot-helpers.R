@@ -1,0 +1,60 @@
+#' #' Fortify method for `ca_result`
+#'
+#' Transform the snapshots in a ca_result object into a data.frame so it can 
+#' be plotted using ggplot.
+#' 
+#' @param x A ca_result object
+#' 
+#' @examples
+#'
+#' # Using the forest gap model
+#' initial <- init_landscape(states=c("+","0"), cover=c(.5,.5))
+#' parms <- forestgap$parms # Import defaults
+#' parms$delta <- .15
+#' output <- ca(initial, parms, model=forestgap, t_max=1000)
+#' 
+#' library(ggplot2)
+#' ggplot(fortify(output)) + 
+#'  geom_raster(aes(x,y,fill=state)) + 
+#'  facet_wrap( ~ time ) + 
+#'  scale_fill_manual(values=c('#111111','#FFFFFF'))
+#'
+fortify.ca_result <- function(x) { 
+  # Note that the number of rows in x$snapshots can be greater than the actual
+  # number of snapshots.
+  output <- lapply(as.list(seq.int(length(x$landscapes))), # for all snapshots
+              function(n) { 
+                data.frame(time = x$snapshots[n, 'time'],
+                           i     = x$snapshots[n, 'i'],
+                           pos   = x$snapshots[n, 'pos'],
+                           fortify.landscape(x$landscapes[[n]]))
+            })
+                      
+  do.call(rbind, output)
+}
+
+#' #' Fortify method for `landscape`
+#'
+#' Transform a `landscape` object into a data.frame so it can 
+#' be plotted using ggplot.
+#' 
+#' @param x A `landscape` object
+#' 
+#' @examples
+#'
+#' # Using the forest gap model
+#' initial <- init_landscape(states=c("+","0"), cover=c(.5,.5))
+#' 
+#' library(ggplot2)
+#' ggplot(fortify(initial)) + 
+#'  geom_raster(aes(x,y,fill=state)) + 
+#'  facet_wrap( ~ time ) + 
+#'  scale_fill_manual(values=c('#111111','#FFFFFF'))
+#'
+fortify.landscape <- function(x) { 
+  data.frame(expand.grid(x     = seq.int(x$dim[1]), 
+                         y     = seq.int(x$dim[2]), 
+                         KEEP.OUT.ATTRS = FALSE),
+             state = x$cells)
+}
+
