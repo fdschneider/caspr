@@ -1,14 +1,5 @@
-#' Count patch sizes
-#'
-#' @param x A landscape object.
-#' @param state A character value. The state of interest to be counted.
-#'
-#' @return Returns a vector of patch sizes (number of cells) occuring in the landscape.
-#' 
-#' @details Might be replaced by a faster version implemented in C++. 
-#' 
 
-patches <- function(x, state = levels(x$cells)[1]) {
+label <- function(x, state = levels(x$cells)[1]) {
   pattern <- x$cells
   pattern <- pattern %in% state
   map <- rep(NA, times = prod(x$dim))
@@ -30,7 +21,35 @@ patches <- function(x, state = levels(x$cells)[1]) {
   }
   
   map <- as.factor(map)
-  patchvec <- as.vector(sapply(levels(map), function(i) length(which(map == i) ) )) 
+
+  return(
+    structure(list(
+      dim = x$dim,
+      cells = map
+    ),
+      class = "landscape"        
+    )
+  )
+  
+} 
+
+
+
+#' Count patch sizes
+#'
+#' @param x A landscape object.
+#' @param state A character value. The state of interest to be counted.
+#'
+#' @return Returns a vector of patch sizes (number of cells) occuring in the landscape.
+#' 
+#' @details Might be replaced by a faster version implemented in C++. 
+#' 
+
+
+patches <- function(x, state = levels(x$cells)[1]) {
+  
+  map <- label(x, state = state) 
+  patchvec <- as.vector(sapply(levels(map$cells), function(i) length(which(map$cells == i) ) )) 
   
   out <- vector()
   if(length(patchvec) > 0) out <- sort(patchvec) else out <- NA
