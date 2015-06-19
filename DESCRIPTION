@@ -10,9 +10,11 @@ Description: The project package for a study on spatial indicators of
     catastrophic shifts. Functions to run and analyse a set of cellular 
     automata models that implement a spatially explicit pressure. 
 License: MIT + file LICENSE
+Additional_repositories: https://github.com/fdschneider/
 Imports: 
   foreach,
   animation,
-  moments
+  moments,
+  spatialwarnings
 Suggests: testthat,
           doSNOW
