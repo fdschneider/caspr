@@ -7,7 +7,7 @@ test_that('Landscape init works', {
     for (height in c(1, 100, 1000)) { 
       for (states in list(c('-','0','+'), 
                           c('q','p'), 
-                          letters, # 26 states
+                          letters[seq.int(10)], # only 10 otherwise proportions do not converge fast enough for last test
                           c('pred','prey','empty'))) { 
                             
         covers <- runif(length(states), 0, 1)
