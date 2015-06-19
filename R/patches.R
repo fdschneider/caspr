@@ -50,22 +50,20 @@ label <- function(x, state = levels(x$cells)[1]) {
 
 
 # Fast option using ConnCompLabel(), no periodic boundaries. 
-if(FALSE){  
-  label <- function(x, state = levels(x$cells)[1]) {
+  label0 <- function(x, state = levels(x$cells)[1]) {
     
     map <- SDMTools::ConnCompLabel(as.matrix(x) == state)
     map[map == 0] <- NA
     return(
       structure(list(
         dim = x$dim,
-        cells = as.factor(map)
+        cells = as.factor(t(map))
       ),
       class = "landscape"        
       )
     )
     
-  } 
-}
+  }
 
 
 #' Count patch sizes
