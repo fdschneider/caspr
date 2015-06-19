@@ -30,7 +30,7 @@ forestgap$update <- function(x,               # landscape object
   for (s in 1:subs) {
     
     # Get global average vegetation cover 
-    rho_plus <- sum(x$cells == "+")/(x$dim[1]*x$dim[2]) 
+    rho_plus <- sum(x$cells == "+") / (x$dim[1]*x$dim[2]) 
     
     # Get the local proportion of disturbed neighbors 
     localempty <- count(x, "0") > 0 

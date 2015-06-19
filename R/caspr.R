@@ -36,7 +36,7 @@ mapping <- function(width, height, boundary = "periodic", i_matrix = matrix(c(0,
   # set interaction matrix
   I <- i_matrix	
   # coordinates of neighbours in Interaction matrix I: 
-  neighbours_in_I <- which(is.finite(abs(I)/abs(I)), arr.in = TRUE)
+  neighbours_in_I <- which(is.finite(abs(I)/abs(I)), arr.ind = TRUE)
   # coordinates relative to the evaluated cell (=  which(is.na(I) ) 
   relrow <- neighbours_in_I[,1]-which(is.na(I), arr.ind = TRUE)[1]
   relcol <- neighbours_in_I[,2]-which(is.na(I), arr.ind = TRUE)[2]

@@ -4,7 +4,7 @@
 \alias{fortify.landscape}
 \title{#' Fortify method for `landscape`}
 \usage{
-fortify.landscape(x)
+\method{fortify}{landscape}(x)
 }
 \arguments{
 \item{x}{A `landscape` object}
