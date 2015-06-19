@@ -14,7 +14,8 @@ To *use* the package, it can be installed directly from GitHub using the `devtoo
 
 ```
 install.packages("devtools")
-devtools::install_github(fdschneider/caspr)
+devtools::install_github("fdschneider/spatial_warnings")
+devtools::install_github("fdschneider/caspr")
 ```
 
 ## Contribute to the package

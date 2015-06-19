@@ -4,7 +4,7 @@
 \alias{fortify.landscape}
 \title{#' Fortify method for `landscape`}
 \usage{
-fortify.landscape(x)
+\method{fortify}{landscape}(x)
 }
 \arguments{
 \item{x}{A `landscape` object}
@@ -20,7 +20,6 @@ initial <- init_landscape(states=c("+","0"), cover=c(.5,.5))
 library(ggplot2)
 ggplot(fortify(initial)) +
  geom_raster(aes(x,y,fill=state)) +
- facet_wrap( ~ time ) +
  scale_fill_manual(values=c('#111111','#FFFFFF'))
 }
 
