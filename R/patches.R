@@ -53,7 +53,7 @@ label <- function(x, state = levels(x$cells)[1]) {
 if(FALSE){  
   label <- function(x, state = levels(x$cells)[1]) {
     
-    map <- ConnCompLabel(as.matrix(x) == state)
+    map <- SDMTools::ConnCompLabel(as.matrix(x) == state)
     map[map == 0] <- NA
     return(
       structure(list(

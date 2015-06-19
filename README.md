@@ -23,7 +23,7 @@ devtools::install_github("fdschneider/caspr")
 Just a couple of guidelines for contributing code to the package:
 
 1. The collaborative work on the package is coordinated via the [issues](https://github.com/fdschneider/caspr/issues). No uninvited pull-requests, please! Before you start developing a feature, please create an issue and assign yourself (if it does not exist yet). 
-2. Clone the repository to your computer and work locally. If you add a new function or modify an existing one please include a valid documentation using [roxygen2](http://r-pkgs.had.co.nz/man.html).
+2. Clone the repository to your computer and work locally. If you add a new function or modify an existing one please include a valid documentation using [roxygen2](http://r-pkgs.had.co.nz/man.html). If you refer to functions of other packages, put them in the `Import` list in DESCRIPTION and use the structure `package::function()` to apply them in the code. 
 3. Before you push your commits to GitHub, please be sure that everything works fine by testing the new functionality on your local repository. Test functions that rely on your function, too! If your feature works, create a last commit where you increase the version number in `DESCRIPTION` by `0.0.1` and mention the related issue in your commit message, e.g. `git commit -m "transfer code into R-package #1"`. If you're not listed yet, add your name to the `LICENSE` and `README.md` file. 
 
 

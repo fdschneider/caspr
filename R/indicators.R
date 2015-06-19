@@ -25,7 +25,7 @@ indicators <- function(x, spatial = TRUE, temporal = TRUE) {
   i_out$mean_clustering <- colMeans(x$local[eval,]/x$cover[eval,])
   i_out$sd_clustering <- sapply(x$local[eval,]/x$cover[eval,], sd)
   #i_out$autocorrelation
-  i_out$patches <- lapply(x$landscapes, patches)
+  i_out$patches <- lapply(x$landscapes, function(i) SDMTools::PatchStat(as.matrix(label(i)))  ) 
   #i_out$cpd <- data.frame(n = unique())
   i_out$largest <- sapply(i_out$patches, max)
   #i_out$...
