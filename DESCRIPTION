@@ -15,6 +15,7 @@ Imports:
   foreach,
   animation,
   moments,
-  spatialwarnings
+  spatialwarnings,
+  SDMTools
 Suggests: testthat,
           doSNOW

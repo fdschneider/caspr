@@ -1,4 +1,17 @@
 
+#' Labelling of unique patches.
+#' 
+#' @param x A landscape object.
+#' @param state A character vector. The state to be evaluated, defaults to the
+#'   primary state of x (\code{state = levels(x$cells)[1]}).
+#'   
+#' @return A landscape object containing ID numbers for each connected patch.
+#'   
+#' @details The function is a wrapper for function \link{ConnCompLabel} of
+#'   package 'SDMTools'.
+#'   
+#'   
+
 label <- function(x, state = levels(x$cells)[1]) {
   pattern <- x$cells
   pattern <- pattern %in% state
@@ -21,18 +34,38 @@ label <- function(x, state = levels(x$cells)[1]) {
   }
   
   map <- as.factor(map)
-
+  
   return(
     structure(list(
       dim = x$dim,
       cells = map
     ),
-      class = "landscape"        
+    class = "landscape"        
     )
   )
   
 } 
 
+
+
+
+# Fast option using ConnCompLabel(), no periodic boundaries. 
+if(FALSE){  
+  label <- function(x, state = levels(x$cells)[1]) {
+    
+    map <- ConnCompLabel(as.matrix(x) == state)
+    map[map == 0] <- NA
+    return(
+      structure(list(
+        dim = x$dim,
+        cells = as.factor(map)
+      ),
+      class = "landscape"        
+      )
+    )
+    
+  } 
+}
 
 
 #' Count patch sizes
