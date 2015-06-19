@@ -109,13 +109,13 @@ The result object `r` of a simulation contains the full timeseries of cover and 
 
 ## Contributors
 
-Alex Genin, Vishwesha Guttal, Sonia Kefi, Florian D. Schneider (maintainer)
+Alain Danet, Alex Genin, Vishwesha Guttal, Sonia Kefi, Sumithra Sankaran, Florian Schneider (Maintainer), Sabiha Majumder
 
 ## License
 
 The MIT License (MIT)
 
-Copyright (c) 2015 Florian D. Schneider
+Copyright (c) 2015 the authors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
