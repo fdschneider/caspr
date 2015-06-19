@@ -53,20 +53,26 @@ as.matrix.landscape <- function(x) {
 as.landscape <- function (...) UseMethod("as.landscape")
 
 #' transfer matrix to landscape.
-#'
+#' 
 #' @param x A matrix object with factorial content.
-#'
-#' @return A landscape object. 
+#' @param levels A character vector giving the original sequence of states.
+#'   
+#' @return A landscape object.
+#'   
+#' @details If no vector levels is specified the levels are coerced from the 
+#'   unique states of the matrix, which might cause loss of states (e.g. if not 
+#'   present on this landscape) or a wrong ordering of states. This is not
+#'   recommended! Always provide a levels vector!
 
-as.landscape.matrix <- function(x) {
+as.landscape.matrix <- function(x, levels = levels(x$cells) ) {
    structure(
      list(
        dim = c(width = dim(x)[1] , height = dim(x)[2]), 
-       cells = array(mt, dim = prod(dim(mt))
+       cells = factor(matrix(t(x), nrow = 1 ), levels )
      ),
      class = "landscape"
      )
-   )
+   
 }
 
 #' Summary of landscape object.
