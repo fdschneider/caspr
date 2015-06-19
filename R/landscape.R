@@ -29,7 +29,9 @@ init_landscape <- function(states, cover, width = 50, height = 50) {
     cells = cells  #contains a random row-wise, factorial vector to fill the grid 
   )
   levels(initial$cells) <- states  #assign cell states 
-  class(initial) <- c("list","landscape") # set class of object (required for plotting)
+  # [Alex] Landscape class should be first so we can override methods for lists 
+  # (e.g. as.data.frame, see methods(class='list') ).
+  class(initial) <- c("landscape","list") # set class of object (required for plotting)
   return(initial)
 }
 
