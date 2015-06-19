@@ -20,7 +20,6 @@ initial <- init_landscape(states=c("+","0"), cover=c(.5,.5))
 library(ggplot2)
 ggplot(fortify(initial)) +
  geom_raster(aes(x,y,fill=state)) +
- facet_wrap( ~ time ) +
  scale_fill_manual(values=c('#111111','#FFFFFF'))
 }
 
