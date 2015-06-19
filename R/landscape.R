@@ -21,9 +21,8 @@ init_landscape <- function(states, cover, width = 50, height = 50) {
   for(i in 2:length(states)) {
     s <- floor(width*height*cover[i]) #how many cells are in state[i]
     cells[sample(which(cells %in% states[1]), s, replace = FALSE)] <- states[i]  # replace s cells, randomly drawn, with state[i]
-    ## BUG: this does not distribute cells correctly!!!
-  }
-  
+    }
+  #ALT: sample(states, width*height, replace = TRUE, prob = cover )
   # wrap landscape object:
   initial <- list(  
     dim = c(width = as.integer(width), height = as.integer(height)),  # first element contains the dimensions of the landscape 
@@ -68,7 +67,7 @@ as.landscape.matrix <- function(x, levels = levels(x$cells) ) {
    structure(
      list(
        dim = c(width = dim(x)[1] , height = dim(x)[2]), 
-       cells = factor(matrix(t(x), nrow = 1 ), levels )
+       cells = factor(matrix(t(x), nrow = 1 ), levels = levels )
      ),
      class = "landscape"
      )
