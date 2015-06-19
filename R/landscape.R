@@ -20,7 +20,7 @@ init_landscape <- function(states, cover, width = 50, height = 50) {
   cells <- factor(rep(states[1], times = width*height), levels = states) # vector of empty cells in state "0"
   for(i in 2:length(states)) {
     s <- floor(width*height*cover[i]) #how many cells are in state[i]
-    cells[sample(which(cells %in% states[1:(i-1)]), s, replace = FALSE)] <- states[i]  # replace s cells, randomly drawn, with state[i]
+    cells[sample(which(cells %in% states[1]), s, replace = FALSE)] <- states[i]  # replace s cells, randomly drawn, with state[i]
     ## BUG: this does not distribute cells correctly!!!
   }
   
