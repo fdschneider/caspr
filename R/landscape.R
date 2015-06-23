@@ -12,7 +12,8 @@
 #' init_landscape(c("+","0","-"), c(0.5,0.25,0.25)) 
 
 
-init_landscape <- function(states, cover, width = 50, height = 50) {
+init_landscape <- function(states, cover, width = 50, height = width) {
+  if(height != width) warning("the landscape is not a square. Spatial analysis will not be possible!")
   if(length(states) != length(cover))
     warning("length of vector 'states' and vector 'cover' differs. I am distributing cover at random!"
     )
@@ -64,12 +65,14 @@ as.landscape <- function (...) UseMethod("as.landscape")
 #'   unique states of the matrix, which might cause loss of states (e.g. if not 
 #'   present on this landscape) or a wrong ordering of states. This is not
 #'   recommended! Always provide a levels vector!
+#'   
+#' @export
 
-as.landscape.matrix <- function(x, levels = levels(x$cells) ) {
+as.landscape.matrix <- function(x, states = levels(x$cells) ) {
    structure(
      list(
        dim = c(width = dim(x)[1] , height = dim(x)[2]), 
-       cells = factor(matrix(t(x), nrow = 1 ), levels = levels )
+       cells = factor(matrix(t(x), nrow = 1 ), levels = states )
      ),
      class = "landscape"
      )

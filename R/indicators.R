@@ -1,4 +1,3 @@
-#' @export
 
 #' Generic function for calculating indicators.
 #'

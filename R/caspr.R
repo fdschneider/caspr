@@ -53,7 +53,7 @@ mapping <- function(width, height, boundary = "periodic", i_matrix = matrix(c(0,
 ####################
 ## count function ##
 ####################
-
+# This function does not count by id the neighbors. Change its name to neighbors? (it's also confusing because we don't know its in the local neighborhood - count could be counting the whole landscape)
 count <- function(...) {
   UseMethod("count")
 }
