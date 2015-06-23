@@ -6,7 +6,7 @@ The code provided here is running spatial disturbance models in a cellular autom
 The R-package is build around objects of a particular class `ca_model` (S3 objects in R) that contain all the model specific information, like the original publication, the update functions, and the cell states. 
 These objects can be handled by a function called `ca()` which runs the cellular automata over time. 
 
-Other functions allow the plotting of single snapshots or timeseries, the generation of initial lattices/grids/landscapes, the calculation of spatial and temporal indicators.
+Other functions allow the plotting of single snapshots or timeseries, the generation of initial lattices/grids/landscapes, the calculation of spatial and temporal indicators as provided by the package ['spatialwarnings'](https://github.com/fdschneider/spatial_warnings).
 
 ## Install package
 
@@ -14,7 +14,6 @@ To *use* the package, it can be installed directly from GitHub using the `devtoo
 
 ```
 install.packages("devtools")
-devtools::install_github("fdschneider/spatial_warnings")
 devtools::install_github("fdschneider/caspr")
 ```
 
@@ -37,8 +36,10 @@ In the following the objects and functions are described in the sequence of thei
 landscape objects are created using the function `init_landscape()` , e.g. 
 
 ```
-l <- init_landscape(c("1", "0"), c(0.2,0.8), 100, 100)
+l <- init_landscape(c("1", "0"), c(0.2,0.8), width = 100)
 ``` 
+
+Landscapes are squared by default, but a height argument can be specified. However, doing so **will disqualify the output to be analysed spatially!!!** 
 
 #### `landscape` object class
 
