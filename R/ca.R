@@ -186,3 +186,32 @@ summary.ca_result <- function(x) {
   
   return(out)
 }
+
+
+#' Transfer output of ca() into a list of matrices. 
+#'
+#' @param x 
+#'
+#' @return a list of matrices.
+#' @export
+#'
+
+as.list.ca_result <- function(x) {
+  lapply(x$landscapes, as.matrix)
+}
+
+
+#' Transfer output of ca() into an array. 
+#'
+#' @param x 
+#'
+#' @return an array with dimensions 'width', 'height' and 'snaps'.
+#' @export
+#'
+
+as.array.ca_result <- function(x) {
+  width <- x$landscapes[[1]]$dim[1]
+  height <- x$landscapes[[1]]$dim[2]
+  snaps <- length(x$landscapes)
+  array(unlist(lapply(x$landscapes, as.matrix)), dim = c(width, height, snaps), dimnames = c("width", "height", "snaps"))
+}

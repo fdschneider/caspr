@@ -1,5 +1,5 @@
 ##  Generic spatial early warning signals 
-## Code originally written by V. Guttal, V. Dakos and S. Kefi and mofdifed b S. Majumder
+## Code originally written by V. Guttal, V. Dakos and S. Kefi and mofdifed by S. Majumder
 
 
 spatial_ews = function(rawmatrix, subsize=2, detrending = FALSE)
