@@ -4,7 +4,7 @@
 \alias{init_landscape}
 \title{Create a new landscape object, i.e. a grid for cellular automata processing.}
 \usage{
-init_landscape(states, cover, width = 50, height = 50)
+init_landscape(states, cover, width = 50, height = width)
 }
 \arguments{
 \item{states}{A character vector containing the potential cell states.}
