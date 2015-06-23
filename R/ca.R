@@ -36,6 +36,8 @@
 
 ca <- function(x, model = musselbed, parms = "default", t_max = 1000, t_min = 500, t_eval = 200, isstable = 0.00001, saveeach = 50, ... )  {
   
+  # checking fo valid input
+  ## parms
   if(parms[1] != "default") { 
     if(!all(names(model$parms) %in% names(parms))) {
       stop(paste("missing parameter(s): ", names(parms)[all(names(model$parms) %in% names(parms))] , "! please specify!"    ) )
@@ -45,7 +47,18 @@ ca <- function(x, model = musselbed, parms = "default", t_max = 1000, t_min = 50
     warning("you did not specify 'parms'! using default parameters of model!")
   }
   
-  mapping(x$dim[1], x$dim[2])
+  ## states
+  if(!all(x$states %in% model$states)) stop("invalid cell states specified in landscape object!")
+ #notworking!  if(any(!model$states %in% x$states)) warning("one or several of the model's default cell states are not present in initial landscape object!") 
+  
+  ## is interaction matrix provided? if not defaults to four cell neighborhood.   
+  if(is.null(model$interact)) {
+    I <- matrix(c(0, 1, 0,  1, NA, 1, 0, 1, 0), ncol = 3, byrow = TRUE) 
+  } else {
+    I <- model$interact 
+  }
+    
+  mapping(x$dim[1], x$dim[2], i_matrix = I )
   xstats <- summary(x)
   states <- levels(x$cells)
   
@@ -215,3 +228,5 @@ as.array.ca_result <- function(x) {
   snaps <- length(x$landscapes)
   array(unlist(lapply(x$landscapes, as.matrix)), dim = c(width, height, snaps), dimnames = c("width", "height", "snaps"))
 }
+
+

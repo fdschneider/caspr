@@ -89,7 +89,7 @@ as.landscape.matrix <- function(x, states = levels(x$cells) ) {
 
 
 summary.landscape <- function(x) {
-  mapping(x$dim[1],x$dim[2])
+  if(!exists("x_with_border")) mapping(x$dim[1],x$dim[2], i_matrix = I)
   out <- list()
   out$dim <- x$dim
   out$n <- sapply(levels(x$cells), function(y) {sum(x$cells == y)})
