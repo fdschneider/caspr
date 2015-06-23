@@ -1,6 +1,6 @@
 #Function to reduce original matrix to submatrix by averaging
 #Writen by Vishwesha Guttal, 7th Nov 2013.
-#Modified by 
+#Modified by Sabiha Majumder
 
 reducedmatrix_ews = function(fullmatrix, subsize)
 {
