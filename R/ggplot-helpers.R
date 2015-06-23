@@ -21,7 +21,7 @@
 #'
 fortify.ca_result <- function(x) { 
   # Note that the number of rows in x$snapshots can be greater than the actual
-  # number of snapshots.
+  # number of snapshots...
   output <- lapply(as.list(seq.int(length(x$landscapes))), # for all snapshots
               function(n) { 
                 data.frame(time = x$snapshots[n, 'time'],
