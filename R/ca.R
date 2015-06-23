@@ -186,3 +186,17 @@ summary.ca_result <- function(x) {
   
   return(out)
 }
+
+
+#' Transfer output of ca() into a list of matrices. 
+#'
+#' @param x 
+#'
+#' @return a list of matrices.
+#' @export
+#'
+
+as.matrix.ca_result <- function(x) {
+  lapply(x$landscapes, as.matrix)
+}
+

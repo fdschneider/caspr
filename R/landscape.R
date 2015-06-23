@@ -12,7 +12,8 @@
 #' init_landscape(c("+","0","-"), c(0.5,0.25,0.25)) 
 
 
-init_landscape <- function(states, cover, width = 50, height = 50) {
+init_landscape <- function(states, cover, width = 50, height = width) {
+  if(height != width) warning("the landscape is not a square. Spatial analysis will not be possible!")
   if(length(states) != length(cover))
     warning("length of vector 'states' and vector 'cover' differs. I am distributing cover at random!"
     )
