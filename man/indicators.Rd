@@ -2,23 +2,13 @@
 % Please edit documentation in R/indicators.R
 \name{indicators}
 \alias{indicators}
-\title{Get spatial and temporal indicators for a ca_result object}
 \usage{
-indicators(x, spatial = TRUE, temporal = TRUE)
+indicators(...)
 }
 \arguments{
-\item{x}{A \code{ca_result} object, output of function \code{ca()}.}
-
-\item{spatial}{Logical. If true, function returns all spatial indicators.}
-
-\item{temporal}{Logical. If true, function returns all temporal indicators.}
+\item{...}{}
 }
-\value{
-An object of class \code{ca_indicators} that contains a detailed
-  report on all kinds of spatial and temporal indicators on the timeseries
-  and snapshots.
-}
-\description{
-Get spatial and temporal indicators for a ca_result object
+\details{
+with methods for objects of class 'landscape' and 'ca_result'.
 }
 
