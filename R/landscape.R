@@ -65,12 +65,14 @@ as.landscape <- function (...) UseMethod("as.landscape")
 #'   unique states of the matrix, which might cause loss of states (e.g. if not 
 #'   present on this landscape) or a wrong ordering of states. This is not
 #'   recommended! Always provide a levels vector!
+#'   
+#' @export
 
-as.landscape.matrix <- function(x, levels = levels(x$cells) ) {
+as.landscape.matrix <- function(x, states = levels(x$cells) ) {
    structure(
      list(
        dim = c(width = dim(x)[1] , height = dim(x)[2]), 
-       cells = factor(matrix(t(x), nrow = 1 ), levels = levels )
+       cells = factor(matrix(t(x), nrow = 1 ), levels = states )
      ),
      class = "landscape"
      )
