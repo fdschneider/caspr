@@ -32,7 +32,7 @@
 #'   state. Only for every \code{saveeach}th timestep, the full lattice is saved
 #'   in a list within the output file (\code{result$snapshots} ).
 #'   
-#' 
+#' @export
 
 ca <- function(x, model = musselbed, parms = "default", t_max = 1000, t_min = 500, t_eval = 200, isstable = 0.00001, saveeach = 50, ... )  {
   
@@ -154,6 +154,8 @@ print.ca_result <- function(x) {
 #' @details This prompts a (series of) summary plot for the simulation run. By
 #' default this is a timeseries of the primary cell state (i.e. the first state
 #' given in \code{x$model$states}).
+#' 
+#' @export
 
 plot.ca_result <- function(x, plotstates = c(TRUE, rep(FALSE, length(x$model$states)-1)), snapshots = FALSE, cols = x$model$cols , lwd = 1, ...) {
   
@@ -186,7 +188,7 @@ plot.ca_result <- function(x, plotstates = c(TRUE, rep(FALSE, length(x$model$sta
 #'
 #' @return Returns a list \code{out} containing the model name, the final time, the mean cover  and standard deviation after transitory dynamics. 
 #'    
-#' 
+#' @export
 
 summary.ca_result <- function(x) {
   out <- list()

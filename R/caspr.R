@@ -54,6 +54,9 @@ mapping <- function(width, height, boundary = "periodic", i_matrix = matrix(c(0,
 ## count function ##
 ####################
 # This function does not count by id the neighbors. Change its name to neighbors? (it's also confusing because we don't know its in the local neighborhood - count could be counting the whole landscape)
+
+#' @export
+
 count <- function(...) {
   UseMethod("count")
 }
@@ -74,6 +77,7 @@ count.integer <- function(y, x, neighbor) {
 #'
 #' @return Returns a vector of the counts in the neighborhood specified by the \link{mapping}, by default the 4-cell neighborhood.
 #' 
+#' @export
 
 count.landscape <- function(x, neighbor) {
   

@@ -1,4 +1,10 @@
-# grazing model: Schneider and Kéfi (2015, in review)
+#' Grazing model
+#' 
+#' @author Schneider and Kéfi (2015, in review)
+#' @details A model 
+#' @export
+
+"grazing"
 
 grazing <- list()
 class(grazing) <- "ca_model"

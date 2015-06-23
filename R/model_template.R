@@ -1,4 +1,6 @@
-# Template for model objects
+#' Template for model objects
+
+"template"
 
 template <- list()
 class(template) <- "ca_model"  

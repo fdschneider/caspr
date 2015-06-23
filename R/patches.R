@@ -10,7 +10,7 @@
 #' @details The function is a wrapper for function \link{ConnCompLabel} of
 #'   package 'SDMTools'.
 #'   
-#'   
+#' @export
 
 label <- function(x, state = levels(x$cells)[1]) {
   pattern <- x$cells

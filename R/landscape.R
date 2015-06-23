@@ -9,7 +9,8 @@
 #'   random distribution of \code{states}, in the relative ratio given in 
 #'   \code{cover}.
 #' @examples 
-#' init_landscape(c("+","0","-"), c(0.5,0.25,0.25)) 
+#' init_landscape(c("+","0","-"), c(0.5,0.25,0.25))
+#' @export
 
 
 init_landscape <- function(states, cover, width = 50, height = width) {
@@ -42,6 +43,7 @@ init_landscape <- function(states, cover, width = 50, height = width) {
 #' @param x A landscape object.
 #'
 #' @return A matrix. 
+#' @export
 
 as.matrix.landscape <- function(x) {
   matrix(x$cells, nrow = x$dim[1], byrow = TRUE)
@@ -86,6 +88,7 @@ as.landscape.matrix <- function(x, states = levels(x$cells) ) {
 #' @examples 
 #' obj <- init_landscape(c("+","0","-"), c(0.5,0.25,0.25)) 
 #' summary(obj)
+#' @export
 
 
 summary.landscape <- function(x) {
@@ -115,9 +118,13 @@ summary.landscape <- function(x) {
 #' @return A landscape object of dimensions \code{width} x \code{height} with 
 #'   random distribution of \code{states}, in the relative ratio given in 
 #'   \code{cover}.
+#' 
+#' 
+#' @export
 #' @examples 
 #' onj <- init_landscape(c("+","0","-"), c(0.5,0.25,0.25)) 
 #' plot(obj)
+#' 
 
 plot.landscape <- function(x, cols = "auto", grid = FALSE, axis = FALSE, add = FALSE, ani = FALSE, ...) {
   lvls <- levels(x$cells) 
