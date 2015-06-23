@@ -44,7 +44,11 @@ ca <- function(x, model = musselbed, parms = "default", t_max = 1000, t_min = 50
     parms <- model$parms
     warning("you did not specify 'parms'! using default parameters of model!")
   }
-  
+
+  if(t_min <2*t_eval){
+	  stop(paste("Wrong parameter combination: t_min have to be superior to 2 times t_eval"))
+  }
+
   mapping(x$dim[1], x$dim[2])
   xstats <- summary(x)
   states <- levels(x$cells)
