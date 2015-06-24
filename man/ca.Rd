@@ -4,8 +4,8 @@
 \alias{ca}
 \title{Run cellular automata simulation.}
 \usage{
-ca(x, model = musselbed, parms = "default", t_max = 1000, t_min = 500,
-  t_eval = 200, isstable = 1e-05, saveeach = 50, ...)
+ca(x, model = musselbed, parms = "default", t_min = 500, t_eval = 200,
+  saveeach = 50, steady = 1e-05, t_max = 1000, ...)
 }
 \arguments{
 \item{x}{A landscape object.}
@@ -18,28 +18,43 @@ vector of parameter values. Those will be combined full-factorially using
 \code{expand.grid()}. Will be checked against template parameters in
 \code{model}. If not provided, template parameters will be used.}
 
-\item{t_max}{Maximal number of timesteps. Model will be terminated even if
-unstable.}
-
-\item{t_min}{Minimal number of timesteps before stability is evaluated and
+\item{t_min}{Minimal number of timesteps before steadyness is evaluated and
 model might be terminated if transitory dynamics are surpassed.}
 
-\item{t_eval}{Timespan that is evaluated for stability.}
-
-\item{isstable}{Tolerance level for stability. Stability is reached if the
-difference in mean cover of the primary cell state (i.e. the first in the
-vector provided in \code{model$states}) over two subsequent timespans of
-length \code{t_eval} is smaller than \code{isstable}.}
+\item{t_eval}{Timespan of moving window that is evaluated for the end of
+transient dynamics.}
 
 \item{saveeach}{Timespan between timesteps at which a full snapshot of the
 landscape is saved into the output of the simulation.}
+
+\item{steady}{Tolerance level for steadyness. Steady state is reached if the
+difference in mean cover of the primary cell state (i.e. the first in the
+vector provided in \code{model$states}) over two subsequent timespans of
+length \code{t_eval} is smaller than \code{steady}.}
+
+\item{t_max}{Maximal number of timesteps. Model will be terminated even if
+still in transient dynamics (i.e. model did not reach steady state)}
 
 \item{...}{Parameters handed over to update function in \code{model$update}.}
 }
 \value{
 The output is returned as a list object of class \code{ca_result},
   containing a full timeseries of global and local cover as well as snapshots
-  of the entire landscape (stored in \code{out$landscapes}).
+  of the landscape.
+  \describe{
+    \item{\code{$model}}{The entire model object used to generate this simulation
+       run, including the parameters at \code{$model$parms}}
+    \item{\code{$time}}{Vector of timesteps.}
+    \item{\code{$evaluate}}{Start and endpoint of steady-state evaluation period.}
+    \item{\code{$cover}}{A list of cover timeseries for each state of the model.}
+    \item{\code{$local}}{A list of local cover timeseries for each state of the
+       model.}
+    \item{\code{$snaps}}{A vector of indices of saved snapshots.}
+    \item{\code{$landscapes}}{A list of landscape objects at each point in
+       \code{$snaps}}
+    \item{\code{$steadyness}}{Steadyness value: difference in mean cover of primary
+       state between first and second half of the evaluation period. }
+  }
 }
 \description{
 Run cellular automata simulation.
@@ -47,10 +62,27 @@ Run cellular automata simulation.
 \details{
 Runs iterations of the update function \code{model$update()} on the
   initial landscape \code{x} until a steady state is reached (as defined by
-  the tolerance level \code{isstable}), but max \code{t_max} timesteps. The
+  the tolerance level \code{steady}), but max \code{t_max} timesteps. The
   function saves the full timeseries, i.e. a value for each timestep, of the
   global cover of each state as well as the average local cover of each
   state. Only for every \code{saveeach}th timestep, the full lattice is saved
   in a list within the output file (\code{result$snapshots} ).
+}
+\examples{
+# 1. run simulation and save a snapshot each 50 timesteps. plot timeseries and snapshots.
+
+l <- init_landscape(c("+","0","-"), c(0.6,0.2,0.2)) # create initial landscape
+p <- list(r = 0.4, d = 0.9, delta = 0.01)   # set parameters
+r <- ca(l, model = musselbed, parms = p, t_max = 500)    # run simulation
+plot(r)
+
+par(mfrow= c(2,3))
+lapply(r$landscapes, plot)
+
+# 2. run simulation and save a snaphot each timestep. create animated gif.
+
+l <- init_landscape(c("1","0"), c(0.6,0.4))
+r <- ca(l, model = life, t_max = 400, t_eval = 400, saveeach = 1)
+animate(r, "life01.gif")
 }
 
