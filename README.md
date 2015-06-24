@@ -68,6 +68,7 @@ A model object is a list `model` that contains
 - `model$ref`: the original reference
 - `model$states`: the potential cell states
 - `model$cols`: colors for cell states
+- `model$interact` : an interaction matrix, defaults to 4-cell neighborhood, affects behaviour of count function. 
 - `model$parms`: a template for parameters or default parameters 
 - `model$update`: the update function, which takes a landscape object `x_old` and returns a landscape object `x_new`, representing the updating of one single timestep
 
@@ -102,16 +103,14 @@ The result object `r` of a simulation contains the full timeseries of cover and 
 - `r$local`: a data frame reporting the average local cover of the cell states, i.e. the average probability that a state *i* is found in the neighborhood given that the focal cell is in state *i*. Thus, `r$local[1]` returns the timeseries of the primary cell state. 
 - `r$snapshots`: a registry table of the snapshots and at which point in time they were taken. 
 - `r$landscapes`: a list of landscape objects for the given snapshots.
-
-#### function `indicators()`
-
-#### `ca_indicators` object class
+- `r$steadyness` : the difference in mean of the last and second-last period of length \code{t_eval}, as specified . 
 
 #### function `carray()`
 
+
 ## Contributors
 
-Alain Danet, Alex Genin, Vishwesha Guttal, Sonia Kefi, Sumithra Sankaran, Florian Schneider (Maintainer), Sabiha Majumder
+Alain Danet, Alex Genin, Vishwesha Guttal, Sonia Kefi, Sabiha Majumder, Sumithra Sankaran, Florian Schneider (Maintainer)
 
 ## License
 
