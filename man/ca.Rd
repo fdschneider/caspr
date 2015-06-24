@@ -79,10 +79,10 @@ plot(r)
 par(mfrow= c(2,3))
 lapply(r$landscapes, plot)
 
-# 2. run simulation and save a snaphot each timestep. create animated gif.
+# 2. run simulation and save full landsape at each timestep. create animated gif.
 
-l <- init_landscape(c("1","0"), c(0.6,0.4))
-r <- ca(l, model = life, t_max = 400, t_eval = 400, saveeach = 1)
+l <- init_landscape(c("1","0"), c(0.6,0.4), 100)
+r <- ca(l, model = life, t_max = 500, t_eval = 500, saveeach = 1)
 animate(r, "life01.gif")
 }
 
