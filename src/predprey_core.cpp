@@ -47,24 +47,24 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
   // Grid height/width
   h = grid.nrow();
   w = grid.ncol();
-  Rcout << grid(1,3);
   
   update = 0;
   // Default value for subs is 1000 in original model
   while (update < subs) { 
-    Rcout << "plop\n";
+    // Rcout << "plop\n";
     
     // Choose a random cell
     i = randn(0, h);
     j = randn(0, w);
-    Rcout << "i:" << i << "j:" << j << "\n";
+    // Rcout << "i:" << i << "j:" << j << "\n";
     
     if ( grid(i,j) == FISH ) { // if fish, try to grow 
-      Rcout << "plap\n";
+      // Rcout << "plap\n";
       // consider random neighbor
       int k  = randn(0, NEIGHBORS); 
-      int i1 = (X[k] + i) % h; // wrap around
-      int j1 = (Y[k] + j) % w;
+      // The + h/w makes sure i1 or j1 is always positive
+      int i1 = (X[k] + i + h) % h; // wrap around
+      int j1 = (Y[k] + j + w) % w; 
       
       if ( grid(i1, j1) == EMPTY && randp() < betaf ) { 
         grid(i1, j1) = FISH; // grow
@@ -72,14 +72,14 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
       
     } else if ( grid(i,j) == SHARK ) { // if shark, then eat or die, and maybe grow
       
-      // consider neighbors starting randomly
+      // consider neighbors starting with a random one
       randnb = randn(0,3);
       k = 0;
       found_prey = false;
       while ( !found_prey && k < NEIGHBORS) { 
-        Rcout << "plip:" << (k + randnb) % NEIGHBORS << "\n";
-        i1 = (X[(k + randnb) % NEIGHBORS] + i) % w;
-        j1 = (Y[(k + randnb) % NEIGHBORS] + j) % h;
+        // Rcout << "plip:" << (k + randnb) % NEIGHBORS << "\n";
+        i1 = (X[(k + randnb) % NEIGHBORS] + i + h) % h;
+        j1 = (Y[(k + randnb) % NEIGHBORS] + j + w) % w;
         if ( grid(i1, j1) == FISH ) { 
           // eat
           found_prey = true;
@@ -104,9 +104,9 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
       i  = randn(0, h);
       j  = randn(0, w);
       k  = randn(0, NEIGHBORS);
-      i1 = (i + X[k]) % h;
-      j1 = (j + Y[k]) % w;
-      Rcout << "plap. i1:" << i1 << " j1:" << j1 << "\n";
+      i1 = (i + X[k] + h) % h; 
+      j1 = (j + Y[k] + w) % w;
+      // Rcout << "plap. i1:" << i1 << "/" << h << " j1:" << j1 << "/" << w << "\n";
       
       if ( grid(i, j) != grid(i1, j1) ) { 
         tmp = grid(i, j);
@@ -118,7 +118,7 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
     update++;
   }
   
-  Rcout << "returning\n";
+  // Rcout << "returning\n";
   
   return grid;
 }
