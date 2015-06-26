@@ -29,7 +29,7 @@ predprey$parms  <- list(
 
 predprey$update <- function(x,               # landscape object
                             parms,           # set of parms 
-                            subs = 10) {     # number of iterations/time step ?
+                            subs = 1000) {     # number of iterations/time step ?
   
   # Adjust data (makes copy)
   x_old <- matrix(as.integer(x$cells), nrow=x$dim[1], byrow=TRUE)

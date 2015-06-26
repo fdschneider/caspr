@@ -8,7 +8,7 @@ initial <- init_landscape(states = c("f","s","0"),
 
 parms <- predprey$parms # Import defaults
 
-output <- ca(initial, parms, model=predprey, t_max=1000) 
+output <- ca(initial, parms, model=predprey, t_max=1000)
 
 
 library(ggplot2)

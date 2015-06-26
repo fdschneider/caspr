@@ -85,9 +85,9 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
           found_prey = true;
           grid(i1, j1) = SHARK; 
           // and maybe reproduce 
-          if ( ( 1 - randp()) < betas) { 
-            grid(i, j) = EMPTY; // otherwise grid(i,j) has shark = repro occured
-          }
+          if ( randp() >= betas ) { 
+            grid(i, j) = EMPTY;
+          } 
         }
         k++; // consider next neighbor
       }
