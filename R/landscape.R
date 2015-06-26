@@ -45,14 +45,19 @@ init_landscape <- function(states, cover, width = 50, height = width) {
 #' @return A matrix. 
 #' @export
 
-as.matrix.landscape <- function(x) {
-  matrix(x$cells, nrow = x$dim[1], byrow = TRUE)
+as.matrix.landscape <- function(x, as = "character") {
+  if(as == "character") {
+    matrix(x$cells, nrow = x$dim[1], byrow = TRUE)
+  } else {
+    if(as == "integer")
+      matrix(as.integer(x$cells), nrow = x$dim[1], byrow = TRUE)
+  }
 }
 
 
 
 #' generic S3 function
-#'
+#' @export
 
 as.landscape <- function (...) UseMethod("as.landscape")
 

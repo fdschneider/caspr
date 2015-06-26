@@ -306,7 +306,8 @@ as.array.ca_result <- function(x) {
 #' 
 #' @details This requires R-package \link{[animation]} and the additional software \href{http://imagemagick.org/}{ImageMagick}
 #' @export
-#'
+#' @import animation
+#' 
 #' @examples
 #' 
 #' # 1. run simulation and save full landsape at each timestep. create animated gif.
@@ -326,7 +327,7 @@ animate <- function(x, filename, type = "gif", speed = 1) {
   saveGIF( 
     for(i in 1:length(x$landscapes) ) {
       par(mar = c(0,0,0,0))
-      plot(x$landscapes[[i]], grid = FALSE, ani = TRUE) 
+      plot(x$landscapes[[i]], cols = x$model$cols, grid = FALSE, ani = TRUE) 
     }
     , movie.name = filename, img.name = "grid", convert = "convert", interval = 0.1/speed,
     cmd.fun = system, clean = TRUE, ani.width = width, ani.height = height, outdir = getwd())
