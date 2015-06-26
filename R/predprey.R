@@ -1,11 +1,19 @@
-# Predator-prey model
-# 
-# 
-# These tags are necessary for Rcpp.
-# 
+#' Predator-prey model
+#' 
+#' @param betaf
+#' @param betas
+#' @param delta
+#' @author Pascual, M., Roy, M., Guichard, F., & Flierl, G. (2002). Cluster size
+#'   distributions: signatures of self-organization in spatial ecologies.
+#'   Philosophical Transactions of the Royal Society of London. Series B,
+#'   Biological Sciences, 357(1421), 657–666.
+#'   http://doi.org/10.1098/rstb.2001.0983
+#'   
 #' @useDynLib caspr
 #' @importFrom Rcpp sourceCpp
 #' @export
+
+"predprey"
 
 predprey <- list()
 class(predprey) <- "ca_model"

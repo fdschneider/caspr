@@ -2,7 +2,7 @@
 % Please edit documentation in R/ca.R
 \name{animate}
 \alias{animate}
-\title{Create animated gif or mpg video from ca_result.}
+\title{Create animated gif.}
 \usage{
 animate(x, filename, type = "gif", speed = 1)
 }
@@ -11,15 +11,15 @@ animate(x, filename, type = "gif", speed = 1)
 
 \item{filename}{A character value specifying relative path and filename.}
 
-\item{type}{A character value specifying the type of output. Either "gif" or "mpg".}
+\item{type}{(intended) A character value specifying the type of output. Either "gif" or "mpg".}
 
 \item{speed}{A numeric value specifying the speed of the output (defaults to 1).}
 }
 \value{
-Returns an animated gif file or mpeg video.
+Returns an animated gif file.
 }
 \description{
-Create animated gif or mpg video from ca_result.
+Create animated gif.
 }
 \details{
 This requires R-package \link{[animation]} and the additional software \href{http://imagemagick.org/}{ImageMagick}
