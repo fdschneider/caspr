@@ -4,7 +4,6 @@
 // 
 // 
 
-# include <cstdlib> // for rand()
 #include <Rcpp.h>
 using namespace Rcpp;
 
@@ -51,15 +50,12 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
   update = 0;
   // Default value for subs is 1000 in original model
   while (update < subs) { 
-    // Rcout << "plop\n";
     
     // Choose a random cell
     i = randn(0, h);
     j = randn(0, w);
-    // Rcout << "i:" << i << "j:" << j << "\n";
     
     if ( grid(i,j) == FISH ) { // if fish, try to grow 
-      // Rcout << "plap\n";
       // consider random neighbor
       int k  = randn(0, NEIGHBORS); 
       // The + h/w makes sure i1 or j1 is always positive
@@ -106,7 +102,6 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
       k  = randn(0, NEIGHBORS);
       i1 = (i + X[k] + h) % h; 
       j1 = (j + Y[k] + w) % w;
-      // Rcout << "plap. i1:" << i1 << "/" << h << " j1:" << j1 << "/" << w << "\n";
       
       if ( grid(i, j) != grid(i1, j1) ) { 
         tmp = grid(i, j);
@@ -118,7 +113,6 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
     update++;
   }
   
-  // Rcout << "returning\n";
   
   return grid;
 }
