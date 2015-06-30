@@ -96,7 +96,7 @@ After simulation, the function returns an object of class `ca_results`.
 
 The result object `r` of a simulation contains the full timeseries of cover and selected snapshots of the full landscape. It has the structure:
 
-- `r$model`: the `ca_model` object used to run the simulation, including the provided parameter set.  
+- `r$model`: the `ca_model` object used to run the simulation, including the provided parameter set.
 - `r$time`: a vector of the distinct timesteps of the simulation
 - `r$evaluate`: the begin and end of a steady state period in the simulation run. 
 - `r$cover`: a data frame reporting the global cover with one column for each state of the model and one row for each timestep. Thus, `r$cover[1]` returns the timeseries of the primary cell state. 
@@ -106,6 +106,26 @@ The result object `r` of a simulation contains the full timeseries of cover and 
 - `r$steadyness` : the difference in mean of the last and second-last period of length \code{t_eval}, as specified . 
 
 #### function `carray()`
+
+A wrapper function that runs a model along a gradient of one parameter value or an array of parameter values making use of a parallel backend provided by the `foreach` package. The initial landscape is drawn for each replicate using the numerical vector of initial cover `init`. 
+
+```r
+
+p <- list(
+    r = 0.4, # recolonisation of empty sites dependent on local density
+    d = seq(0,1,0.1), # wave disturbance
+    delta = 0.01, # intrinsic disturbance rate
+    replicates = 1:5
+  )
+r <- carray(musselbed, c(0.7,0.15,0.15), parms = p)
+
+```
+
+It returns a dataframe with global and local cover for each state for each parameter value or combination of parameter values given in `parms`.
+
+
+
+#### function `animate()`
 
 
 ## Contributors
