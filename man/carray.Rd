@@ -44,13 +44,6 @@ The function is used to create gradients along one parameter value
   value or combination of parameter values while making use of a parallel
   backend provided by \code{\link[foreach]{foreach}}.
 }
-\note{
-\strong{ToDo:}
-
-  - initialise with different landscape objects
-
-  - implement selector for output, e.g. indicators = TRUE
-}
 \examples{
 \dontrun{
   p <- list(

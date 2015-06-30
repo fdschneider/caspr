@@ -24,6 +24,7 @@
 #'   value or combination of parameter values while making use of a parallel
 #'   backend provided by \code{\link[foreach]{foreach}}.
 #'   
+#' @export 
 #' @import foreach
 #' @examples 
 #' \dontrun{
@@ -59,6 +60,10 @@ carray <- function(model, init, parms = model$parms, width = 50, height = width,
   iterations <- cbind(ID = 1:nrow(iterations),iterations)
   set.seed(salt)
   iterations$seed <- as.integer(runif(length(iterations$ID),100000,999999))
+  
+  if(!getDoParRegistered() & length(iterations$ID) > 10 ) {
+    stop("No parallel backend registered! This would take too much time!")
+  }
   
   foreach(i = iterations$ID, .combine = rbind, .packages = c("caspr")) %dopar% {
     
