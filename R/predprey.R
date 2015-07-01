@@ -57,3 +57,7 @@ predprey$update <- function(x,               # landscape object
   return(x)
 }
 
+# Internal function/not exported
+.to_vector <- function(xmat, levels) { 
+  factor(levels[t(xmat)], levels = levels)
+}
