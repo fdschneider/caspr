@@ -37,7 +37,6 @@ init_landscape <- function(states, cover, width = 50, height = width) {
   return(initial)
 }
 
-
 #' transfer landscape to matrix.
 #'
 #' @param x A landscape object.
@@ -46,11 +45,15 @@ init_landscape <- function(states, cover, width = 50, height = width) {
 #' @export
 
 as.matrix.landscape <- function(x, as = "character") {
-  if(as == "character") {
+  if (as == "character") {
     matrix(x$cells, nrow = x$dim[1], byrow = TRUE)
-  } else {
-    if(as == "integer")
+  } else if (as == 'integer') {
       matrix(as.integer(x$cells), nrow = x$dim[1], byrow = TRUE)
+# Cannot make a factorial matrix ?!
+#   } else if (as =="factor") { 
+#     matrix(x$cells, nrow = x$dim[1], byrow = TRUE)
+  } else { 
+    stop(paste0('Cannot convert landscape object to class ', as, "."))
   }
 }
 
@@ -75,15 +78,24 @@ as.landscape <- function (...) UseMethod("as.landscape")
 #'   
 #' @export
 
-as.landscape.matrix <- function(x, states = levels(x$cells) ) {
-   structure(
-     list(
-       dim = c(width = dim(x)[1] , height = dim(x)[2]), 
-       cells = factor(matrix(t(x), nrow = 1 ), levels = states )
-     ),
-     class = "landscape"
-     )
-   
+as.landscape.matrix <- function(x, states = NA)  {
+  
+  # Assumes the matrix x is not a factor, which seems like an impossible 
+  # situation [Alex]
+  if (is.na(states)) { 
+    states <- unique(as.vector(x))
+    warning('Importing states from the unique elements of the matrix.',
+            'This is not recommended !')
+  }
+  
+  structure(
+    list(
+      dim = c(width = dim(x)[1] , height = dim(x)[2]), 
+      cells = factor(matrix(t(x), nrow = 1 ), levels = states )
+    ),
+    class = "landscape"
+    )
+  
 }
 
 #' Summary of landscape object.
