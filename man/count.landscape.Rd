@@ -12,7 +12,7 @@
 \item{neighbor}{A character value. The state to count.}
 }
 \value{
-Returns a vector of the counts in the neighborhood specified by the \link{mapping}, by default the 4-cell neighborhood.
+Returns a vector of the counts in the neighborhood specified by the \code{\link{mapping}}, by default the 4-cell neighborhood.
 }
 \description{
 Count neighbors.

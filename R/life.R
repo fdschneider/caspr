@@ -29,11 +29,11 @@ life$update <- function(x_old, parms) {
   
   x_new <- x_old
   
-  neighbors <- count(x_old, "1")
+  neighb <- neighbors(x_old, "1")
   # define update procedures depending on parms 
   
-  x_new$cells[x_old$cells == "0" & neighbors %in% parms$B] <- "1"
-  x_new$cells[x_old$cells == "1" & !neighbors %in% parms$S] <- "0"
+  x_new$cells[x_old$cells == "0" & neighb %in% parms$B] <- "1"
+  x_new$cells[x_old$cells == "1" & !neighb %in% parms$S] <- "0"
   
   return(x_new)
 }

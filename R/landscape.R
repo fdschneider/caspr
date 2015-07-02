@@ -102,7 +102,7 @@ summary.landscape <- function(x) {
   out$dim <- x$dim
   out$n <- sapply(levels(x$cells), function(y) {sum(x$cells == y)})
   out$cover <- out$n/sum(out$n)
-  out$local <- sapply(levels(x$cells), function(y) {mean(  (count(x,y)/4)[x$cells == y]  )})
+  out$local <- sapply(levels(x$cells), function(y) {mean(  (neighbors(x,y)/4)[x$cells == y]  )})
   return(out)
 }
 

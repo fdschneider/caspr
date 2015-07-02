@@ -31,7 +31,7 @@ grazing$update <- function(x_old, parms_temp, subs = 10, timestep = NA) {
     
     
     parms_temp$rho_plus <- sum(x_old$cells == "+")/(x_old$dim[1]*x_old$dim[2]) # get initial vegetation cover
-    parms_temp$Q_plus <- count(x_old, "+")/4  # count local density of occupied fields for each cell:
+    parms_temp$Q_plus <- neighbors(x_old, "+")/4  # count local density of occupied fields for each cell:
     
     # 2 - drawing random numbers
     rnum <- runif(x_old$dim[1]*x_old$dim[2]) # one random number between 0 and 1 for each cell
