@@ -88,7 +88,9 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
         k++; // consider next neighbor
       }
       // pred has not eaten -> he can die of starvation
+//      Rcout << "randp: " << randp() << "delta: " << delta;
       if ( !found_prey && (randp() < delta) ) { 
+//         Rcout << "shark died\n";
         grid(i, j) = EMPTY;
       }
     }
