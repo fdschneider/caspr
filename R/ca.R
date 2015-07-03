@@ -109,8 +109,12 @@ ca <- function(x, model = musselbed, parms = "default", t_min = 500, t_eval = 20
   result$model$parms <- parms
   result$time <- seq(0, t_min) # add vector of realized timesteps
   result$evaluate <- c(t_min, t_min+2*t_eval)+1
-  result$steadyness <- 1
-  
+  result$steady_state <- data.frame(issteady = FALSE, 
+                                    steadyness = 1, 
+                                    target = steady, 
+                                    t_eval = t_eval 
+                                    )
+
   result$cover <- as.data.frame(t(xstats$cover))
   result$cover <- result$cover[rep(1, t_min+1),] # preallocating memory
   
@@ -194,7 +198,8 @@ ca <- function(x, model = musselbed, parms = "default", t_min = 500, t_eval = 20
   } 
   # ------------ end simulation -----------------
   
-  result$steadyness <- steadyness
+  result$steady_state$issteady <- steadyness <= steady
+  result$steady_state$steadyness <- steadyness 
   result$snaps <- snaps
   class(result) <- "ca_result"
   return(result)
@@ -202,11 +207,38 @@ ca <- function(x, model = musselbed, parms = "default", t_min = 500, t_eval = 20
 
 
 
-print.ca_result <- function(x) {
-  cat("Model run of", x$model$name, " over ", tail(x$time,1)," timesteps. \n")
-  cat("final cover:")
-}
+#' @export
 
+print.ca_result <- function(x) {
+  
+  obj <- deparse(substitute(x))
+  
+  cat(" \n ")
+  cat("Model run of ", x$model$name, " over ", x$evaluate[2],
+      " timesteps. \n", sep = "")
+  
+  if(x$steady_state$issteady == TRUE) {
+    cat("\n average cover reached steady state ('steadyness' <= ", 
+        x$steady_state$steady ,"): \n", sep = "")
+  } else {
+    cat("\n average cover did not reach steady state ('steadyness' = ", 
+        round(x$steady_state$steadyness, 6) ,"): \n", sep = "")
+  }
+  cat( "  ", formatC(names(summary(x)$mean_cover), width = 6, flag = " " ) , "\n")
+  cat( "  ", formatC(round(summary(x)$mean_cover, digits = 3), width = 6, flag = " " ) )
+  cat(" \n \n")
+  cat(" for more details call 'summary(", obj,")' or 'plot(", obj,")'! \n", sep = "")
+  
+  cat( " access simulation results: \n")
+  cat( "   '", obj,"$model$parms' : simulation parameters \n", sep = "")
+  cat( "   '", obj,"$time' : a vector of timesteps \n", sep = "")
+  cat( "   '", obj,"$cover' : a dataframe of the states' timeseries \n", sep = "")
+  cat( "   '", obj,"$ini_landscape' : the initial landscape object \n", sep = "")
+  cat( "   '", obj,"$snaps' : an index table of saved snapshots \n", sep = "")
+  cat( "   '", obj,"$landscapes[[i]]' : extract snapshot from list of snapshots \n", sep = "")
+  cat(" \n ")
+  
+}
 
 #' plot method for 'ca_result' objects
 #' 
