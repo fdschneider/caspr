@@ -4,8 +4,8 @@
 \alias{carray}
 \title{Run ca() over parameter array.}
 \usage{
-carray(model, init, parms = model$parms, width = 50, height = width,
-  salt = 345678, ...)
+carray(model, init, parms = model$parms, save = FALSE, filename = "sim",
+  directory = getwd(), width = 50, height = width, salt = 345678, ...)
 }
 \arguments{
 \item{model}{A valid object of class 'ca_model'. Defaults to musselbed. Valid
@@ -18,6 +18,16 @@ to \code{length(model$states)}.}
 vector of parameter values. Those will be combined full-factorially using
 \code{expand.grid()}}
 
+\item{save}{Logical. If TRUE, each individual run is saved to a file. They
+can be loaded into the current working environment using
+\code{load("filename")}.}
+
+\item{filename}{A character vector specifying the root of the filename of the
+saved files, including a relative path. It will be extended by an
+individual iteration ID and the fileending ".Rd". Note: If running in
+parallel on a cluster, output files will be saved in the workers home
+directory!}
+
 \item{width}{An integer number. Defaults to 50 and is ignored if a landscape
 object is provided in \code{init}.}
 
@@ -25,8 +35,8 @@ object is provided in \code{init}.}
 provided and is ignored if a landscape object is provided in \code{init}.}
 
 \item{salt}{An integer number. Used as seed when generating seeds for each
-single simulation run. Those seeds are returned in the output of the
-function.}
+single simulation run. Those generated seeds are returned in the output of
+the function.}
 
 \item{...}{parameters handed over to function \code{ca()}.}
 }
@@ -48,9 +58,9 @@ The function is used to create gradients along one parameter value
 \dontrun{
   p <- list(
     r = 0.4, # recolonisation of empty sites dependent on local density
-    d = seq(0,1,0.05), # wave disturbance
+    d = seq(0,1,0.1), # wave disturbance
     delta = 0.01, # intrinsic disturbance rate
-    replicates = 1:5
+    replicates = 1:2  # repeat the same parameter set twice
   )
 
 # provides parallel backend
@@ -63,12 +73,12 @@ The function is used to create gradients along one parameter value
 
  registerDoSNOW(cl)
 
- musselgradient <- carray(musselbed, parms = p, init = c(0.6,0.2,0.2), t_max = 800)
+ musselgradient <- carray(musselbed, parms = p, init = c(0.6,0.2,0.2), t_max = 400, save = TRUE, file = "out/musselbed")
 
  stopCluster(cl)
 
  musselgradient
- plot(musselgradient[,"mean_cover.+"] ~ musselgradient$delta, pch = 20)
+ plot(musselgradient[,"mean_cover.+"] ~ musselgradient$d, pch = 20)
 }
 }
 

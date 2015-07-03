@@ -5,7 +5,7 @@
 \title{Run cellular automata simulation.}
 \usage{
 ca(x, model = musselbed, parms = "default", t_min = 500, t_eval = 200,
-  saveeach = 50, steady = 1e-05, t_max = 1000, ...)
+  saveeach = 50, steady = 1e-05, t_max = 1000, seed = NULL, ...)
 }
 \arguments{
 \item{x}{A landscape object.}
@@ -35,26 +35,25 @@ length \code{t_eval} is smaller than \code{steady}.}
 \item{t_max}{Maximal number of timesteps. Model will be terminated even if
 still in transient dynamics (i.e. model did not reach steady state)}
 
+\item{seed}{An integer number serving as seed for random number generation.
+If not provided global seeds of R apply.}
+
 \item{...}{Parameters handed over to update function in \code{model$update}.}
 }
 \value{
 The output is returned as a list object of class \code{ca_result},
   containing a full timeseries of global and local cover as well as snapshots
-  of the landscape.
-  \describe{
-    \item{\code{$model}}{The entire model object used to generate this simulation
-       run, including the parameters at \code{$model$parms}}
-    \item{\code{$time}}{Vector of timesteps.}
-    \item{\code{$evaluate}}{Start and endpoint of steady-state evaluation period.}
-    \item{\code{$cover}}{A list of cover timeseries for each state of the model.}
-    \item{\code{$local}}{A list of local cover timeseries for each state of the
-       model.}
-    \item{\code{$snaps}}{A vector of indices of saved snapshots.}
-    \item{\code{$landscapes}}{A list of landscape objects at each point in
-       \code{$snaps}}
-    \item{\code{$steadyness}}{Steadyness value: difference in mean cover of primary
-       state between first and second half of the evaluation period. }
-  }
+  of the landscape. \describe{ \item{\code{$model}}{The entire model object
+  used to generate this simulation run, including the parameters at
+  \code{$model$parms}} \item{\code{$time}}{Vector of timesteps.}
+  \item{\code{$evaluate}}{Start and endpoint of steady-state evaluation
+  period.} \item{\code{$cover}}{A list of cover timeseries for each state of
+  the model.} \item{\code{$local}}{A list of local cover timeseries for each
+  state of the model.} \item{\code{$snaps}}{A vector of indices of saved
+  snapshots.} \item{\code{$landscapes}}{A list of landscape objects at each
+  point in \code{$snaps}} \item{\code{$steadyness}}{Steadyness value:
+  difference in mean cover of primary state between first and second half of
+  the evaluation period. } }
 }
 \description{
 Run cellular automata simulation.
