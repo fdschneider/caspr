@@ -30,7 +30,7 @@ forestgap$update <- function(x,               # landscape object
   for (s in 1:subs) {
     
     # Get the local proportion of empty neighbors 
-    localempty <- count(x, "0") / length(interact)
+    localempty <- neighbors(x, "0") / length(interact)
     rho_plus <- sum(x$cells == "+") / prod(x$dim)
     
     # 2 - drawing random numbers
