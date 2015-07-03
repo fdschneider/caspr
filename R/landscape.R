@@ -162,3 +162,12 @@ plot.landscape <- function(x, cols = "auto", grid = FALSE, axis = FALSE, add = F
   if(grid) box()
 }
 
+
+
+
+print.landscape <- function(x) {
+  
+  print(list(dim = x$dim, cells = head(x$cells, 25) )) 
+  
+}
+
