@@ -19,9 +19,11 @@
 #'   length \code{t_eval} is smaller than \code{steady}.
 #' @param saveeach Timespan between timesteps at which a full snapshot of the 
 #'   landscape is saved into the output of the simulation.
+#' @param seed An integer number serving as seed for random number generation.
+#'   If not provided global seeds of R apply. 
 #' @param ... Parameters handed over to update function in \code{model$update}.
 #'   
-#' @return The output is returned as a list object of class \code{ca_result},
+#' @return The output is returned as a list object of class \code{ca_result}, 
 #'   containing a full timeseries of global and local cover as well as snapshots
 #'   of the landscape.
 #'   \describe{
@@ -66,7 +68,7 @@
 #' r <- ca(l, model = life, t_max = 500, t_eval = 500, saveeach = 1)
 #' animate(r, "life01.gif")
 
-ca <- function(x, model = musselbed, parms = "default", t_min = 500, t_eval = 200, saveeach = 50, steady = 0.00001, t_max = 1000, ... )  {
+ca <- function(x, model = musselbed, parms = "default", t_min = 500, t_eval = 200, saveeach = 50, steady = 0.00001, t_max = 1000, seed = NULL, ... )  {
   
   # checking fo valid input
   ## parms
@@ -115,6 +117,9 @@ ca <- function(x, model = musselbed, parms = "default", t_min = 500, t_eval = 20
   result$local <- as.data.frame(t(xstats$local))
   result$local <- result$local[rep(1, t_min+1),] # preallocating memory
   
+  result$seed <- seed       # save seed 
+  result$ini_landscape <- x # save initial landscape object
+  
   result$snaps <- snaps
   result$landscapes <- list()
   result$landscapes <- lapply(1:length(snaps), function(i) x) # preallocating memory
@@ -128,6 +133,7 @@ ca <- function(x, model = musselbed, parms = "default", t_min = 500, t_eval = 20
   x_new <- x_old
   steadyness <- 1  # check value for stability
   i = 0  # iterator for simulation timesteps
+  if(!is.null(seed)) set.seed(seed)  # get seed from function call
   
   # starting iterations:
   while(steadyness > steady & i <= as.integer(t_max) ) {
