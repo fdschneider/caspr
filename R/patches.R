@@ -75,6 +75,7 @@ label <- function(x, state = levels(x$cells)[1]) {
 #' 
 #' @details Might be replaced by a faster version implemented in C++. 
 #' 
+#' @export
 
 
 patches <- function(x, state = levels(x$cells)[1]) {
