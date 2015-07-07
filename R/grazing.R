@@ -1,7 +1,61 @@
-#' Grazing model
+#' @title Grazing model
+#'   
+#' @description A spatially-explicit model of grazing pressure in drylands.
+#'   
+#' @usage ca(l, grazing)
+#'   
+#' @param del local seed dispersal
+#' @param b environmental quality
+#' @param c_ global competition
+#' @param m0 intrinsic mortality
+#' @param g grazing pressure
+#' @param r regeneration rate of degraded cells
+#' @param f local facilitation
+#' @param d intrinsic degradation rate
+#' @param protect associational resistance against grazing
+#'   
+#' @author Florian D. Schneider and Sonia Kéfi (2015, in review)
+#'   
+#' @details The model builds upon a published model by Kéfi et al. 2007. Spatial
+#'   models of vegetation cover so far have considered grazing mortality a
+#'   rather constant pressure, affecting all plants equally, regardless of their
+#'   position in space. In the known models it usually adds as a constant to the
+#'   individual plant risk (Kéfi et al 2007 TPB). However, grazing has a strong
+#'   spatial component: Many plants in rangelands invest in protective
+#'   structures such as thorns or spines, or develop growth forms that reduce
+#'   their vulnerability to grazing. Therefore, plants growing next to each
+#'   other benefit from the protection of their neighbors.
+#'   
+#'   Such \strong{associational resistance} is widely acknowledged in vegetation
+#'   ecology but hardly integrated in models as a cause for spatially
+#'   heterogenous grazing pressure. It also renders the plant mortality density
+#'   dependent, which has important impacts on the bistability of the system.
+#'   
+#'   The model investigates how the assumption of spatially heterogeneous
+#'   pressure alters the bistability properties and the response of spatial
+#'   indicators of catastrophic shifts.
+#'   
+#'   The model knows three different cell states: occupied by vegetation
+#'   \code{"+"}, empty but fertile \code{"0"} and degraded \code{"-"}.
+#'   Transitions between cell states are only possible between vegetated and
+#'   empty (by the processes of plant 'death' and 'recolonization') and between
+#'   empty and degraded (by 'degradation' and 'regeneration').
+#'   
+#'   To account for the spatially heterogeneous impacts of grazing due to
+#'   associational resistance, we assumed that a plant's vulnerability to
+#'   grazers decreases with the proportion of occupied neighbors,  $q_{+|+}$.
+#'   The individual probability of dying is therefore defined as
+#'   
+#'   \deqn{	w_{ \left\{ +,0 \right\} }  = m_0 + g_0 \left( 1 - q_{+|+} \right)}
+#'   
+#'   where the additional mortality due to grazing is maximized to \eqn{g_0} if
+#'   a plant has no vegetated neighbor (i.e., \eqn{q_{+|+} = 0}) and gradually
+#'   reduces to 0 with an increasing fraction of occupied neighbors,
+#'   \eqn{q_{+|+}}.
+
 #' 
-#' @author Schneider and Kéfi (2015, in review)
-#' @details A model 
+#' @seealso \href{https://github.com/cascade-wp6/2015_schneider_kefi}{project on GitHub}
+#' 
 #' @export
 
 "grazing"
