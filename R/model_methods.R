@@ -1,28 +1,23 @@
-# 
-# 
-# Defines a summary function for class "ca_model" so we can have a quick 
+
+# Defines a  S3 method print for class "ca_model" so we can have a quick 
 # reminder of the parameters it has
 # 
 
-summary.ca_model <- function(x, with_ref=FALSE) { 
+print.ca_model <- function(x) { 
   
-  
-  cat(x$name, "\n")
-  cat("--------------------\n")
-  
+  cat("\n", x$name, "\n")
+  cat(" ", rep("-", nchar(x$name)), "\n\n", sep = "" ) 
+
   # Print default parameters
-  cat("Possible cell states: ", 
-      paste(x$states, collapse=", "), "\n")
+  cat(" Possible cell states:")
+  cat(" ", paste(x$states, collapse=", "), "\n\n")
   
-  
-  cat("Default parameters: \n")
+  cat(" Required parameters and default values: \n")
   for (i in seq_along(x$parms)) { 
-    cat(paste0(names(x$parms)[i], " = ", x$parms[[i]], "\n"))
+    cat("  ", paste0(names(x$parms)[i], " = ", round(x$parms[[i]], 5), "\n"))
   }
   
   # Print ref
-  if (with_ref) { 
-    cat("Original reference:\n")
+    cat("\n Original reference: ")
     cat(x$ref,"\n")
-  }
 }

@@ -4,7 +4,7 @@
 \alias{as.matrix.landscape}
 \title{transfer landscape to matrix.}
 \usage{
-\method{as.matrix}{landscape}(x)
+\method{as.matrix}{landscape}(x, as = "character")
 }
 \arguments{
 \item{x}{A landscape object.}

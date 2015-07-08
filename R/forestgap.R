@@ -1,10 +1,10 @@
-# Forest gap model
-# 
-# We implement the version used by Kubo et al. (1996).
-# More details on the implementation are available at: 
-# 
-# https://github.com/skefi/SpatialStress/wiki/forestgap
-# 
+#' Forest gap model
+#'
+#' @details We implement the version used by Kubo et al. (1996).  More details on the implementation are available at: \link{https://github.com/skefi/SpatialStress/wiki/forestgap}
+#' 
+#' @export
+
+"forestgap"
 
 forestgap <- list()
 class(forestgap) <- "ca_model"
@@ -30,7 +30,7 @@ forestgap$update <- function(x,               # landscape object
   for (s in 1:subs) {
     
     # Get the local proportion of empty neighbors 
-    localempty <- count(x, "0") / length(interact)
+    localempty <- neighbors(x, "0") / length(interact)
     rho_plus <- sum(x$cells == "+") / prod(x$dim)
     
     # 2 - drawing random numbers

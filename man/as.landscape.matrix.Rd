@@ -4,7 +4,7 @@
 \alias{as.landscape.matrix}
 \title{transfer matrix to landscape.}
 \usage{
-\method{as.landscape}{matrix}(x, levels = levels(x$cells))
+\method{as.landscape}{matrix}(x, states = NA)
 }
 \arguments{
 \item{x}{A matrix object with factorial content.}

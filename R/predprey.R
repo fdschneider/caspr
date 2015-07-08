@@ -1,0 +1,63 @@
+#' Predator-prey model
+#' 
+#' @param betaf
+#' @param betas
+#' @param delta
+#' @author Pascual, M., Roy, M., Guichard, F., & Flierl, G. (2002). Cluster size
+#'   distributions: signatures of self-organization in spatial ecologies.
+#'   Philosophical Transactions of the Royal Society of London. Series B,
+#'   Biological Sciences, 357(1421), 657–666.
+#'   http://doi.org/10.1098/rstb.2001.0983
+#'   
+#' @useDynLib caspr
+#' @importFrom Rcpp sourceCpp
+#' @export
+
+"predprey"
+
+predprey <- list()
+class(predprey) <- "ca_model"
+predprey$name   <- "Predator-prey Gap Model"
+predprey$ref    <- paste0("Pascual, M., Roy, M., Guichard, F., & Flierl, G. ",
+                          "(2002). Cluster size distributions: signatures of ",
+                          "self-organization in spatial ecologies. ",
+                          "Philosophical Transactions of the Royal Society of ",
+                          "London. Series B, Biological Sciences, 357(1421), ",
+                          "657–666. http://doi.org/10.1098/rstb.2001.0983")
+predprey$states <- c("f", "s", "0") # fish/shark/empty /!\ ORDER MATTERS
+predprey$cols <- c("gray50", "black", "white" )
+predprey$parms  <- list(
+  betaf = 1/3,  # growth rate of preypredprey
+  betas = 1/10, # growth rate of predator
+  delta = 1/3 # death rate of predator (if starved)
+  # The original publication refers to a nu parameter that fixes the mixing 
+  #   rate (?). However, it is not used in the c code provided but maybe that is 
+  #   because publication always show results where it is set to 1.
+#   nu  = 1
+)
+
+predprey$update <- function(x,               # landscape object
+                            parms,           # set of parms 
+                            subs = prod(x$dim)) {     # number of iterations/time step ?
+  
+  # Adjust data (makes copy)
+  #x_old <- matrix(as.integer(x$cells), nrow=x$dim[1], byrow=TRUE)
+  x_old <- as.matrix(x, as = "integer")
+  
+  x_new <- predprey_core(x_old, 
+                         subs, 
+                         length(interact), # global variable
+                         parms$betaf, 
+                         parms$betas,
+                         parms$delta)
+  
+  x$cells <- factor(predprey$states[t(x_new)], levels = predprey$states)
+
+  ## end of single update call
+  return(x)
+}
+
+# Internal function/not exported
+.to_vector <- function(xmat, levels) { 
+  factor(levels[t(xmat)], levels = levels)
+}

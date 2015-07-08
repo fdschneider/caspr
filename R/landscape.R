@@ -9,7 +9,8 @@
 #'   random distribution of \code{states}, in the relative ratio given in 
 #'   \code{cover}.
 #' @examples 
-#' init_landscape(c("+","0","-"), c(0.5,0.25,0.25)) 
+#' init_landscape(c("+","0","-"), c(0.5,0.25,0.25))
+#' @export
 
 
 init_landscape <- function(states, cover, width = 50, height = width) {
@@ -36,21 +37,30 @@ init_landscape <- function(states, cover, width = 50, height = width) {
   return(initial)
 }
 
-
 #' transfer landscape to matrix.
 #'
 #' @param x A landscape object.
 #'
 #' @return A matrix. 
+#' @export
 
-as.matrix.landscape <- function(x) {
-  matrix(x$cells, nrow = x$dim[1], byrow = TRUE)
+as.matrix.landscape <- function(x, as = "character") {
+  if (as == "character") {
+    matrix(x$cells, nrow = x$dim[1], byrow = TRUE)
+  } else if (as == 'integer') {
+      matrix(as.integer(x$cells), nrow = x$dim[1], byrow = TRUE)
+# Cannot make a factorial matrix ?!
+#   } else if (as =="factor") { 
+#     matrix(x$cells, nrow = x$dim[1], byrow = TRUE)
+  } else { 
+    stop(paste0('Cannot convert landscape object to class ', as, "."))
+  }
 }
 
 
 
 #' generic S3 function
-#'
+#' @export
 
 as.landscape <- function (...) UseMethod("as.landscape")
 
@@ -68,15 +78,24 @@ as.landscape <- function (...) UseMethod("as.landscape")
 #'   
 #' @export
 
-as.landscape.matrix <- function(x, states = levels(x$cells) ) {
-   structure(
-     list(
-       dim = c(width = dim(x)[1] , height = dim(x)[2]), 
-       cells = factor(matrix(t(x), nrow = 1 ), levels = states )
-     ),
-     class = "landscape"
-     )
-   
+as.landscape.matrix <- function(x, states = NA)  {
+  
+  # Assumes the matrix x is not a factor, which seems like an impossible 
+  # situation [Alex]
+  if (is.na(states)) { 
+    states <- unique(as.vector(x))
+    warning('Importing states from the unique elements of the matrix.',
+            'This is not recommended !')
+  }
+  
+  structure(
+    list(
+      dim = c(width = dim(x)[1] , height = dim(x)[2]), 
+      cells = factor(matrix(t(x), nrow = 1 ), levels = states )
+    ),
+    class = "landscape"
+    )
+  
 }
 
 #' Summary of landscape object.
@@ -86,15 +105,16 @@ as.landscape.matrix <- function(x, states = levels(x$cells) ) {
 #' @examples 
 #' obj <- init_landscape(c("+","0","-"), c(0.5,0.25,0.25)) 
 #' summary(obj)
+#' @export
 
 
 summary.landscape <- function(x) {
-  mapping(x$dim[1],x$dim[2])
+  if(!exists("x_with_border")) mapping(x$dim[1],x$dim[2], i_matrix = I)
   out <- list()
   out$dim <- x$dim
   out$n <- sapply(levels(x$cells), function(y) {sum(x$cells == y)})
   out$cover <- out$n/sum(out$n)
-  out$local <- sapply(levels(x$cells), function(y) {mean(  (count(x,y)/4)[x$cells == y]  )})
+  out$local <- sapply(levels(x$cells), function(y) {mean(  (neighbors(x,y)/4)[x$cells == y]  )})
   return(out)
 }
 
@@ -115,9 +135,13 @@ summary.landscape <- function(x) {
 #' @return A landscape object of dimensions \code{width} x \code{height} with 
 #'   random distribution of \code{states}, in the relative ratio given in 
 #'   \code{cover}.
+#' 
+#' 
+#' @export
 #' @examples 
 #' onj <- init_landscape(c("+","0","-"), c(0.5,0.25,0.25)) 
 #' plot(obj)
+#' 
 
 plot.landscape <- function(x, cols = "auto", grid = FALSE, axis = FALSE, add = FALSE, ani = FALSE, ...) {
   lvls <- levels(x$cells) 
@@ -136,5 +160,14 @@ plot.landscape <- function(x, cols = "auto", grid = FALSE, axis = FALSE, add = F
   rect(rep(1:x$dim[1], times = x$dim[2])-.5, rep(1:x$dim[2], each = x$dim[1])-.5, rep(1:x$dim[1], times = x$dim[2])+.5, rep(1:x$dim[2], each = x$dim[1])+.5, col = cols[as.numeric(x$cells)], border = border)
   
   if(grid) box()
+}
+
+
+
+
+print.landscape <- function(x) {
+  
+  print(list(dim = x$dim, cells = head(x$cells, 25) )) 
+  
 }
 

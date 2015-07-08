@@ -2,11 +2,15 @@
 % Please edit documentation in R/indicators.R
 \name{indicators}
 \alias{indicators}
+\title{Generic function for calculating indicators.}
 \usage{
 indicators(...)
 }
 \arguments{
 \item{...}{}
+}
+\description{
+Generic function for calculating indicators.
 }
 \details{
 with methods for objects of class 'landscape' and 'ca_result'.
