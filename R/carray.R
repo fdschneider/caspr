@@ -73,7 +73,9 @@ carray <- function(model, init, parms = model$parms, save = FALSE, filename = "s
     stop("No parallel backend registered! This would take too much time!")
   }
   
-  foreach(i = iterations$ID, .combine = rbind, .packages = c("caspr")) %dopar% {
+  
+  foreach(i = iterations$ID, .combine = rbind, 
+          .export = c("model", "parms", "init"), .packages = c("caspr")) %dopar% {
     
     set.seed(iterations$seed[i])
     
@@ -88,7 +90,9 @@ carray <- function(model, init, parms = model$parms, save = FALSE, filename = "s
     run <- ca(l, model, parms = iterations[i,, drop = TRUE], seed = iterations$seed[i], ...)
     
     # get summary for output
-    out <- unlist(summary(run)[-1])
+    out <- c(summary(run)$mean_cover, summary(run)$sd_cover)
+    names(out) <- paste0(rep(c("mean_cover", "sd_cover"), each = length(model$states) ), "_",names(out))
+    out <- cbind(t_end = as.integer(summary(run)$time[2]), as.data.frame(t(out)) )
     
     if(save) {
       obj <- paste0(filename, "_",    # define an unambiguous output object name
@@ -96,7 +100,7 @@ carray <- function(model, init, parms = model$parms, save = FALSE, filename = "s
       )
       
       assign(obj, run) 
-      eval(parse(text = paste0("save(",obj, ", file = '", paste0(obj, ".Rd"), "')")   ) )
+      eval(parse(text = paste0("save(", obj, ", file = '",  directory, "/", obj, ".Rd' )" )   ) )
       
       out <- c(out, saved_in =  paste0(obj, ".Rd"))
     }
