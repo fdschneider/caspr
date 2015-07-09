@@ -35,9 +35,9 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
   bool found_prey;
   
   // Define states explicitely for clarity
-  int FISH  = 0;
-  int SHARK = 1;
-  int EMPTY = 2;
+  int FISH  = 1;
+  int SHARK = 2;
+  int EMPTY = 3;
 
   // Vector to sample a random value between 1 and -1
   IntegerVector X = IntegerVector::create(1,  0, -1,  0);
@@ -66,7 +66,8 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
         grid(i1, j1) = FISH; // grow
       }
       
-    } else if ( grid(i,j) == SHARK ) { // if shark, then eat or die, and maybe grow
+    // if shark, then eat or die, and maybe grow
+    } else if ( grid(i,j) == SHARK ) { 
       
       // consider neighbors starting with a random one
       randnb = randn(0,3);
@@ -82,6 +83,7 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
           grid(i1, j1) = SHARK; 
           // and maybe reproduce 
           if ( randp() >= betas ) { 
+//             Rcout << "shark reproduces\n";
             grid(i, j) = EMPTY;
           } 
         }
@@ -90,7 +92,7 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
       // pred has not eaten -> he can die of starvation
 //      Rcout << "randp: " << randp() << "delta: " << delta;
       if ( !found_prey && (randp() < delta) ) { 
-//         Rcout << "shark died\n";
+//         Rcout << "shark dies\n";
         grid(i, j) = EMPTY;
       }
     }

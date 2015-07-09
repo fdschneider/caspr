@@ -24,6 +24,35 @@ test_that('Conversion of pred/prey states works correctly', {
   
 })
 
+test_that('Pred/prey results are sensible', { 
+  
+  
+  # Test common-sense behavior
+  shark_landscape <- init_landscape(states = c('f','s','0'), 
+                                    cover  = c(0, 1, 0),
+                                    width=50, height=50)
+  expect_equivalent(summary(ca(shark_landscape, 
+                               predprey))[['mean_cover']]['0'],
+                    1)
+  
+  empty_landscape <- init_landscape(states = c('f','s','0'),
+                                    cover  = c(0, 0, 1),
+                                    width=50, height=50)
+  expect_equivalent(summary(ca(empty_landscape, 
+                               predprey))[['mean_cover']]['0'],
+                    1)
+  
+  fish_landscape <- init_landscape(states = c('f','s','0'),
+                                   cover  = c(1, 0, 0),
+                                   width=50, height=50)
+  expect_equivalent(summary(ca(fish_landscape, 
+                               predprey))[['mean_cover']][c('f','0')],
+                    c(1,0))
+  
+  
+  
+})
+
 #   # Create a shark-only landscape -> they all die eventually
 #   x_full <- x
 #   x_full$cells[] <- rep('s', length(x$cells)) # the [] preserve levels

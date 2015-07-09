@@ -27,7 +27,7 @@ predprey$ref    <- paste0("Pascual, M., Roy, M., Guichard, F., & Flierl, G. ",
 predprey$states <- c("f", "s", "0") # fish/shark/empty /!\ ORDER MATTERS
 predprey$cols <- c("gray50", "black", "white" )
 predprey$parms  <- list(
-  betaf = 1/3,  # growth rate of preypredprey
+  betaf = 1/3,  # growth rate of fish
   betas = 1/10, # growth rate of predator
   delta = 1/3 # death rate of predator (if starved)
   # The original publication refers to a nu parameter that fixes the mixing 
