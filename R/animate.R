@@ -1,3 +1,5 @@
+#' @export
+
 animate <- function(...) UseMethod("animate")
 
 #' Create animated gif or video from simulation result. 

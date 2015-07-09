@@ -93,6 +93,7 @@ ca <- function(x, model = musselbed, parms = "default", t_min = 500, t_eval = 20
   }
     
   mapping(x$dim[1], x$dim[2], i_matrix = I )
+>>>>>>> e7a0d0d2656c34f9dc0865f87b6b5b4ab0af381a
   xstats <- summary(x)
   states <- levels(x$cells)
   
