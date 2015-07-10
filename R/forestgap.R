@@ -1,7 +1,45 @@
-#' Forest gap model
+#' @title Forest gap model
 #'
-#' @details We implement the version used by Kubo et al. (1996).  More details on the implementation are available at: \link{https://github.com/skefi/SpatialStress/wiki/forestgap}
+#' @description Dynamic model for forest pattern after recurring wind disturbance with two cell states: empty (\code{"0"}) and vegetated (\code{"+"}).
 #' 
+#' @usage ca(l, forestgap, parms = p)
+#' 
+#' @param alpha A numerical value. Reproduction rate per year.  
+#' @param delta A numerical value. Death rate depending on local gap density. 
+#' @param d A numerical value. intrinsic death rate.
+#' 
+#' @author Kubo, T., Y. Iwasa and N. Furumoto. 
+#' @references  
+#' 
+#' \strong{Kubo, T. et al. (1996) Forest spatial dynamics with gap expansion: total gap area and gap size distribution. J. Theor. Biol. 180, 229–246}
+#'  
+#' Kizaki, S. and Katori, M. (1999) Analysis of canopy-gap structures of forests by Ising–Gibbs states – Equilibrium and scaling property of real forests. J. Phys. Soc. Jpn 68, 2553–2560
+#' 
+#' Katori, M. (1998) Forest dynamics with canopy gap expansion and stochastic Ising model. Fractals 6, 81–86
+#' 
+#' Solé, R.V. and Manrubia, S.C. (1995) Self-similarity in rain forests: evidence for a critical state. Phys. Rev. E. 51, 6250–6253
+#' 
+#' Solé́, R.V. and Manrubia, S.C. (1995) Are rainforests self-organized in a critical state? J. Theor. Biol. 173, 31–40
+#' 
+#' @details 
+#' This model can use either an explicit height for trees, in which case states can be anywhere in a range [Smin..Smax] (Solé et al., 1995), or use only two states, vegetated (non-gap) and empty (gap) (Kubo et al., 1996). Here we focus on the version that uses only two states: gap (+) and non-gap (0). Without spatial spreading of disturbance (all cells are independent), a cell transitions from empty to vegetated with a birth probability b and from vegetated to empty with death probability d.
+#' 
+#' However, gap expansion occurs in nature as trees having empty (non-vegetated) surroundings are more likely to fall due to disturbance (e.g. wind blows). Let p(0) be the proportion of neighbouring sites that are gaps. We can implement this expansion effect by modifying the death rate into d + ẟ p(0). Since 0 <= p(0) <= 1, ẟ represents the maximal added death rate due to gap expansion (i.e. the spatial component intensity).
+#' 
+#' In their simulations, the authors (Kubo et al. 1996) use a 100x100 torus-type lattice (with random initial covers?).
+#'
+#' The authors consider two cases: one in which the recovery of trees is proportional to the global density of vegetated sites, and one where the recovery is proportional to the local density of vegetation. We use only the first case as it the only one producing bistability.
+#' 
+#' The birth rate b is replaced with ⍺⍴+ where ⍴+ represents the global density of non-gap sites and ⍺ is a positive constant. This can produce alternative stable states over a range of ẟ values within 0.15-0.2 (⍺ is fixed to 0.20 and d to 0.01).
+#' 
+#' The state transition probabilities thus become:
+#' 
+#'     b = ⍺⍴+
+#' 
+#' and 
+#' 
+#'     d =  d₀ + ẟp₀
+#'     
 #' @export
 
 "forestgap"
