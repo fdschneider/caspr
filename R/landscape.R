@@ -90,7 +90,7 @@ as.landscape.matrix <- function(x, states = NA)  {
   
   structure(
     list(
-      dim = c(width = dim(x)[1] , height = dim(x)[2]), 
+      dim = c(width = dim(x)[2] , height = dim(x)[1]), 
       cells = factor(matrix(t(x), nrow = 1 ), levels = states )
     ),
     class = "landscape"
