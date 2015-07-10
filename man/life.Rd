@@ -3,7 +3,7 @@
 \docType{data}
 \name{life}
 \alias{life}
-\title{Game of Life}
+\title{Conway's Game of Life}
 \format{\preformatted{List of 7
  $ name    : chr "Random model"
  $ ref     : logi NA
@@ -14,23 +14,62 @@
   ..$ B: num 3
   ..$ S: num [1:2] 2 3
  $ update  :function (x_old, parms)  
-  ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 28 16 39 1 16 1 28 39
-  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x3e131a8> 
+  ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 67 16 78 1 16 1 67 78
+  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x150d830> 
  - attr(*, "class")= chr "ca_model"
 }}
 \usage{
-life
+l <- init_landscape(c("1","0"), c(0.35,0.65), 150,150)
+run <- ca(l, life)
 }
 \description{
-Game of Life
-}
-\details{
 Model implementation for Conway's Game of Life.
 }
-\examples{
-l <- init_landscape(c("1","0"), c(0.35,0.65), 150,150)
+\details{
+The Game of Life, also known simply as Life, is a cellular automaton devised
+by the British mathematician John Horton Conway in 1970.
 
-liferun <- ca(l, life)
+The "game" is a zero-player game, meaning that its evolution is determined by
+its initial state, requiring no further input. One interacts with the Game of
+Life by creating an initial configuration and observing how it evolves or,
+for advanced players, by creating patterns with particular properties.
+
+\strong{Rules}
+
+The universe of the Game of Life is an infinite two-dimensional orthogonal
+grid of square cells, each of which is in one of two possible states, alive
+or dead. Every cell interacts with its eight neighbours, which are the cells
+that are horizontally, vertically, or diagonally adjacent. At each step in
+time, the following transitions occur:
+
+\itemize{
+  \item Any live cell with fewer than two live neighbours dies, as if caused
+    by under-population.
+  \item Any live cell with two or three live neighbours lives on to the next
+    generation.
+  \item Any live cell with more than three live neighbours dies, as if by
+    overcrowding.
+  \item Any dead cell with exactly three live neighbours becomes a live cell,
+    as if by reproduction.
+}
+
+The initial pattern constitutes the seed of the system. The first generation
+is created by applying the above rules simultaneously to every cell in the
+seed—births and deaths occur simultaneously, and the discrete moment at which
+this happens is sometimes called a tick (in other words, each generation is a
+pure function of the preceding one). The rules continue to be applied
+repeatedly to create further generations.
+
+
+Source: \href{https://en.wikipedia.org/wiki/Conway's_Game_of_Life}{Wikipedia}
+}
+\author{
+John H. Conway
+}
+\references{
+Gardner, Martin (October 1970). Mathematical Games – The
+  fantastic combinations of John Conway's new solitaire game "life".
+  Scientific American 223. pp. 120–123. ISBN 0-89454-001-7.
 }
 \keyword{datasets}
 
