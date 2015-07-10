@@ -5,7 +5,7 @@
 \title{Run ca() over parameter array.}
 \usage{
 carray(model, init, parms = model$parms, save = FALSE, filename = "sim",
-  directory = getwd(), width = 50, height = width, salt = 345678, ...)
+  directory = "", width = 50, height = width, salt = 345678, ...)
 }
 \arguments{
 \item{model}{A valid object of class 'ca_model'. Defaults to musselbed. Valid
@@ -65,17 +65,13 @@ The function is used to create gradients along one parameter value
 
 # provides parallel backend
  library(foreach)
- library(doSNOW)
+ library(doMC)
 
- workerlist <- c(rep("localhost", times = 7)) #adjust to your computers' capacities
-
- cl <- makeSOCKcluster(workerlist, outfile='out_messages.txt')
-
- registerDoSNOW(cl)
+ registerDoMC(cores=7)
 
  musselgradient <- carray(musselbed, parms = p, init = c(0.6,0.2,0.2), t_max = 400, save = TRUE, file = "out/musselbed")
 
- stopCluster(cl)
+ registerDoSEQ()
 
  musselgradient
  plot(musselgradient[,"mean_cover.+"] ~ musselgradient$d, pch = 20)
