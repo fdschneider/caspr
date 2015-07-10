@@ -45,17 +45,13 @@
 #'   
 #' # provides parallel backend
 #'  library(foreach)
-#'  library(doSNOW)
+#'  library(doMC)
 #' 
-#'  workerlist <- c(rep("localhost", times = 7)) #adjust to your computers' capacities
-#' 
-#'  cl <- makeSOCKcluster(workerlist, outfile='out_messages.txt')
-#' 
-#'  registerDoSNOW(cl)
+#'  registerDoMC(cores=7)
 #'  
 #'  musselgradient <- carray(musselbed, parms = p, init = c(0.6,0.2,0.2), t_max = 400, save = TRUE, file = "out/musselbed")
 #'  
-#'  stopCluster(cl)
+#'  registerDoSEQ()
 #' 
 #'  musselgradient
 #'  plot(musselgradient[,"mean_cover.+"] ~ musselgradient$d, pch = 20)
@@ -92,17 +88,21 @@ carray <- function(model, init, parms = model$parms, save = FALSE, filename = "s
     # get summary for output
     out <- c(summary(run)$mean_cover, summary(run)$sd_cover)
     names(out) <- paste0(rep(c("mean_cover", "sd_cover"), each = length(model$states) ), "_",names(out))
-    out <- cbind(t_end = as.integer(summary(run)$time[2]), as.data.frame(t(out)) )
+    out <- as.data.frame(t(out))
+    out$t_start <- as.integer(summary(run)$time[1])
+    out$t_end <- as.integer(summary(run)$time[2])
     
     if(save) {
-      obj <- paste0(filename, "_",    # define an unambiguous output object name
+      dir.create(file.path(directory, sub(basename(filename), "", filename)), showWarnings = FALSE)
+      path <- normalizePath(file.path(directory, sub(basename(filename), "", filename))) 
+      obj <- paste0(basename(filename), "_",    # define an unambiguous output object name
                     formatC(i, width= ceiling(log10(length(iterations$ID))), flag="0")
       )
       
       assign(obj, run) 
-      eval(parse(text = paste0("save(", obj, ", file = '",  directory, "/", obj, ".Rd' )" )   ) )
+      eval(parse(text = paste0("save(", obj, ", file = '", file.path(path, obj) ,".Rd' )" )   ) )
       
-      out <- c(out, saved_in =  paste0(obj, ".Rd"))
+      out$saved_in <- paste0(obj, ".Rd")
     }
 
     return(out)
