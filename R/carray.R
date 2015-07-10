@@ -58,7 +58,7 @@
 #' }
 
 
-carray <- function(model, init, parms = model$parms, save = FALSE, filename = "sim", directory = getwd(), width = 50, height = width, salt = 345678, ...) {
+carray <- function(model, init, parms = model$parms, save = FALSE, filename = "sim", directory = "", width = 50, height = width, salt = 345678, ...) {
   
   iterations <- expand.grid(parms)
   iterations <- cbind(ID = 1:nrow(iterations),iterations)
@@ -89,6 +89,7 @@ carray <- function(model, init, parms = model$parms, save = FALSE, filename = "s
     out <- c(summary(run)$mean_cover, summary(run)$sd_cover)
     names(out) <- paste0(rep(c("mean_cover", "sd_cover"), each = length(model$states) ), "_",names(out))
     out <- as.data.frame(t(out))
+    out <- cbind(out, run$steady_state)
     out$t_start <- as.integer(summary(run)$time[1])
     out$t_end <- as.integer(summary(run)$time[2])
     
