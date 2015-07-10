@@ -13,15 +13,24 @@
   ..$ death: num 0.5
   ..$ birth: num 0.5
  $ update:function (x_old, parms)  
-  ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 17 20 28 1 20 1 17 28
-  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x6fbf2e0> 
+  ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 27 20 38 1 20 1 27 38
+  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x331e788> 
  - attr(*, "class")= chr "ca_model"
 }}
 \usage{
-template
+ca(l, template, parms = p)
 }
 \description{
-Template for model objects
+One sentence description. Potential cell states.
+}
+\details{
+Wordy description about the model details, transition probabilities, biological assumptions.
+}
+\author{
+Author of original model
+}
+\references{
+Original reference and further references
 }
 \keyword{datasets}
 

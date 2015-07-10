@@ -1,4 +1,14 @@
-#' Template for model objects
+#' @title Template for model objects
+#' @description One sentence description. Potential cell states.
+#' @usage 
+#' ca(l, template, parms = p)
+#' @author Author of original model
+#' @references Original reference and further references
+#' @details 
+#' Wordy description about the model details, transition probabilities, biological assumptions.
+#' @export
+#' 
+
 
 "template"
 
