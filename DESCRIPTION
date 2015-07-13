@@ -20,6 +20,6 @@ Imports:
 Suggests: 
   testthat,
   doSNOW,
-    knitr
+  knitr
 LinkingTo: Rcpp
 VignetteBuilder: knitr
