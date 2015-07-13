@@ -10,33 +10,51 @@
  $ states: chr [1:3] "f" "s" "0"
  $ cols  : chr [1:3] "gray50" "black" "white"
  $ parms :List of 3
-  ..$ betaf: num 0.333
+  ..$ betaf: num 0.01
   ..$ betas: num 0.1
-  ..$ delta: num 0.333
+  ..$ delta: num 0.2
  $ update:function (x, parms, subs = prod(x$dim))  
-  ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 39 20 58 1 20 1 39 58
-  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x2cf40c8> 
+  ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 61 20 80 1 20 1 61 80
+  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x3391338> 
  - attr(*, "class")= chr "ca_model"
 }}
 \usage{
-predprey
+ca(l, predprey, parms = p)
 }
 \arguments{
-\item{betaf}{}
+\item{betaf}{A numerical value. The reproduction rate of prey.}
 
-\item{betas}{}
+\item{betas}{A numerical value. reproduction rate of predators.}
 
-\item{delta}{}
+\item{delta}{A numerical value. Probability of starvation for predators that
+  do not find prey.}
 }
 \description{
-Predator-prey model
+A spatially-explicit predator prey model.
+}
+\details{
+The particular neighbourhood we consider in the simulations consists
+  of the four nearest sites. Prey growth occurs as a contact process: a prey
+  chooses a neighbouring site at random and gives birth onto it only if this
+  site is empty at rate \code{betas}. Predators hunt for prey by inspecting
+  their neighbourhood for the presence of prey at rate 1. If prey are
+  present, the predator selects one at random and eats it, moving to this
+  neighbouring site. Only predators that find a prey can reproduce, and do so
+  with a specified probability, \code{betas}. The offspring is placed in the
+  original site of the predator. Predators that do not find prey are
+  susceptible to starvation and die with a probability \code{delta}. Random
+  movement occurs through mixing: neighbouring sites exchange state at a
+  constant rate ␯nu .
 }
 \author{
-Pascual, M., Roy, M., Guichard, F., & Flierl, G. (2002). Cluster size
-  distributions: signatures of self-organization in spatial ecologies.
+Mercedes Pascual, M. Roy, F. Guichard & G. Flierl
+}
+\references{
+Pascual, M., Roy, M., Guichard, F., & Flierl, G. (2002). Cluster
+  size distributions: signatures of self-organization in spatial ecologies.
   Philosophical Transactions of the Royal Society of London. Series B,
   Biological Sciences, 357(1421), 657–666.
-  http://doi.org/10.1098/rstb.2001.0983
+  doi: \href{https://doi.org/10.1098/rstb.2001.0983}{10.1098/rstb.2001.0983}
 }
 \keyword{datasets}
 
