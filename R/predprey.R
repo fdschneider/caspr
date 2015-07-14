@@ -28,7 +28,7 @@
 #'   original site of the predator. Predators that do not find prey are 
 #'   susceptible to starvation and die with a probability \code{delta}. Random 
 #'   movement occurs through mixing: neighbouring sites exchange state at a 
-#'   constant rate ␯nu .
+#'   constant rate \code{nu}.
 #'   
 #'   
 #' @useDynLib caspr
