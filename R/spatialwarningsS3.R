@@ -8,7 +8,6 @@
 #' indicators_fitpsd(l)
 #' patchsizes(l)
 #' 
-#' @import spatialwarnings
 #' @export
 
 patchsizes <- function(...) UseMethod("patchsizes")

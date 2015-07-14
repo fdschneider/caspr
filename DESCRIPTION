@@ -16,6 +16,7 @@ Imports:
   animation,
   moments,
   SDMTools,
+  spatialwarnings,
   Rcpp
 Suggests: 
   testthat,
