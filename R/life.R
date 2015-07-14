@@ -5,7 +5,7 @@
 #' @usage 
 #' l <- init_landscape(c("1","0"), c(0.35,0.65), 150,150)
 #' run <- ca(l, life)
-#' @references Gardner, Martin (October 1970). Mathematical Games – The
+#' @references Gardner, Martin (October 1970). Mathematical Games - The
 #'   fantastic combinations of John Conway's new solitaire game "life".
 #'   Scientific American 223. pp. 120–123. ISBN 0-89454-001-7.
 #' @details  
