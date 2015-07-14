@@ -1,22 +1,31 @@
 ---
-title: "caspr: Cellular Automata for Spatial Pressure in R"
+title: 'caspr: Cellular Automata for Spatial Pressure in R'
 author: "Florian D. Schneider"
-date: "`r Sys.Date()`"
+date: '`r Sys.Date()`'
 output: 
-  rmarkdown::html_vignette
+  output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  \VignetteIndexEntry{caspr: Cellular Automata for Spatial Pressure in R}
+  \usepackage[utf8]{inputenc}
+  \VignetteEngine{knitr::rmarkdown}
 ---
 
+# General information
 
-The code provided here is running spatial disturbance models in a cellular automata framework. This is part of a collaborative project between the group of [Sonia Kéfi](http://sonia.kefi.fr/) (Institut de Sciences d'Evolution, CNRS, IRD, Université Montpellier, France) and [Vishwesha Guttal](https://teelabiisc.wordpress.com/) (Center for Ecological Sciences, Indian Institute of Science, Bangalore, India).
-
+The caspr package is running spatial disturbance models in a cellular automata framework. This is part of a collaborative project between the group of [Sonia Kéfi](http://sonia.kefi.fr/) (Institut de Sciences d'Evolution, CNRS, IRD, Université Montpellier, France) and [Vishwesha Guttal](https://teelabiisc.wordpress.com/) (Center for Ecological Sciences, Indian Institute of Science, Bangalore, India).
 
 ## Contributors
 
-Alain Danet, Alex Genin, Vishwesha Guttal, Sonia Kefi, Sabiha Majumder, Sumithra Sankaran, Florian Schneider (Maintainer)
+Alain Danet, Alex Genin, Vishwesha Guttal, Sonia Kefi, Sabiha Majumder, Sumithra Sankaran, [Florian Schneider (Maintainer)](mailto:florian.schneider@univ-montp2.fr)
+
+## Install package
+
+The package can be installed directly from GitHub using the `devtools` package. 
+
+```
+install.packages("devtools")
+devtools::install_github("fdschneider/caspr")
+```
 
 ## License
 
@@ -42,37 +51,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-## Basic structure
+
+# Package structure
 
 The R-package is build around objects of a particular class `ca_model` (S3 objects in R) that contain all the model specific information, like the original publication, the update functions, and the cell states. 
 These objects can be handled by a function called `ca()` which runs the cellular automata over time. 
 Other functions allow the plotting of single snapshots or timeseries, the generation of initial lattices/grids/landscapes, the calculation of spatial and temporal indicators as provided by the package ['spatialwarnings'](https://github.com/fdschneider/spatial_warnings).
 
-## Install package
+## Cellular automata
 
-The package can be installed directly from GitHub using the `devtools` package. 
 
-```
-install.packages("devtools")
-devtools::install_github("fdschneider/caspr")
-```
 
 ## Objects and functions
 
-In the following the objects and functions are described in the sequence of their use (somewhat). 
+In the following the objects and functions are described in a (somewhat) logical sequence of usage. 
 
+### landscape objects
 
-####  function `init_landscape(states, cover, width, height)`
-
-landscape objects are created using the function `init_landscape()` , e.g. 
-
-```
-l <- init_landscape(c("1", "0"), c(0.2,0.8), width = 100)
-``` 
-
-Landscapes are squared by default, but a height argument can be specified. However, doing so **will disqualify the output to be analysed spatially!!!** 
-
-#### `landscape` object class
+Cellular automata are lattice- or grid-based systems, where neighboring cells on the lattice are affecting each others transition rules. Those lattices are termed 'landscapes' within the framework of 'caspr' and are stored in objects of class `"landscape"`. 
 
 A landscape object is a list `l` that contains
 
@@ -87,31 +83,42 @@ plot(l)
 summary(l)
 ```
 
-The vectorial storage of the grid is allowing for a speedy evaluation than with matrices, using the map vectors provided globally by executing `mapping(l$dims[1], l$dims[2])`. 
+The vectorial storage of the grid is allowing for a more efficient memory use and evaluation than with matrices, using map vectors that are provided as global variables by executing `mapping(l$dims[1], l$dims[2])`. 
+For compatibility the landscape object can be translated into a matrix using `as.matrix(l)`. Any matrix of factorial content can be reverted into a landscape object using `as.landscape(l, states)`. 
+### Generate landscape objects 
 
-For compatibility the landscape object can be translated into a matrix using `as.matrix(l)`. Any matrix of factorial content can be reverted into a landscape object using `as.landscape(l)`. 
+**Usage:** `init_landscape(states, cover, width, height)`
 
-#### `ca_model` object class 
+landscape objects are created using the function `init_landscape()` , e.g. 
 
-A model object is a list `model` that contains
+```
+l <- init_landscape(c("1", "0"), c(0.2,0.8), width = 100)
+``` 
+
+Landscapes are squared by default, but a height argument can be specified. However, doing so **will disqualify the output to be analysed spatially!!!** 
+
+### Model objects
+
+A model object is a list `model` of class `"ca_model"` that contains
 
 - `model$name`: the name of the model
 - `model$ref`: the original reference
 - `model$states`: the potential cell states
 - `model$cols`: colors for cell states
 - `model$interact` : an interaction matrix, defaults to 4-cell neighborhood, affects behaviour of count function. 
-- `model$parms`: a template for parameters or default parameters 
+- `model$parms`: a template for parameters including default parameters 
 - `model$update`: the update function, which takes a landscape object `x_old` and returns a landscape object `x_new`, representing the updating of one single timestep
 
-Those objects are not created by a function, but provided manually in separate files. If you add a model, following `model_template.R`, please test the update function for valid output and optimize for speed. 
+Other functions or static parameters can be provided as further objects to the list. But those listed abova are mandatory. 
+In the current version of *caspr*, the objects of class `ca_model` are not created by a function, but provided manually as custom R objects. If you add a model than start from `model_template.R`! Before running `ca(l, yourmodel)`  you should test the update function for valid output and optimize for evaluation speed!
 
-(A method `print.ca_model` will be developed to quickly review a model's specifications.)
+A method `print.ca_model` exists which allows to review a model's specifications simply by calling the model object in R.
 
-#### function `ca(x, model, parms)` 
+### Running models
 
 The function `ca(x, model, parms)` runs a cellular automata simulation starting from the landscape object provided in `x` and using the update function provided by `model` with the parameter set `parms` (a list of parameters). Before running the model, the function validates the parameter set provided against the template stored in `model$parms`. 
 
-Further parameters can be used to adjust the timespan run and the snapshots of the landscape saved. 
+Further parameters are available to adjust the timespan run and the snapshots of the landscape saved. 
 
 ```
 l <- init_landscape(c("+", "0", "-"), c(0.2,0.7,0.1))
@@ -120,12 +127,7 @@ r <- ca(l, musselbed, p)
 
 ```
 
-After simulation, the function returns an object of class `ca_results`.  
-
-
-#### `ca_result` object class
-
-The result object `r` of a simulation contains the full timeseries of cover and selected snapshots of the full landscape. It has the structure:
+After simulation, the function returns an object of class `ca_results`. The result object `r` has the structure:
 
 - `r$model`: the `ca_model` object used to run the simulation, including the provided parameter set.
 - `r$time`: a vector of the distinct timesteps of the simulation
@@ -134,7 +136,23 @@ The result object `r` of a simulation contains the full timeseries of cover and 
 - `r$local`: a data frame reporting the average local cover of the cell states, i.e. the average probability that a state *i* is found in the neighborhood given that the focal cell is in state *i*. Thus, `r$local[1]` returns the timeseries of the primary cell state. 
 - `r$snapshots`: a registry table of the snapshots and at which point in time they were taken. 
 - `r$landscapes`: a list of landscape objects for the given snapshots.
-- `r$steadyness` : the difference in mean of the last and second-last period of length \code{t_eval}, as specified . 
+- `r$steadyness` : the difference in mean of the last and second-last period of length `t_eval`, as specified. 
+
+Thus the result of a simulation contains two major types of output: 
+
+1. the full timeseries of cover of each state (`r$cover`), as well as a timeseries of the average local cover (`r$local`). 
+2. selected snapshots of the full landscape (`r$landscapes`). 
+
+The length of both depends on the number of timesteps that were evaluated until the model terminated.
+
+#### defining number of timesteps and saving snapshots of simulation run
+
+There are two ways of specifying the number of timesteps, i.e. the duration of a simulation run. 
+
+- define a fixed period of time
+- run until a predefined criterion for steady state is reached
+
+
 
 #### function `carray()`
 
@@ -159,8 +177,10 @@ It returns a dataframe with global and local cover for each state for each param
 
 
 
-## Models 
+## Model descriptions
 
+A set of spatially-explicit cellular automata is provided with caspr. They have in common that a spatially explicit stress is acting on the focal cell state, for instance by increasing mortality if predators or gaps in the canopy are present or by reducing mortality by associational growth.  
+We also added Conway's Game of Life as a test case for animation functions -- and for fun. 
 
 ### Mussel bed model
 
@@ -171,3 +191,6 @@ It returns a dataframe with global and local cover for each state for each param
 ### Grazing model
 
 ### Conway's Game of Life
+
+
+## Spatial indicators
