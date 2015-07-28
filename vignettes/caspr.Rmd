@@ -5,9 +5,9 @@ date: '`r Sys.Date()`'
 output: 
   output: rmarkdown::html_vignette
 vignette: >
-  \VignetteIndexEntry{caspr: Cellular Automata for Spatial Pressure in R}
+  %\VignetteIndexEntry{caspr: Cellular Automata for Spatial Pressure in R}
   \usepackage[utf8]{inputenc}
-  \VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 # General information
