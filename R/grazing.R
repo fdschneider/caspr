@@ -12,33 +12,33 @@
 #' @param r regeneration rate of degraded cells
 #' @param f local facilitation
 #' @param d intrinsic degradation rate
-#' @param protect associational resistance against grazing
+#' @param p associational resistance against grazing
 #'   
-#' @author Florian D. Schneider and Sonia Kéfi (2015, in review)
+#' @author Florian D. Schneider and Sonia Kéfi (2015, in revision)
 #'   
 #' @details The model builds upon a published model by Kéfi et al. 2007. Spatial
-#'   models of vegetation cover so far have considered grazing mortality a
+#'   models of vegetation cover so far have considered grazing mortality a 
 #'   rather constant pressure, affecting all plants equally, regardless of their
 #'   position in space. In the known models it usually adds as a constant to the
-#'   individual plant risk (Kéfi et al 2007 TPB). However, grazing has a strong
-#'   spatial component: Many plants in rangelands invest in protective
-#'   structures such as thorns or spines, or develop growth forms that reduce
-#'   their vulnerability to grazing. Therefore, plants growing next to each
+#'   individual plant risk (Kéfi et al 2007 TPB). However, grazing has a strong 
+#'   spatial component: Many plants in rangelands invest in protective 
+#'   structures such as thorns or spines, or develop growth forms that reduce 
+#'   their vulnerability to grazing. Therefore, plants growing next to each 
 #'   other benefit from the protection of their neighbors.
 #'   
 #'   Such \strong{associational resistance} is widely acknowledged in vegetation
-#'   ecology but hardly integrated in models as a cause for spatially
-#'   heterogenous grazing pressure. It also renders the plant mortality density
+#'   ecology but hardly integrated in models as a cause for spatially 
+#'   heterogenous grazing pressure. It also renders the plant mortality density 
 #'   dependent, which has important impacts on the bistability of the system.
 #'   
-#'   The model investigates how the assumption of spatially heterogeneous
-#'   pressure alters the bistability properties and the response of spatial
+#'   The model investigates how the assumption of spatially heterogeneous 
+#'   pressure alters the bistability properties and the response of spatial 
 #'   indicators of catastrophic shifts.
 #'   
-#'   The model knows three different cell states: occupied by vegetation
-#'   \code{"+"}, empty but fertile \code{"0"} and degraded \code{"-"}.
-#'   Transitions between cell states are only possible between vegetated and
-#'   empty (by the processes of plant 'death' and 'recolonization') and between
+#'   The model knows three different cell states: occupied by vegetation 
+#'   \code{"+"}, empty but fertile \code{"0"} and degraded \code{"-"}. 
+#'   Transitions between cell states are only possible between vegetated and 
+#'   empty (by the processes of plant 'death' and 'recolonization') and between 
 #'   empty and degraded (by 'degradation' and 'regeneration').
 #'   
 #'   To account for the spatially heterogeneous impacts of grazing due to
@@ -74,8 +74,8 @@ grazing$parms <- list(
   g = 0.2, # grazing pressure
   r = 0.01, # regeneration rate of degraded cells
   f = 0.9, # local facilitation
-  d = 0.2, # intrinsic degradation rate 
-  protect = 0.9 # associational resistance against grazing
+  d = 0.1, # intrinsic degradation rate 
+  p = 1 # associational resistance against grazing
 ) 
 grazing$update <- function(x_old, parms_temp, subs = 10, timestep = NA) {
   
@@ -95,7 +95,7 @@ grazing$update <- function(x_old, parms_temp, subs = 10, timestep = NA) {
     if(parms_temp$rho_plus > 0) {
       recolonisation <- with(parms_temp, (del*rho_plus+(1-del)*Q_plus)*(b-c_*rho_plus)*1/subs)
       
-      death <- with(parms_temp, (m0+g*(1-protect))*1/subs)
+      death <- with(parms_temp, (m0+g*(1-p*Q_plus))*1/subs)
       death[death > 1] <- 1 
     } else {
       recolonisation <- 0
