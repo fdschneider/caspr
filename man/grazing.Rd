@@ -6,22 +6,22 @@
 \title{Grazing model}
 \format{\preformatted{List of 6
  $ name  : chr "Spatial Grazing Model"
- $ ref   : chr "Schneider and Kéfi 2015, in review"
+ $ ref   : chr "Schneider and Kefi 2015, in review"
  $ states: chr [1:3] "+" "0" "-"
  $ cols  : chr [1:3] "#000000" "#7F7F7F" "#FFFFFF"
  $ parms :List of 9
-  ..$ del    : num 0.9
-  ..$ b      : num 0.2
-  ..$ c_     : num 0.2
-  ..$ m0     : num 0.05
-  ..$ g      : num 0.2
-  ..$ r      : num 0.01
-  ..$ f      : num 0.9
-  ..$ d      : num 0.2
-  ..$ protect: num 0.9
+  ..$ del: num 0.9
+  ..$ b  : num 0.2
+  ..$ c_ : num 0.2
+  ..$ m0 : num 0.05
+  ..$ g  : num 0.2
+  ..$ r  : num 0.01
+  ..$ f  : num 0.9
+  ..$ d  : num 0.1
+  ..$ p  : num 1
  $ update:function (x_old, parms_temp, subs = 10, timestep = NA)  
-  ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 80 19 131 1 19 1 80 131
-  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x59e8318> 
+  ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 78 19 129 1 19 1 78 129
+  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x44c7108> 
  - attr(*, "class")= chr "ca_model"
 }}
 \usage{
@@ -44,17 +44,17 @@ ca(l, grazing)
 
 \item{d}{intrinsic degradation rate}
 
-\item{protect}{associational resistance against grazing}
+\item{p}{associational resistance against grazing}
 }
 \description{
 A spatially-explicit model of grazing pressure in drylands.
 }
 \details{
-The model builds upon a published model by Kéfi et al. 2007. Spatial
+The model builds upon a published model by Kefi et al. 2007. Spatial
   models of vegetation cover so far have considered grazing mortality a
   rather constant pressure, affecting all plants equally, regardless of their
   position in space. In the known models it usually adds as a constant to the
-  individual plant risk (Kéfi et al 2007 TPB). However, grazing has a strong
+  individual plant risk (Kefi et al 2007 TPB). However, grazing has a strong
   spatial component: Many plants in rangelands invest in protective
   structures such as thorns or spines, or develop growth forms that reduce
   their vulnerability to grazing. Therefore, plants growing next to each
@@ -83,12 +83,12 @@ The model builds upon a published model by Kéfi et al. 2007. Spatial
   \deqn{	w_{ \left\{ +,0 \right\} }  = m_0 + g_0 \left( 1 - q_{+|+} \right)}
 
   where the additional mortality due to grazing is maximized to \eqn{g_0} if
-  a plant has no vegetated neighbor (*i.e.*, \eqn{q_{+|+} = 0}) and gradually
+  a plant has no vegetated neighbor (i.e., \eqn{q_{+|+} = 0}) and gradually
   reduces to 0 with an increasing fraction of occupied neighbors,
   \eqn{q_{+|+}}.
 }
 \author{
-Florian D. Schneider and Sonia Kéfi (2015, in review)
+Florian D. Schneider and Sonia Kefi (2015, in revision)
 }
 \seealso{
 \href{https://github.com/cascade-wp6/2015_schneider_kefi}{project on GitHub}

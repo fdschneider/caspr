@@ -14,13 +14,13 @@
 #' @param d intrinsic degradation rate
 #' @param p associational resistance against grazing
 #'   
-#' @author Florian D. Schneider and Sonia Kéfi (2015, in revision)
+#' @author Florian D. Schneider and Sonia Kefi (2015, in revision)
 #'   
-#' @details The model builds upon a published model by Kéfi et al. 2007. Spatial
+#' @details The model builds upon a published model by Kefi et al. 2007. Spatial
 #'   models of vegetation cover so far have considered grazing mortality a 
 #'   rather constant pressure, affecting all plants equally, regardless of their
 #'   position in space. In the known models it usually adds as a constant to the
-#'   individual plant risk (Kéfi et al 2007 TPB). However, grazing has a strong 
+#'   individual plant risk (Kefi et al 2007 TPB). However, grazing has a strong 
 #'   spatial component: Many plants in rangelands invest in protective 
 #'   structures such as thorns or spines, or develop growth forms that reduce 
 #'   their vulnerability to grazing. Therefore, plants growing next to each 
@@ -52,18 +52,16 @@
 #'   a plant has no vegetated neighbor (i.e., \eqn{q_{+|+} = 0}) and gradually
 #'   reduces to 0 with an increasing fraction of occupied neighbors,
 #'   \eqn{q_{+|+}}.
-
 #' 
 #' @seealso \href{https://github.com/cascade-wp6/2015_schneider_kefi}{project on GitHub}
 #' 
 #' @export
-
 "grazing"
 
 grazing <- list()
 class(grazing) <- "ca_model"
 grazing$name <- "Spatial Grazing Model"
-grazing$ref <- "Schneider and Kéfi 2015, in review"
+grazing$ref <- "Schneider and Kefi 2015, in review"
 grazing$states <- c("+", "0", "-")
 grazing$cols <- grayscale(3)
 grazing$parms <- list(

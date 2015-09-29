@@ -15,7 +15,7 @@
   ..$ delta: num 0.2
  $ update:function (x, parms, subs = prod(x$dim))  
   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 61 20 80 1 20 1 61 80
-  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x4572348> 
+  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x4387fe8> 
  - attr(*, "class")= chr "ca_model"
 }}
 \usage{
@@ -44,7 +44,7 @@ The particular neighbourhood we consider in the simulations consists
   original site of the predator. Predators that do not find prey are
   susceptible to starvation and die with a probability \code{delta}. Random
   movement occurs through mixing: neighbouring sites exchange state at a
-  constant rate nu.
+  constant rate \code{nu}.
 }
 \author{
 Mercedes Pascual, M. Roy, F. Guichard & G. Flierl
