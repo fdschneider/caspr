@@ -17,9 +17,10 @@ be plotted using ggplot.
 # Using the forest gap model
 initial <- init_landscape(states=c("+","0"), cover=c(.5,.5))
 
-library(ggplot2)
-ggplot(fortify(initial)) +
- geom_raster(aes(x,y,fill=state)) +
- scale_fill_manual(values=c('#111111','#FFFFFF'))
+if (require(ggplot2)) {
+  ggplot(fortify(initial)) +
+    geom_raster(aes(x,y,fill=state)) +
+    scale_fill_manual(values=c('#111111','#FFFFFF'))
+}
 }
 
