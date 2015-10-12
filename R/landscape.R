@@ -139,7 +139,7 @@ summary.landscape <- function(x) {
 #' 
 #' @export
 #' @examples 
-#' onj <- init_landscape(c("+","0","-"), c(0.5,0.25,0.25)) 
+#' obj <- init_landscape(c("+","0","-"), c(0.5,0.25,0.25)) 
 #' plot(obj)
 #' 
 
