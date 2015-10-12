@@ -23,7 +23,9 @@ test_that('Landscape init works', {
         # Is the distribution of cells coherent with the given probabilities ?
         # (works only with large lattices)
         if (width*height >= 10000) {
-          expect_equal(round(summary(test_landscape)$cover, digits=2), round(covers, digits = 2) )
+          expect_equal(round(summary(test_landscape)$cover, digits=2), 
+                       round(covers, digits = 2),
+                       tolerance = 0.02)
         }
         
       }
