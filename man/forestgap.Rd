@@ -15,7 +15,7 @@
   ..$ d    : num 0.01
  $ update:function (x, parms, subs = 10)  
   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 89 21 124 1 21 1 89 124
-  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x390e0e8> 
+  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x3ddba10> 
  - attr(*, "class")= chr "ca_model"
 }}
 \usage{

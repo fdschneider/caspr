@@ -15,7 +15,7 @@
   ..$ delta: num 0.2
  $ update:function (x, parms, subs = prod(x$dim))  
   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 61 20 80 1 20 1 61 80
-  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x3ad1650> 
+  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x3bee0a0> 
  - attr(*, "class")= chr "ca_model"
 }}
 \usage{
