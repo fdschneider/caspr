@@ -20,10 +20,11 @@ parms <- forestgap$parms # Import defaults
 parms$delta <- .15
 output <- ca(initial, parms, model=forestgap, t_max=1000)
 
-library(ggplot2)
-ggplot(fortify(output)) +
- geom_raster(aes(x,y,fill=state)) +
- facet_wrap( ~ time ) +
- scale_fill_manual(values=c('#111111','#FFFFFF'))
+if (require(ggplot2)) {
+  ggplot(fortify(output)) +
+    geom_raster(aes(x,y,fill=state)) +
+    facet_wrap( ~ time ) +
+    scale_fill_manual(values=c('#111111','#FFFFFF'))
+}
 }
 

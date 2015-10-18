@@ -17,7 +17,7 @@ init_landscape <- function(states, cover, width = 50, height = width) {
   if(height != width) warning("the landscape is not a square. Spatial analysis will not be possible!")
   if(length(states) != length(cover))
     warning("length of vector 'states' and vector 'cover' differs. I am distributing cover at random!"
-    )
+  )
   cover <- cover/sum(cover) #normalizing total cover to 1
   cells <- factor(rep(states[1], times = width*height), levels = states) # vector of empty cells in state "0"
   for(i in 2:length(states)) {
@@ -114,7 +114,8 @@ summary.landscape <- function(x) {
   out$dim <- x$dim
   out$n <- sapply(levels(x$cells), function(y) {sum(x$cells == y)})
   out$cover <- out$n/sum(out$n)
-  out$local <- sapply(levels(x$cells), function(y) {mean(  (neighbors(x,y)/4)[x$cells == y]  )})
+  out$local <- sapply(levels(x$cells), 
+                      function(y) {mean(  (neighbors(x,y)/4)[x$cells == y]  )})
   return(out)
 }
 
@@ -139,7 +140,7 @@ summary.landscape <- function(x) {
 #' 
 #' @export
 #' @examples 
-#' onj <- init_landscape(c("+","0","-"), c(0.5,0.25,0.25)) 
+#' obj <- init_landscape(c("+","0","-"), c(0.5,0.25,0.25)) 
 #' plot(obj)
 #' 
 

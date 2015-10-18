@@ -34,7 +34,7 @@ A landscape object of dimensions \code{width} x \code{height} with
 Plotting an objects of class "landscape"
 }
 \examples{
-onj <- init_landscape(c("+","0","-"), c(0.5,0.25,0.25))
+obj <- init_landscape(c("+","0","-"), c(0.5,0.25,0.25))
 plot(obj)
 }
 
