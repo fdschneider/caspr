@@ -25,14 +25,19 @@ still in transient dynamics (i.e. model did not reach steady state)}
 \item{saveeach}{Timespan between timesteps at which a full snapshot of the
 landscape is saved into the output of the simulation.}
 
-\item{stopifsteady}{Binary parameter, defaults to FALSE. If TRUE, the function provided in parameter \code{steady} will be applied to test in each timestep if steady state is reached.}
+\item{stopifsteady}{Binary parameter, defaults to FALSE. If TRUE, the
+function provided in parameter \code{steady} will be applied to test in
+each timestep if steady state is reached.}
 
-\item{steady}{A function returning TRUE or FALSE, taking exactly the parameters \code{i}, \code{result}, \code{steadyparms}. By default the function returns TRUE if the
-difference in mean cover of the primary cell state (i.e. the first in the
-vector provided in \code{model$states}) over two subsequent timespans of
-length \code{steadyparms$t_eval} is smaller than \code{steadyparms$accept}.}
+\item{steady}{A function returning TRUE or FALSE, taking exactly the
+parameters \code{i}, \code{result}, \code{steadyparms}. By default the
+function returns TRUE if the difference in mean cover of the primary cell
+state (i.e. the first in the vector provided in \code{model$states}) over
+two subsequent timespans of length \code{steadyparms$t_eval} is smaller
+than \code{steadyparms$accept}.}
 
-\item{steadyparms}{a list of parameters that are required by the function provided in \code{steady}.}
+\item{steadyparms}{a list of parameters that are required by the function
+provided in \code{steady}.}
 
 \item{seed}{An integer number serving as seed for random number generation.
 If not provided global seeds of R apply.}
@@ -45,20 +50,16 @@ transient dynamics.}
 \value{
 The output is returned as a list object of class \code{ca_result},
   containing a full timeseries of global and local cover as well as snapshots
-  of the landscape.
-  \describe{
-    \item{\code{$model}}{The entire model object used to generate this simulation
-       run, including the parameters at \code{$model$parms}}
-    \item{\code{$time}}{Vector of timesteps.}
-    \item{\code{$evaluate}}{Start and endpoint of steady-state evaluation period.}
-    \item{\code{$cover}}{A list of cover timeseries for each state of the model.}
-    \item{\code{$local}}{A list of local cover timeseries for each state of the
-       model.}
-    \item{\code{$snaps}}{A vector of indices of saved snapshots.}
-    \item{\code{$landscapes}}{A list of landscape objects at each point in
-       \code{$snaps}}
-    \item{\code{$issteady}}{A binary vector of the returned values of function \code{steady}}
-  }
+  of the landscape. \describe{ \item{\code{$model}}{The entire model object
+  used to generate this simulation run, including the parameters at
+  \code{$model$parms}} \item{\code{$time}}{Vector of timesteps.}
+  \item{\code{$evaluate}}{Start and endpoint of steady-state evaluation
+  period.} \item{\code{$cover}}{A list of cover timeseries for each state of
+  the model.} \item{\code{$local}}{A list of local cover timeseries for each
+  state of the model.} \item{\code{$snaps}}{A vector of indices of saved
+  snapshots.} \item{\code{$landscapes}}{A list of landscape objects at each
+  point in \code{$snaps}} \item{\code{$issteady}}{A binary vector of the
+  returned values of function \code{steady}} }
 }
 \description{
 Run cellular automata simulation.
@@ -75,7 +76,8 @@ Runs iterations of the update function \code{model$update()} on the
 \examples{
 # 1. run simulation and save a snapshot each 50 timesteps. plot timeseries and snapshots.
 
-l <- init_landscape(c("+","0","-"), c(0.6,0.2,0.2), width = 100) # create initial landscape
+l <- init_landscape(c("+","0","-"), c(0.6,0.2,0.2), width = 100) # create
+initial landscape
 p <- list(r = 0.4, d = 0.9, delta = 0.01)   # set parameters
 r <- ca(l, model = musselbed, parms = p, t_max = 400)    # run simulation
 plot(r)
