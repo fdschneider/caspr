@@ -9,11 +9,11 @@
 #'   \code{model}. If not provided, template parameters will be used.
 #' @param t_max Maximal number of timesteps. Model will be terminated even if 
 #'   still in transient dynamics (i.e. model did not reach steady state)
-#' @param t_min Minimal number of timesteps before steadyness is evaluated and 
+#' @param t_min Minimal number of timesteps before steadiness is evaluated and 
 #'   model might be terminated if transitory dynamics are surpassed.
 #' @param t_eval Timespan of moving window that is evaluated for the end of 
 #'   transient dynamics.
-#' @param steady Tolerance level for steadyness. Steady state is reached if the 
+#' @param steady Tolerance level for steadiness. Steady state is reached if the 
 #'   difference in mean cover of the primary cell state (i.e. the first in the 
 #'   vector provided in \code{model$states}) over two subsequent timespans of 
 #'   length \code{t_eval} is smaller than \code{steady}.
@@ -37,7 +37,7 @@
 #'     \item{\code{$snaps}}{A vector of indices of saved snapshots.}
 #'     \item{\code{$landscapes}}{A list of landscape objects at each point in 
 #'        \code{$snaps}}
-#'     \item{\code{$steadyness}}{Steadyness value: difference in mean cover of primary 
+#'     \item{\code{$steadiness}}{steadiness value: difference in mean cover of primary 
 #'        state between first and second half of the evaluation period. }
 #'   }
 #' @details Runs iterations of the update function \code{model$update()} on the
@@ -54,9 +54,9 @@
 #' 
 #' # 1. run simulation and save a snapshot each 50 timesteps. plot timeseries and snapshots.
 #' 
-#' l <- init_landscape(c("+","0","-"), c(0.6,0.2,0.2)) # create initial landscape
+#' l <- init_landscape(c("+","0","-"), c(0.6,0.2,0.2), width = 100) # create initial landscape
 #' p <- list(r = 0.4, d = 0.9, delta = 0.01)   # set parameters
-#' r <- ca(l, model = musselbed, parms = p, t_max = 500)    # run simulation 
+#' r <- ca(l, model = musselbed, t_max = 400)    # run simulation 
 #' plot(r)
 #' 
 #' par(mfrow= c(2,3))
@@ -65,10 +65,16 @@
 #' # 2. run simulation and save full landsape at each timestep. create animated gif.
 #' 
 #' l <- init_landscape(c("1","0"), c(0.6,0.4), 100)
-#' r <- ca(l, model = life, t_max = 500, t_eval = 500, saveeach = 1)
+#' r <- ca(l, model = life, t_max = 400)
 #' animate(r, "life01.gif")
 
-ca <- function(x, model = musselbed, parms = "default", t_min = 500, t_eval = 200, saveeach = 50, steady = 0.00001, t_max = 1000, seed = NULL, ... )  {
+
+ca <- function(x, model = grazing, parms = "default", 
+                  t_max = 200, saveeach = 1, 
+                  #stopifsteady = FALSE, 
+                  #steady = model$steady, 
+                  #steadyparms = model$steadyparms,  
+                  seed = NULL, ... )  {
   
   # checking fo valid input
   ## parms
@@ -80,46 +86,46 @@ ca <- function(x, model = musselbed, parms = "default", t_min = 500, t_eval = 20
     parms <- model$parms
     warning("you did not specify 'parms'! using default parameters of model!")
   }
-  
+  if(saveeach > t_max) { 
+    warning(paste0("Parameter saveeach is larger than t_max: I will only save initial and final landscape! Increase t_max!") ) 
+    saveeach <- t_max
+  }
+  #if(stopifsteady && identical(steadyparms$dim, x$dim)  ) {
+  #  warning(paste0("steadyness criterion was defined for lattice of dimensions: ",steadyparms$dim[1], "x",steadyparms$dim[1], " and might be invalid! Please adjust parameter 'steadyparms'!" ))
+  #}
   ## states
   if(!all(x$states %in% model$states)) stop("invalid cell states specified in landscape object!")
- #notworking!  if(any(!model$states %in% x$states)) warning("one or several of the model's default cell states are not present in initial landscape object!") 
-  
-  ## is interaction matrix provided? if not defaults to four cell neighborhood.   
+ #notworking!  if(!identical(model$states, x$states)) warning("one or several of the model's default cell states are not present in initial landscape object!") 
+  ## is interaction matrix provided? if not defaults to four cell neighborhood. 
   if(is.null(model$interact)) {
     I <- matrix(c(0, 1, 0,  1, NA, 1, 0, 1, 0), ncol = 3, byrow = TRUE) 
   } else {
     I <- model$interact 
   }
+  
     
   mapping(x$dim[1], x$dim[2], i_matrix = I )
   xstats <- summary(x)
   states <- levels(x$cells)
   
   # calculate timesteps for snapshots:
-  if(t_max <= t_min) {t_eval = t_max; t_min = t_max}
-  if(t_eval+1 > t_min) { t_min <- t_eval+1 } # increase t_min if t_eval is too long 
-
-  snaps <- as.integer(t_min) - rev(seq(0, as.integer(t_eval),as.integer(saveeach)))
+  snaps <- seq(0, as.integer(t_max), as.integer(saveeach))
   
   # initialise result object:
   
   result <- list()  # generate list object
   result$model <- model
   result$model$parms <- parms
-  result$time <- seq(0, t_min) # add vector of realized timesteps
-  result$evaluate <- c(t_min, t_min+2*t_eval)+1
-  result$steady_state <- data.frame(issteady = FALSE, 
-                                    steadyness = 1, 
-                                    target = steady, 
-                                    t_eval = t_eval 
-                                    )
+  result$time <- seq(0, t_max) # add vector of realized timesteps
+  #result$evaluate <- c(t_min, t_min+2*t_eval)+1
+  #result$issteady <- logical(length = t_max + 1 )
+  #result$steadyval <- numeric( length = t_max + 1 )
 
   result$cover <- as.data.frame(t(xstats$cover))
-  result$cover <- result$cover[rep(1, t_min+1),] # preallocating memory
+  result$cover <- result$cover[rep(1, t_max+1),] # preallocating memory
   
   result$local <- as.data.frame(t(xstats$local))
-  result$local <- result$local[rep(1, t_min+1),] # preallocating memory
+  result$local <- result$local[rep(1, t_max+1),] # preallocating memory
   
   result$seed <- seed       # save seed 
   result$ini_landscape <- x # save initial landscape object
@@ -135,14 +141,13 @@ ca <- function(x, model = musselbed, parms = "default", t_min = 500, t_eval = 20
   # initialise simulation variables: 
   x_old <- x  # ghost matrix at t_i
   x_new <- x_old
-  steadyness <- 1  # check value for stability
-  i = 0  # iterator for simulation timesteps
+  i = 1  # iterator for simulation timesteps
   if(!is.null(seed)) set.seed(seed)  # get seed from function call
-  
+ 
   # starting iterations:
-  while(steadyness > steady & i <= as.integer(t_max) ) {
+  while(i <= t_max ) { # | stopifsteady & steady(i, result, steadyparms)
     
-    i <- i +1  # increase iterator
+    i <- i + 1  # increase iterator
     
     # call update function:
     
@@ -164,42 +169,15 @@ ca <- function(x, model = musselbed, parms = "default", t_min = 500, t_eval = 20
       result$landscapes[[match(i, snaps)]] <- x_new
     }
     
-    # calculate steadyness and update snaps if not steady
-    
-    if(i %in% snaps & i >= t_min) { # if we are over the minimal timespan 
-      # get vector of t_eval timesteps previous to the last t_eval timesteps
-      t_1 <- (i-as.integer(t_eval)):(i-0.5*as.integer(t_eval)) 
-      # get vector of the last t_eval timesteps 
-      t_2 <- (i-0.5*as.integer(t_eval)+1):(i) 
-      
-      if(result$cover[[1]][i] > 0) { 
-        # calculate steadyness, i.e. difference between the mean cover 
-        #    in the two evaluation periods t_1 and t_2
-        steadyness <- (abs(mean(result$cover[[1]][t_1]) - mean(result$cover[[1]][t_2]))) /
-          (mean(result$cover[[1]][t_1])) 
-      } else {
-        # set steadyness to 0 if cover is 0, immediate stop of simulation
-        steadyness <- 0 
-      }
-      
-      # update snaps vector if not steady
-      
-      if(steadyness > steady & i == max(snaps) & i+saveeach <= t_max ) {
-        snaps[match(min(snaps), snaps)]  <- max(snaps)+as.integer(saveeach)
-      }
-      
-      # save timesteps of last evaluation
-      
-      result$evaluate <- c(min(t_1), max(t_2))
-     
-    }
+    #result$steadyval[i] <- steady(i, result, steadyparms, returnvalue = TRUE)
+    #result$issteady[i] <- steady(i, result, steadyparms)
     result$time[i] <- i # save timestep to results
     
   } 
   # ------------ end simulation -----------------
   
-  result$steady_state$issteady <- steadyness <= steady
-  result$steady_state$steadyness <- steadyness 
+  #result$steady_state$issteady <- steadiness <= steady
+  #result$steady_state$steadiness <- steadiness 
   result$snaps <- snaps
   class(result) <- "ca_result"
   return(result)
@@ -214,16 +192,17 @@ print.ca_result <- function(x) {
   obj <- deparse(substitute(x))
   
   cat(" \n ")
-  cat("Model run of ", x$model$name, " over ", x$evaluate[2],
+  cat("Model run of ", x$model$name, " over ", max(x$time),
       " timesteps. \n", sep = "")
   
-  if(x$steady_state$issteady == TRUE) {
-    cat("\n average cover reached steady state ('steadyness' <= ", 
-        x$steady_state$steady ,"): \n", sep = "")
-  } else {
-    cat("\n average cover did not reach steady state ('steadyness' = ", 
-        round(x$steady_state$steadyness, 6) ,"): \n", sep = "")
-  }
+  #if(x$steady_state$issteady == TRUE) {
+  # cat("\n average cover reached steady state ('steadiness' <= ", 
+  #    x$steady_state$steady ,"): \n", sep = "")
+  #} else {
+  #  cat("\n average cover did not reach steady state ('steadiness' = ", 
+  #      round(x$steady_state$steadiness, 6) ,"): \n", sep = "")
+  #}
+  cat("\n average cover: \n")
   cat( "  ", formatC(names(summary(x)$mean_cover), width = 6, flag = " " ) , "\n")
   cat( "  ", formatC(round(summary(x)$mean_cover, digits = 3), width = 6, flag = " " ) )
   cat(" \n \n")
@@ -291,7 +270,7 @@ plot.ca_result <- function(x, plotstates = c(TRUE, rep(FALSE, length(x$model$sta
 summary.ca_result <- function(x) {
   out <- list()
   class(out) <- "ca_summary"
-  eval <- x$evaluate[1]:x$evaluate[2]
+  eval <- seq_along(x$time)
   out$name <- x$model$name
   out$time <- c(min(x$time), max(x$time))
   out$mean_cover <- colMeans(x$cover[eval,])
@@ -314,7 +293,7 @@ as.list.ca_result <- function(x) {
 }
 
 
-#' Transfer output of ca() into an array. 
+#' Transfer output of runca() into an array. 
 #'
 #' @param x 
 #'
