@@ -11,7 +11,7 @@
  $ cols  : chr [1:3] "#000000" "#7F7F7F" "#FFFFFF"
  $ parms :List of 9
   ..$ del: num 0.9
-  ..$ b  : num 0.2
+  ..$ b  : num 0.5
   ..$ c_ : num 0.2
   ..$ m0 : num 0.05
   ..$ g  : num 0.2
@@ -21,7 +21,7 @@
   ..$ p  : num 1
  $ update:function (x_old, parms_temp, subs = 10, timestep = NA)  
   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 78 19 129 1 19 1 78 129
-  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x46b55d8> 
+  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x000000000a217420> 
  - attr(*, "class")= chr "ca_model"
 }}
 \usage{
