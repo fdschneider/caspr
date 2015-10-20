@@ -66,7 +66,7 @@ grazing$states <- c("+", "0", "-")
 grazing$cols <- grayscale(3)
 grazing$parms <- list(
   del = 0.9, # local seed dispersal
-  b = 0.2, # environmental quality
+  b = 0.5, # environmental quality
   c_ = 0.2, # global competition
   m0 = 0.05, # intrinsic mortality
   g = 0.2, # grazing pressure
