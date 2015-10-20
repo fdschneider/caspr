@@ -114,32 +114,6 @@ neighborsij <- function(x, state = levels(x$cells)[1], i = NULL, j = NULL, selec
 
 
 
-#' print function for model objects
-#'
-#' @param x 
-#'
-#' @export
-#'
-
-print.ca_model <- function(x) {
-  
-  obj <- deparse(substitute(x))
-  
-  cat("\n","Cellular automata model: ", x$name, "\n", sep = "")
-  
-  cat("\n","original publication: ", x$ref, "\n", sep = "")
-  cat("\n","defined cell states: ", x$states, "\n", sep = ", ")
-  
-  cat("\n","default parameters:\n ", sep = "")
-  print(t(as.data.frame(x$parms)), sep = "\t")
-   
-  cat( " \naccess model details: \n")
-  cat( "   '", obj,"$update()' : update function \n", sep = "")
-  cat(" \n ")
-  
-}
-
-
 # helper functions
 # ----------------
 

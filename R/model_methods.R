@@ -1,7 +1,10 @@
 
-# Defines a  S3 method print for class "ca_model" so we can have a quick 
-# reminder of the parameters it has
-# 
+#' print function for model objects
+#'
+#' @param x 
+#'
+#' @export
+#'
 
 print.ca_model <- function(x) { 
   
