@@ -28,12 +28,12 @@
 #' 
 #' Solé, R.V. and Manrubia, S.C. (1995) Are rainforests self-organized in a 
 #' critical state? J. Theor. Biol. 173, 31–40
-#' 
+#' @family models
 #' @details This model can use either an explicit height for trees, in which
 #' case states can be anywhere in a range [Smin...Smax] (Solé et al., 1995), or
 #' use only two states, vegetated (non-gap) and empty (gap) (Kubo et al., 1996).
-#' Here we focus on the version that uses only two states: gap (+) and non-gap
-#' (0). Without spatial spreading of disturbance (all cells are independent), a
+#' Here we focus on the version that uses only two states: gap (0) and non-gap
+#' (+). Without spatial spreading of disturbance (all cells are independent), a
 #' cell transitions from empty to vegetated with a birth probability b and from 
 #' vegetated to empty with death probability d.
 #' 
@@ -64,6 +64,15 @@
 #' and
 #' 
 #' d = d_0 + delta p_0
+#' 
+#' @examples 
+#' 
+#' l <- init_landscape(c("+","0"), c(0.6,0.4), width = 100) # create initial landscape
+#' p <- list(alpha = 0.2, delta = 0.17, d = 0.01)   # set parameters
+#' r <- ca(l, model = forestgap, parms = p, t_max = 100)    # run simulation
+#' 
+#' r
+#' plot(r)
 #' 
 #' @export
 

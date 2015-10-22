@@ -1,7 +1,21 @@
-#' Mussel bed model 
+#' @title Mussel bed model 
+#' @description Model for spatial pattern of intertidal mussel beds with wave disturbance. With three cell states: occupied by mussels (\code{"+"}), empty sites (\code{"0"} and disturbed sites (\code{"-"}).
+#' @usage 
+#' ca(l, musselbed, parms = p)
+#' 
+#' @param r A numerical value. recolonisation of empty sites dependent on local density
+#' @param d A numerical value. probability of disturbance of occupied sites if at least one disturbed site
+#' @param delta A numerical value. intrinsic disturbance rate.
 #' 
 #' @author Guichard et al 2003
+#' 
+#' @references Original reference and further references
+#' @family models
+#' @details 
+#' Wordy description about the model details, transition probabilities, biological assumptions.
 #' @export
+#' 
+
 
 "musselbed"
 

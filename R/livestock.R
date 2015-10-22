@@ -18,6 +18,7 @@
 #' @param v attractant-decoy effect of plants to livestock
 #' 
 #' @author F.D. Schneider
+#' @family models
 #' @details 
 #' An unpublished, generalized model of positive and negative local feedbacks in arid rangelands, including mechanisms such as local facilitation, competition, associational resistance and attractant-decoy. 
 #' 

@@ -16,7 +16,7 @@
 #'   Philosophical Transactions of the Royal Society of London. Series B, 
 #'   Biological Sciences, 357(1421), 657–666. 
 #'   doi: \href{https://doi.org/10.1098/rstb.2001.0983}{10.1098/rstb.2001.0983}
-#'   
+#' @family models
 #' @details The particular neighbourhood we consider in the simulations consists
 #'   of the four nearest sites. Prey growth occurs as a contact process: a prey 
 #'   chooses a neighbouring site at random and gives birth onto it only if this 

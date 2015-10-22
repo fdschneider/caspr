@@ -52,8 +52,15 @@
 #'   a plant has no vegetated neighbor (i.e., \eqn{q_{+|+} = 0}) and gradually
 #'   reduces to 0 with an increasing fraction of occupied neighbors,
 #'   \eqn{q_{+|+}}.
+#'   
+#' @family models
 #' 
 #' @seealso \href{https://github.com/cascade-wp6/2015_schneider_kefi}{project on GitHub}
+#' 
+#' @examples 
+#' l <- init_landscape(c("+","0","-"), c(0.6,0.2,0.2), width = 50) # create initial landscape
+#' p <- list(del = 0.9, b = 0.4, c_ = 0.2, m0 = 0.05, g = 0.25, r = 0.01, f = 0.9, d = 0.1, p = 1)   # set parameters
+#' r <- ca(l, model = grazing, parms = p, t_max = 100)    # run simulation 
 #' 
 #' @export
 "grazing"
