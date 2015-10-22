@@ -1,4 +1,4 @@
-#' Run ca() over parameter array.
+#' Run ca() over a parameter array.
 #' 
 #' @param model A valid object of class 'ca_model'. Defaults to musselbed. Valid
 #'   values are: \code{musselbed}, \code{grazing}.
@@ -9,7 +9,7 @@
 #'   \code{expand.grid()}
 #' @param width An integer number. Defaults to 50 and is ignored if a landscape 
 #'   object is provided in \code{init}.
-#' @param height An integer number. Defaults to 50 or to \code{width} if 
+#' @param height An integer number. Defaults to \code{width} if 
 #'   provided and is ignored if a landscape object is provided in \code{init}.
 #' @param salt An integer number. Used as seed when generating seeds for each 
 #'   single simulation run. Those generated seeds are returned in the output of 
@@ -32,6 +32,14 @@
 #'   value or combination of parameter values while making use of a parallel 
 #'   backend provided by \code{\link[foreach]{foreach}}.
 #'   
+#' Make sure to adapt the type of parallel backend to your computer
+#' infrastructure (see
+#' \href{https://cran.r-project.org/web/packages/foreach/vignettes/foreach.pdf}{package
+#' vignette of the foreach -package}).
+#' 
+#' @return The function returns a dataframe with global and local cover for each
+#'   state for each parameter value or combination of parameter values given in
+#'   `parms`, as well as the seed used for the individual simulation run.
 #' @export
 #' @import foreach
 #' @examples 
@@ -58,7 +66,14 @@
 #' }
 
 
-carray <- function(model, init, parms = model$parms, save = FALSE, filename = "sim", directory = "", width = 50, height = width, salt = 345678, ...) {
+ca_array <- function(model, 
+                     init, 
+                     width = 50, height = width,
+                     parms = model$parms, 
+                     save = FALSE, 
+                     filename = "sim", directory = "", 
+                     salt = 345678, 
+                     ... ) {
   
   iterations <- expand.grid(parms)
   iterations <- cbind(ID = 1:nrow(iterations),iterations)
@@ -112,3 +127,7 @@ carray <- function(model, init, parms = model$parms, save = FALSE, filename = "s
   
   return(cbind(iterations, out) )
 }
+
+
+#' @export
+carray <- ca_array
