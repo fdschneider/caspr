@@ -6,7 +6,7 @@
 \title{Mussel bed model}
 \format{\preformatted{List of 6
  $ name  : chr "Mussel Disturbance Model"
- $ ref   : chr "Guichard et al 2003, American Naturalist, Vol. 161, pp. 889â€“904"
+ $ ref   : chr "Guichard et al 2003, American Naturalist, Vol. 161, pp. 889â<U+0080><U+0093>904"
  $ states: chr [1:3] "+" "0" "-"
  $ cols  : chr [1:3] "#000000" "#7F7F7F" "#FFFFFF"
  $ parms :List of 3
@@ -14,18 +14,36 @@
   ..$ d    : num 0.9
   ..$ delta: num 0.01
  $ update:function (x_old, parms_temp, delta = 0.2, subs = 10, timestep = NA)  
-  ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 19 21 66 1 21 1 19 66
-  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x490c708> 
+  ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 33 21 80 1 21 1 33 80
+  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x000000000a12bc10> 
  - attr(*, "class")= chr "ca_model"
 }}
 \usage{
-musselbed
+ca(l, musselbed, parms = p)
+}
+\arguments{
+\item{r}{A numerical value. recolonisation of empty sites dependent on local density}
+
+\item{d}{A numerical value. probability of disturbance of occupied sites if at least one disturbed site}
+
+\item{delta}{A numerical value. intrinsic disturbance rate.}
 }
 \description{
-Mussel bed model
+Model for spatial pattern of intertidal mussel beds with wave disturbance. With three cell states: occupied by mussels (\code{"+"}), empty sites (\code{"0"} and disturbed sites (\code{"-"}).
+}
+\details{
+Wordy description about the model details, transition probabilities, biological assumptions.
 }
 \author{
 Guichard et al 2003
+}
+\references{
+Original reference and further references
+}
+\seealso{
+Other models: \code{\link{forestgap}};
+  \code{\link{grazing}}; \code{\link{life}};
+  \code{\link{livestock}}; \code{\link{predprey}}
 }
 \keyword{datasets}
 

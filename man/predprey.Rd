@@ -15,7 +15,7 @@
   ..$ delta: num 0.2
  $ update:function (x, parms, subs = prod(x$dim))  
   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 61 20 80 1 20 1 61 80
-  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x48bae48> 
+  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x000000000a104a68> 
  - attr(*, "class")= chr "ca_model"
 }}
 \usage{
@@ -55,6 +55,11 @@ Pascual, M., Roy, M., Guichard, F., & Flierl, G. (2002). Cluster
   Philosophical Transactions of the Royal Society of London. Series B,
   Biological Sciences, 357(1421), 657–666.
   doi: \href{https://doi.org/10.1098/rstb.2001.0983}{10.1098/rstb.2001.0983}
+}
+\seealso{
+Other models: \code{\link{forestgap}};
+  \code{\link{grazing}}; \code{\link{life}};
+  \code{\link{livestock}}; \code{\link{musselbed}}
 }
 \keyword{datasets}
 

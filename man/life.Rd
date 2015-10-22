@@ -14,8 +14,8 @@
   ..$ B: num 3
   ..$ S: num [1:2] 2 3
  $ update  :function (x_old, parms)  
-  ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 67 16 78 1 16 1 67 78
-  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x45ffaa8> 
+  ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 68 16 79 1 16 1 68 79
+  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x000000000a1ac338> 
  - attr(*, "class")= chr "ca_model"
 }}
 \usage{
@@ -55,7 +55,7 @@ time, the following transitions occur:
 
 The initial pattern constitutes the seed of the system. The first generation
 is created by applying the above rules simultaneously to every cell in the
-seed—births and deaths occur simultaneously, and the discrete moment at which
+seed - births and deaths occur simultaneously, and the discrete moment at which
 this happens is sometimes called a tick (in other words, each generation is a
 pure function of the preceding one). The rules continue to be applied
 repeatedly to create further generations.
@@ -70,6 +70,11 @@ John H. Conway
 Gardner, Martin (October 1970). Mathematical Games - The
   fantastic combinations of John Conway's new solitaire game "life".
   Scientific American 223. pp. 120–123. ISBN 0-89454-001-7.
+}
+\seealso{
+Other models: \code{\link{forestgap}};
+  \code{\link{grazing}}; \code{\link{livestock}};
+  \code{\link{musselbed}}; \code{\link{predprey}}
 }
 \keyword{datasets}
 

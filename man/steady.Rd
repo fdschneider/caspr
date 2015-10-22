@@ -4,7 +4,7 @@
 \alias{steady}
 \title{Test for steady state dynamics of timeseries.}
 \usage{
-steady(i, result, steadyparms = list(t_eval = 200, accept = 0.001),
+steady(i, result, steadyparms = list(t_eval = 400, accept = 0.001),
   returnvalue = FALSE)
 }
 \arguments{

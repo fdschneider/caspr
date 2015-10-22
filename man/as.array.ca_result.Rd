@@ -2,7 +2,7 @@
 % Please edit documentation in R/ca.R
 \name{as.array.ca_result}
 \alias{as.array.ca_result}
-\title{Transfer output of ca() into an array.}
+\title{Transfer output of runca() into an array.}
 \usage{
 \method{as.array}{ca_result}(x)
 }
@@ -13,6 +13,6 @@
 an array with dimensions 'width', 'height' and 'snaps'.
 }
 \description{
-Transfer output of ca() into an array.
+Transfer output of runca() into an array.
 }
 

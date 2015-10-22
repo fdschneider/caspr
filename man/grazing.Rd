@@ -20,8 +20,8 @@
   ..$ d  : num 0.1
   ..$ p  : num 1
  $ update:function (x_old, parms_temp, subs = 10, timestep = NA)  
-  ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 78 19 129 1 19 1 78 129
-  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x000000000a217420> 
+  ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 85 19 136 1 19 1 85 136
+  .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x000000000a2239f8> 
  - attr(*, "class")= chr "ca_model"
 }}
 \usage{
@@ -87,11 +87,20 @@ The model builds upon a published model by Kefi et al. 2007. Spatial
   reduces to 0 with an increasing fraction of occupied neighbors,
   \eqn{q_{+|+}}.
 }
+\examples{
+l <- init_landscape(c("+","0","-"), c(0.6,0.2,0.2), width = 50) # create initial landscape
+p <- list(del = 0.9, b = 0.4, c_ = 0.2, m0 = 0.05, g = 0.25, r = 0.01, f = 0.9, d = 0.1, p = 1)   # set parameters
+r <- ca(l, model = grazing, parms = p, t_max = 100)    # run simulation
+}
 \author{
 Florian D. Schneider and Sonia Kefi (2015, in revision)
 }
 \seealso{
 \href{https://github.com/cascade-wp6/2015_schneider_kefi}{project on GitHub}
+
+Other models: \code{\link{forestgap}}; \code{\link{life}};
+  \code{\link{livestock}}; \code{\link{musselbed}};
+  \code{\link{predprey}}
 }
 \keyword{datasets}
 

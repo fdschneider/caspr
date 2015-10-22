@@ -2,12 +2,12 @@
 % Please edit documentation in R/ggplot-helpers.R
 \name{fortify.ca_result}
 \alias{fortify.ca_result}
-\title{#' Fortify method for `ca_result`}
+\title{Fortify method for `ca_result`}
 \usage{
 fortify.ca_result(x)
 }
 \arguments{
-\item{x}{A ca_result object}
+\item{x}{a ca_result object}
 }
 \description{
 Transform the snapshots in a ca_result object into a data.frame so it can
