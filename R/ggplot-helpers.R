@@ -1,9 +1,9 @@
-#' #' Fortify method for `ca_result`
+#' Fortify method for `ca_result`
 #'
 #' Transform the snapshots in a ca_result object into a data.frame so it can 
 #' be plotted using ggplot.
 #' 
-#' @param x A ca_result object
+#' @param x a ca_result object
 #' 
 #' @examples
 #'
@@ -19,6 +19,8 @@
 #'     facet_wrap( ~ time ) + 
 #'     scale_fill_manual(values=c('#111111','#FFFFFF'))
 #' }
+#' @export
+
 fortify.ca_result <- function(x) { 
   output <- lapply(as.list(seq.int(length(x$landscapes))), # for all snapshots
               function(n) { 
@@ -46,6 +48,8 @@ fortify.ca_result <- function(x) {
 #'     geom_raster(aes(x,y,fill=state)) + 
 #'     scale_fill_manual(values=c('#111111','#FFFFFF'))
 #' }
+#' @export
+
 fortify.landscape <- function(x) { 
   data.frame(expand.grid(x     = seq.int(x$dim[1]), 
                          y     = seq.int(x$dim[2]), 
