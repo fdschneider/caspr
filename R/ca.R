@@ -30,23 +30,30 @@
 #'   
 #' @return The output is returned as a list object of class \code{ca_result}, 
 #'   containing a full timeseries of global and local cover as well as snapshots
-#'   of the landscape. \describe{ \item{\code{$model}}{The entire model object
+#'   of the landscape.
+#'   
+#'   \describe{ 
+#'   \item{\code{$model}}{The entire model object
 #'   used to generate this simulation run, including the parameters at
-#'   \code{$model$parms}} \item{\code{$time}}{Vector of timesteps.} 
-#'   \item{\code{$evaluate}}{Start and endpoint of steady-state evaluation
-#'   period.} \item{\code{$cover}}{A list of cover timeseries for each state of
-#'   the model.} \item{\code{$local}}{A list of local cover timeseries for each
-#'   state of the model.} \item{\code{$snaps}}{A vector of indices of saved
-#'   snapshots.} \item{\code{$landscapes}}{A list of landscape objects at each
+#'   \code{$model$parms}}
+#'   \item{\code{$time}}{Vector of timesteps.} 
+#'   \item{\code{$issteady}}{Binary vector reporting for each timestep if the criterion for steady state was fulfilled. The criterion can be customized by adjusting parameter \code{steady}.} 
+#'   \item{\code{$cover}}{A list of cover timeseries for each state of the model.} 
+#'   \item{\code{$local}}{A list of local cover timeseries for each
+#'   state of the model.} 
+#'   \item{\code{$snaps}}{A vector of indices of saved snapshots.} 
+#'   \item{\code{$landscapes}}{A list of landscape objects at each
 #'   point in \code{$snaps}} \item{\code{$issteady}}{A binary vector of the
-#'   returned values of function \code{steady}} }
+#'   returned values of function \code{steady}} 
+#'   }
+#'   
 #' @details Runs iterations of the update function \code{model$update()} on the 
-#'   initial landscape \code{x} until a steady state is reached (as defined by 
-#'   the tolerance level \code{steady}), but max \code{t_max} timesteps. The 
-#'   function saves the full timeseries, i.e. a value for each timestep, of the 
-#'   global cover of each state as well as the average local cover of each 
-#'   state. Only for every \code{saveeach}th timestep, the full lattice is saved
-#'   in a list within the output file (\code{result$snapshots} ).
+#'   initial landscape \code{x} until a \code{t_max} is reached. The function
+#'   saves the full timeseries, i.e. a value for each timestep, of the global
+#'   cover of each state as well as the average local cover of each state. The
+#'   full landscape object of each timestep is stored in a list
+#'   \code{result$landscapes} of the output object, but frequency of these
+#'   snapshots can be altered by increasing the parameter \code{saveeach}.
 #'   
 #' @export
 #' 
@@ -57,11 +64,11 @@
 #' l <- init_landscape(c("+","0","-"), c(0.6,0.2,0.2), width = 100) # create
 #' initial landscape
 #' p <- list(r = 0.4, d = 0.9, delta = 0.01)   # set parameters
-#' r <- ca(l, model = musselbed, parms = p, t_max = 400)    # run simulation 
+#' r <- ca(l, model = musselbed, parms = p, t_max = 200)    # run simulation
 #' plot(r)
 #' 
 #' par(mfrow= c(2,3))
-#' lapply(r$landscapes, plot)
+#' lapply(c(0,25,50,100,150,200)+1, plot(r$landscapes[[i]]) )
 #' 
 #' # 2. run simulation and save full landsape at each timestep. create animated gif.
 #' 
