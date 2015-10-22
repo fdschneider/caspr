@@ -129,7 +129,7 @@ ca <- function(x, model = grazing, parms = "default",
   result$local <- result$local[rep(1, t_max+1),] # preallocating memory
   
   result$seed <- seed       # save seed 
-  result$ini_landscape <- x # save initial landscape object
+  result$ini_landscape <- x # save initial landscape object at t=0
   
   result$snaps <- snaps
   result$landscapes <- list()
@@ -142,27 +142,26 @@ ca <- function(x, model = grazing, parms = "default",
   # initialise simulation variables: 
   x_old <- x  # ghost matrix at t_i
   x_new <- x_old
-  i = 1  # iterator for simulation timesteps
+  i = 0  # iterator for simulation timesteps
   if(!is.null(seed)) set.seed(seed)  # get seed from function call
  
   # starting iterations:
   while(i <= t_max | stopifsteady & steady(i, result, steadyparms) ) { 
     
-    i <- i + 1  # increase iterator
-    
     # call update function:
     
     model$update(x_old, parms, ...) -> x_new
+    
+    # replace ghost matrix for next iteration
+
+    x_old <- x_new 
+    i = i+1
     
     # save stats of new landscape
     
     xstats <- summary(x_new)
     result$cover[i,] <- xstats$cover
     result$local[i,] <- xstats$local
-    
-    # replace ghost matrix for next iteration
-    
-    x_old <- x_new 
     
     # save landscape if snapshot
     
@@ -172,14 +171,12 @@ ca <- function(x, model = grazing, parms = "default",
     
     #result$steadyval[i] <- steady(i, result, steadyparms, returnvalue = TRUE)
     result$issteady[i] <- steady(i, result, steadyparms)
-    result$time[i] <- i # save timestep to results
     
   } 
   # ------------ end simulation -----------------
   
   #result$steady_state$issteady <- steadiness <= steady
   #result$steady_state$steadiness <- steadiness 
-  result$snaps <- snaps
   class(result) <- "ca_result"
   return(result)
 }
