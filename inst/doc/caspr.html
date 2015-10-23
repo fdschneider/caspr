@@ -10,7 +10,7 @@
 
 <meta name="author" content="Florian D. Schneider" />
 
-<meta name="date" content="2015-10-22" />
+<meta name="date" content="2015-10-23" />
 
 <title>caspr: Cellular Automata for Spatial Pressure in R</title>
 
@@ -54,7 +54,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">caspr: Cellular Automata for Spatial Pressure in R</h1>
 <h4 class="author"><em>Florian D. Schneider</em></h4>
-<h4 class="date"><em>2015-10-22</em></h4>
+<h4 class="date"><em>2015-10-23</em></h4>
 </div>
 
 
@@ -67,7 +67,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </div>
 <div id="version-and-package-home" class="section level2">
 <h2>Version and package home</h2>
-<p>The package is developed and distributed on Github. Source code is found at <a href="https://github.com/fdschneider/caspr"><a href="https://github.com/fdschneider/caspr">https://github.com/fdschneider/caspr</a></a>. <a href="https://github.com/fdschneider/caspr/releases/tag/v0.1.5">Current release is v0.1.5</a>. Please report bugs on the <a href="https://github.com/fdschneider/caspr/issues">package issue tracker</a> and contribute fixes or new model definitions via pull requests!</p>
+<p>The package is developed and distributed on Github. Source code is found at <a href="https://github.com/fdschneider/caspr"><a href="https://github.com/fdschneider/caspr">https://github.com/fdschneider/caspr</a></a>. <a href="https://github.com/fdschneider/caspr/releases/tag/v0.1.7">Current release is v0.1.7</a>. Please report bugs on the <a href="https://github.com/fdschneider/caspr/issues">package issue tracker</a> and contribute fixes or new model definitions via pull requests!</p>
 </div>
 <div id="install-package" class="section level2">
 <h2>Install package</h2>
@@ -76,6 +76,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 devtools::<span class="kw">install_github</span>(<span class="st">&quot;fdschneider/caspr&quot;</span>)</code></pre>
 <p>Then, to load the package in your current session, type</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(caspr)</code></pre>
+<pre><code>## 
+## Attaching package: 'caspr'
+## 
+## Das folgende Objekt ist maskiert durch '.GlobalEnv':
+## 
+##     animate</code></pre>
 </div>
 <div id="license" class="section level2">
 <h2>License</h2>
@@ -99,10 +105,10 @@ devtools::<span class="kw">install_github</span>(<span class="st">&quot;fdschnei
 <p>Cellular automata are lattice- or grid-based systems, where neighboring cells on the lattice are affecting each others transition rules. Those lattices are termed ‘landscapes’ within the framework of ‘caspr’ and are stored in objects of class <code>&quot;landscape&quot;</code>.</p>
 <div id="generate-landscape-objects" class="section level3">
 <h3>Generate landscape objects</h3>
-<p>landscape objects are created using the function <code>init_landscape()</code> , e.g.</p>
+<p>Landscape objects are created using the function <code>init_landscape()</code> , e.g.</p>
 <pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span><span class="kw">init_landscape</span>(<span class="kw">c</span>(<span class="st">&quot;1&quot;</span>, <span class="st">&quot;0&quot;</span>), <span class="kw">c</span>(<span class="fl">0.2</span>,<span class="fl">0.8</span>), <span class="dt">width =</span> <span class="dv">100</span>)</code></pre>
 <p>Landscapes are squared by default, but a height argument can be specified optionally. However, doing so <strong>might disqualify the output to be spatially analysed!!!</strong></p>
-<p>A landscape object is a list <code>l</code> that contains</p>
+<p>A landscape object is a list <code>l</code> of class <code>&quot;landscape&quot;</code> that contains</p>
 <ul>
 <li><code>l$dim</code> : a named vector of the default form <code>c(width = 50, height = 50)</code></li>
 <li><code>l$cells</code> : a factorial vector of length <code>prod(l$dims)</code> that contains the state that each cell of the landscape matrix is in (row-wise from top to bottom).</li>
@@ -112,6 +118,16 @@ devtools::<span class="kw">install_github</span>(<span class="st">&quot;fdschnei
 <h3>Transfer to Matrix</h3>
 <p>The vectorial storage of the grid is allowing for a more efficient memory use and evaluation than with matrices, using map vectors that are provided as global variables by executing <code>mapping(l$dims[1], l$dims[2])</code>.</p>
 <p>For compatibility the landscape object can be translated into a matrix using <code>as.matrix(l)</code>. Any matrix <code>L</code> of <em>factorial</em> content can be reverted into a landscape object using <code>as.landscape(L, states)</code>. Ensure that the factors occuring in the matrix match the factor levels provided in the argument states, which is used to set the order of the states in the resulting landscape object (order is important in the further process!).</p>
+</div>
+<div id="binary-matrix-for-spatial-analysis" class="section level3">
+<h3>Binary matrix for spatial analysis</h3>
+<p>The function <code>as.binary_matrix()</code> provides compatibility with the package <a href>‘spatialwarnings’</a> for spatial analysis of spatial patterns. By default the function assumes the primary cell state to be transferred into binary value <code>TRUE</code>, while all other states are set to <code>FALSE</code>. The parameter <code>is</code> specifies the state or a vector of states that should be set to <code>TRUE</code> in the resulting binary matrix.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(spatialwarnings)
+
+L &lt;-<span class="st"> </span><span class="kw">as.binary_matrix</span>(l)
+L_gap &lt;-<span class="st"> </span><span class="kw">as.binary_matrix</span>(l, <span class="dt">is =</span> <span class="kw">c</span>(<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-&quot;</span>))
+
+<span class="kw">spatialwarnings</span>(L)</code></pre>
 </div>
 <div id="plot-and-summarize-output" class="section level3">
 <h3>Plot and summarize output</h3>
@@ -161,8 +177,8 @@ devtools::<span class="kw">install_github</span>(<span class="st">&quot;fdschnei
 ##  Original reference: Schneider and Kefi 2015, in review</code></pre>
 <p>It is envisioned to provide a function that helps generating the backbone of a new model object.</p>
 </div>
-<div id="running-models" class="section level2">
-<h2>Running models</h2>
+<div id="running-models-function-ca" class="section level2">
+<h2>Running models: function <code>ca()</code></h2>
 <p>The function <code>ca(x, model, parms)</code> runs a cellular automata simulation starting from the landscape object provided in <code>x</code> and using the update function provided by <code>model</code> with the parameter set <code>parms</code> (a list of parameters). Before running the model, the function validates the parameter set provided against the template stored in <code>model$parms</code>.</p>
 <p>Further parameters are available to adjust the timespan run and the snapshots of the landscape saved.</p>
 <pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span><span class="kw">init_landscape</span>(<span class="kw">c</span>(<span class="st">&quot;+&quot;</span>, <span class="st">&quot;0&quot;</span>, <span class="st">&quot;-&quot;</span>), <span class="kw">c</span>(<span class="fl">0.2</span>,<span class="fl">0.7</span>,<span class="fl">0.1</span>))
@@ -187,7 +203,7 @@ r &lt;-<span class="st"> </span><span class="kw">ca</span>(l, musselbed, p)</cod
 </ol>
 <div id="define-frequency-of-snapshots" class="section level3">
 <h3>define frequency of snapshots</h3>
-<p>The output object contains a list object <code>r$landscapes</code> which contains individual snapshots of the landscapes, by default taken each full timestep. The parameter <code>saveeach</code> reduces the frequency of snapshots to be saved in the output object. This is usefull to reduce size of the output objects or to produce time-lapse videos with the <code>animate()</code> function.</p>
+<p>The output object contains a list object <code>r$landscapes</code> which contains individual snapshots of the landscapes, by default taken each full timestep. The parameter <code>saveeach</code> reduces the frequency of snapshots to be saved in the output object. This is usefull to reduce size of the output objects or to produce time-lapse videos with the <code>ca_animate()</code> function.</p>
 <p>The following would only save the initial and final landscape.</p>
 <pre class="sourceCode r"><code class="sourceCode r">r &lt;-<span class="st"> </span><span class="kw">ca</span>(l, musselbed, p, <span class="dt">t_max =</span> <span class="dv">500</span>, <span class="dt">saveeach =</span> <span class="dv">500</span>)</code></pre>
 </div>
@@ -231,6 +247,7 @@ r &lt;-<span class="st"> </span><span class="kw">ca_array</span>(musselbed, <spa
 <p>Optionally, the individual model run outputs will be saved to ‘.Rd’ files if parameter <code>save = TRUE</code> is set. The <code>filename</code> parameter can be used to specify a relative path and filename root, which will be extended by an individual counter.</p>
 <pre class="sourceCode r"><code class="sourceCode r">r &lt;-<span class="st"> </span><span class="kw">ca_array</span>(musselbed, <span class="dt">init =</span> <span class="kw">c</span>(<span class="fl">0.7</span>,<span class="fl">0.15</span>,<span class="fl">0.15</span>), <span class="dt">parms =</span> p,
               <span class="dt">save =</span> <span class="ot">TRUE</span>, <span class="dt">filename =</span> <span class="st">&quot;output/musselbed&quot;</span>)</code></pre>
+<p><strong>Note:</strong> If running in parallel on a cluster, output files will be saved in the workers home directory!</p>
 </div>
 <div id="random-number-seeds" class="section level3">
 <h3>Random number seeds</h3>
@@ -239,8 +256,20 @@ r &lt;-<span class="st"> </span><span class="kw">ca_array</span>(musselbed, <spa
 r2 &lt;-<span class="st"> </span><span class="kw">ca_array</span>(musselbed, <span class="dt">init =</span> <span class="kw">c</span>(<span class="fl">0.7</span>,<span class="fl">0.15</span>,<span class="fl">0.15</span>), <span class="dt">parms =</span> p, <span class="dt">salt =</span> <span class="dv">745283</span>)</code></pre>
 </div>
 </div>
-<div id="function-animate" class="section level2">
-<h2>function <code>animate()</code></h2>
+<div id="function-ca_animate" class="section level2">
+<h2>function <code>ca_animate()</code></h2>
+<p>To visualize simulation runs the function <code>ca_animate()</code> provides a wrapper that generates an animated gif (default) or video of the landscapes development over time. The function requires the <a href="http://yihui.name/animation/">‘animation’ package</a>, which uses ‘ImageMagick’ to convert the multiples into an animated gif or ‘ffmpg’ to convert into a video. Make sure that <a href="http://imagemagick.org/">ImageMagick</a> and/or ffmpg are installed and properly found by the animation package functions (see ?saveGIF). The animated gifs are tiny and represent one landscape cell per pixel. Use an image viewer that scales images without aliasing to view the animated gif at larger size.</p>
+<p>The type of video generated can be specified by the <code>type</code> argument which can be <code>mp4</code>, <code>wmv</code> or <code>avi</code>. So far, <code>mp4</code> produces the nicest output.</p>
+<pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span><span class="kw">init_landscape</span>(musselbed$states, <span class="dt">cover =</span> <span class="kw">c</span>(<span class="fl">0.3</span>,<span class="fl">0.2</span>,<span class="fl">0.5</span>), <span class="dt">width =</span> <span class="dv">100</span>)
+r &lt;-<span class="st"> </span><span class="kw">ca</span>(l, musselbed,  <span class="dt">t_max =</span> <span class="dv">40</span>)
+
+<span class="kw">ca_animate</span>(r, <span class="dt">filename =</span> <span class="st">&quot;musselbed&quot;</span>)
+<span class="kw">ca_animate</span>(r, <span class="dt">filename =</span> <span class="st">&quot;musselbed&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;mp4&quot;</span>)</code></pre>
+<p>Note that the parameter <code>saveeach</code> in <code>ca()</code> can be used to produce timelapse effects.</p>
+<pre class="sourceCode r"><code class="sourceCode r">r &lt;-<span class="st"> </span><span class="kw">ca</span>(l, musselbed,  <span class="dt">t_max =</span> <span class="dv">200</span>, <span class="dt">saveeach =</span> <span class="dv">3</span>)
+<span class="kw">ca_animate</span>(r, <span class="dt">filename =</span> <span class="st">&quot;musselbed&quot;</span>, <span class="dt">speed =</span> <span class="fl">0.8</span>)</code></pre>
+<p>Additionally, the speed of the output video or animation can be adjusted by setting the relative <code>speed</code> parameters (defaults to <code>speed = 1</code>).</p>
+<p>By default, output is saved in current working directory. The parameter <code>directory</code> allows specifying any relative or absolute target path.</p>
 </div>
 </div>
 <div id="model-descriptions" class="section level1">
@@ -260,7 +289,7 @@ r2 &lt;-<span class="st"> </span><span class="kw">ca_array</span>(musselbed, <sp
 <p>Dynamic model for forest pattern after recurring wind disturbance with two cell states: empty (<code>&quot;0&quot;</code>) and vegetated (<code>&quot;+&quot;</code>).</p>
 <p>This model can use either an explicit height for trees, in which case states can be anywhere in a range [<span class="math">\(S_min ... S_max\)</span>] (Solé et al., 1995), or use only two states, vegetated (non-gap) and empty (gap) (Kubo et al., 1996). Here we focus on the version that uses only two states: gap (<code>&quot;0&quot;</code>) and non-gap (<code>&quot;+&quot;</code>). Without spatial spreading of disturbance (all cells are independent), a cell transitions from empty to vegetated with a birth probability b and fromvegetated to empty with death probability d.</p>
 <p>However, gap expansion occurs in nature as trees having empty (non-vegetated) surroundings are more likely to fall due to disturbance (e.g. wind blows). Let <span class="math">\(p(0)\)</span> be the proportion of neighbouring sites that are gaps. We can implement this expansion effect by substituting the death rate</p>
-<p><span class="math">\[ d = d_0 + \delta p_0 \..\]</span></p>
+<p><span class="math">\[ d = d_0 + \delta p_0 \,.\]</span></p>
 <p>Since <span class="math">\(0\leq p(0) \leq 1\)</span>, delta represents the maximal added death rate due to gap expansion (i.e. the spatial component intensity).</p>
 <p>The authors consider two cases: one in which the recovery of trees is proportional to the global density of vegetated sites, and one where the recovery is proportional to the local density of vegetation. We use only the first case as it the only one producing bistability.</p>
 <p>The birth rate <span class="math">\(b\)</span> is substituted with</p>
@@ -269,11 +298,19 @@ r2 &lt;-<span class="st"> </span><span class="kw">ca_array</span>(musselbed, <sp
 <p>In their original simulations, the authors of the model (Kubo et al. 1996) use a <span class="math">\(100\times100\)</span>-torus-type lattice (with random initial covers?).</p>
 <div id="example-1" class="section level3">
 <h3>Example</h3>
+<pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span><span class="kw">init_landscape</span>(<span class="kw">c</span>(<span class="st">&quot;+&quot;</span>,<span class="st">&quot;0&quot;</span>), <span class="kw">c</span>(<span class="fl">0.6</span>,<span class="fl">0.4</span>), <span class="dt">width =</span> <span class="dv">100</span>) <span class="co"># create initial landscape</span>
+p &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">alpha =</span> <span class="fl">0.2</span>, <span class="dt">delta =</span> <span class="fl">0.2</span>, <span class="dt">d =</span> <span class="fl">0.01</span>)   <span class="co"># set parameters</span>
+r &lt;-<span class="st"> </span><span class="kw">ca</span>(l, <span class="dt">model =</span> forestgap, <span class="dt">parms =</span> p, <span class="dt">t_max =</span> <span class="dv">50</span>)    <span class="co"># run simulation</span>
+r
+<span class="kw">plot</span>(r)</code></pre>
+</div>
+<div id="original-reference" class="section level3">
+<h3>Original reference</h3>
+<p>Kubo, T. et al. (1996) Forest spatial dynamics with gap expansion: total gap area and gap size distribution. J. Theor. Biol. 180, 229246, <a href="http://dx.doi.org/10.1006/jtbi.1996.0099">doi: 10.1006/jtbi.1996.0099</a></p>
 </div>
 </div>
 <div id="predator-prey-model" class="section level2">
 <h2>Predator-prey model</h2>
-<p>Original model description: Pascual, M., Roy, M., Guichard, F., &amp; Flierl, G. (2002). Cluster size distributions: signatures of self-organization in spatial ecologies. Philosophical Transactions of the Royal Society of London. Series B, Biological Sciences, 357(1421), 657666. doi: <a href="https://doi.org/10.1098/rstb.2001.0983">10.1098/rstb.2001.0983</a></p>
 <p>A spatially explicit predator prey model with three potential cell states: Occupied by prey (fish, <code>&quot;f&quot;</code>), occupied by predators (sharks, <code>&quot;s&quot;</code>) and empty (<code>&quot;0&quot;</code>).</p>
 <p>The particular neighbourhood considered in the simulations consists of the four nearest sites. Prey growth occurs as a contact process: a prey chooses a neighbouring site at random and gives birth to another prey if this site is empty at a birth rate <span class="math">\(\beta_f\)</span>. Predators hunt for prey by inspecting their neighbourhood for the presence of prey at rate <span class="math">\(\beta_s = 1\)</span>. If prey are present in the nearest neighborhood, the predator selects one at random and eats it, moving to this neighbouring site. Only predators that find a prey can reproduce, and do so with a specified probability, <span class="math">\(\beta_s\)</span>. The offspring is placed in the original site of the predator. Predators that do not find prey are susceptible to starvation and die with a probability <span class="math">\(\delta\)</span>. Random movement occurs through mixing: neighbouring sites exchange state at a constant rate <span class="math">\(\nu\)</span>.</p>
 <div id="example-2" class="section level3">
@@ -291,6 +328,10 @@ r
 <span class="kw">plot</span>(r$landscapes[[<span class="dv">31</span>]], <span class="dt">main =</span> <span class="st">&quot;t = 30&quot;</span>)
 <span class="kw">plot</span>(r$landscapes[[<span class="dv">41</span>]], <span class="dt">main =</span> <span class="st">&quot;t = 40&quot;</span>)</code></pre>
 </div>
+<div id="original-reference-1" class="section level3">
+<h3>Original reference</h3>
+<p>Pascual, M., Roy, M., Guichard, F., &amp; Flierl, G. (2002). Cluster size distributions: signatures of self-organization in spatial ecologies. Philosophical Transactions of the Royal Society of London. Series B, Biological Sciences, 357(1421), 657–666. <a href="https://doi.org/10.1098/rstb.2001.0983">doi: 10.1098/rstb.2001.0983</a></p>
+</div>
 </div>
 <div id="grazing-model" class="section level2">
 <h2>Grazing model</h2>
@@ -306,7 +347,12 @@ r
 <pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span><span class="kw">init_landscape</span>(<span class="kw">c</span>(<span class="st">&quot;+&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-&quot;</span>), <span class="kw">c</span>(<span class="fl">0.6</span>,<span class="fl">0.2</span>,<span class="fl">0.2</span>), <span class="dt">width =</span> <span class="dv">50</span>) <span class="co"># create initial landscape</span>
 p &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">del =</span> <span class="fl">0.9</span>, <span class="dt">b =</span> <span class="fl">0.4</span>, <span class="dt">c_ =</span> <span class="fl">0.2</span>, <span class="dt">m0 =</span> <span class="fl">0.05</span>, <span class="dt">g =</span> <span class="fl">0.25</span>, <span class="dt">r =</span> <span class="fl">0.01</span>, <span class="dt">f =</span> <span class="fl">0.9</span>, <span class="dt">d =</span> <span class="fl">0.1</span>, <span class="dt">p =</span> <span class="dv">1</span>)   <span class="co"># set parameters</span>
 r &lt;-<span class="st"> </span><span class="kw">ca</span>(l, <span class="dt">model =</span> grazing, <span class="dt">parms =</span> p, <span class="dt">t_max =</span> <span class="dv">100</span>)    <span class="co"># run simulation </span></code></pre>
-<p><img src="data:image/png;base64,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" /></p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqAAAADACAMAAADsiSGEAAAAQlBMVEUAAAAAADoAAGYAOpAAZrY6AAA6ZrY6kNtmAABmtv9/f3+QOgCQ2/+2ZgC2///bkDrb////tmb/25D//7b//9v////0zWreAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAPBklEQVR4nO2di5bbNhJEsdl4nYXXmdgx/v9Xd0SgqguURklI0WrqVB1nhiJBG01coB8kldIsK7HKsztgWfdkQK3UMqBWahlQK7UMqJVaBtRKLQNqpZYBtVLLgFqpZUCt1DKgVmoZUCu1DKiVWgbUSi0DaqWWAbVSy4BaqWVArdQyoFZqGVArtQyolVoZAP1WSvnX/57di4P09d24/76wjcOw75/KL78f8ff/bEC//+d639urjNwN497e6fz6bt9L2Pjx4P348uuPL//+44B/8ycD+v3Tr1f7fnw5Zu79dN0y7qJv5fNL2Hhn8L5/+nzQHPy5gP74Uq49wZ+/dS94dt007qL3VfQVbLw3eN/Gf4/Xk1bQt7Lo82X7fYFZvODpdcu4dhnDX35/CRvvDN7bAujnu6dvUwIXf9Exxv1kfWDc17GynN7GO4P3coCuFpnzD95Ft417w8bpbbwzeC/n4tc6/eBddNO4b+VXbp3cxjuDd7HtFZKk93js2sYljHmBJPemcX/+tgzbS9h4Z/Bepsz0HpBdz7O3V6lh3zDubXjDl7DxzuC9Z/OvUai3rH8kA2qllgG1UsuAWqllQK3UMqBWahlQK7UMqJVaBtRKLQNqpZYBtVLLgFqpZUCt1DKgVmoZUCu1DKiVWgbUSi0DaqWWAbVS6yBAlzdxalG1WseOelFZ/tTWLn90z9KqLn9FXTYyau755UOrtGz5PYzrx/o57zYth+vSuC4XP6l9MO6yMUxZdvL3Ytj1fhpUH2WYAd0kA3p+QMEjf4NUYooRrQ0/L70ZtArex3Rxl3ofW590w4hlg4M29vcpVieVpVn/U3PaB9Aw12T/TF7/qD9xdn0MowddHZl2YJTM6fLSN/reputPJ7gfOqaLezUx1/qKKLxWOgA4BrJYYX1qQDHRdF2cXcK6vXoLbu7l1IBulQFdtz8ZoEvU2UcJwWencMAXexGXyocCVJMCCioXKC+/6Qs5UNyDaxDOHVfiUW7wINUItMcOjsXs0+t8yvVfskNHJklFQkmuLZpbzMFoz40wugWEpwS0aX5Ua8SZ/QgHEMvpQJO8DkbTJklT9hNLaR8hbTXjV2X/OsHaKAO6VQb09IAqh50/Yocst9EvMmUnt/T1x3Rxl3D98anBRG2hKgg3OTGrROOJNcZJtosgi0aYj6v9D5iABnSTDGh7AUBJKV1ar8YjuW06RCC4Ca8D1WO6uEtz+Z05EDJ3rWezWeNQSzqV0biuqv5aN9Zc8hP26LXZrSML9RJdxjqKsDIWSM30ueI0WVWP6eJD1EthqFl0SOtyVQvr9hjeiisxdlZcnmcbcUPrTo0lU4LOeqPV2P9QgwzoLhnQqzPPAShw6yByR/8nlVTGaESWTCPmyTiASGphAe88NOFvaTZu37Z+lMk7Gc1pX3SS1dDG6FN6PD7OZdF1g106DFBc/4Li0Qg9y7hFVFGDaVwsMcjksvTg9Zgu7lKtAK30a4jlsGEpLVq3x3pJghuuSlJAm5oYu7hAKot9u2cP10f3yoBukgFlq3MC2jSGXJXriwRuDNYqnGXjIcZrh3VxuyrHrsCJI6aJKVV5wwJFsx6eIqphoSOjGHWWEptheHDJCRiwtoeg2XVYkoQhqLKvsLrJdbTvYWDK2I6Vw5wDiKVPmIuUEHOKYWrjRCOZLZjOOQFbMNoWOyKQRhMGoAExz39YTwzoJhnQ8wMKEqUyTyc/kVoGx8NfMoLL7AJLgf9mUDZl8fTpiFyqlrCX/bweaQGVTfp0RZDWrBz6QzE9Lkka5c0odvJOC8NRDUaRXLSZ3WO69wCNcDkemO87wwjMtZEM6ak9TpUGOSWdW2VL67pSu8JULsk++wzoRhnQUwNaUHJBmCZl+UJSgW+4flhT1FMe08VdYihSNAQbx5qU8NtUJ+NoFQlnMgKKwPMj/46J+dHZFUO/27iDkySkEwUj1lCvkEdGI0mKUK7hMZqsgNalRotBGyUyJkJlHCoY3rHg9sYNF6jtX2GOFJI9GlfltUbpfhR8eRIHe28fDOgmGdBXABSeu/8ZvlAzdHHu6s11Z9I4FN49qi1jNCoAHROzRUWD7l5vKSUNYVrMHMEuIMTsa7RjacsQTePXfTrs6kTFCIspeZUQpSBYlfoT1tS0AVprLRgsOnSSEDbxBA2zVfPA8RdlBTTizXrzJx1G7J9OktV3Vz8M6CYZ0JMDGkl7FJKG05MoJgLRubSNMniEOtkUAVcp8fI7Y7TwizC6572VN8swwknvJAVrnHp1FVBKvyPSiYOPsurIVz5AW0N8OWZdxJhyV0nfRqrxjk9aQLEeFqwksaBiWtXZ1qrzFA2SAhq4aexZEXG2dut2EVBu14e2y4BukgF9BUABoNxxjzfD47kQOdoQqmpQmjNGa+w0CjAEVOJOXgAOb7hMKTwlFKsU+KTwrdw9ApqAOepNe3VokiTL6LxkxuAqvg0lGR58QJB9jGL2sLLC5ZCYNqyaURBt+JbGJhHq88z4UFe9ki43LSd9dD4J3rvAGNBNMqB/cX52QBFqqRNnCZsU1jkG0FHvZmV17y3K8YUfUTOqcPcBaJ0eQGDjwflzDflAdfU76krTrOIetrn912zWoe8kwRgWQTFeLEM1PtjDYI2FUt4RPaaLu4RsT+LIUc/lU1m6skolTc9uieugXWQRiZGGmzHK1ydx514PYUA3yYDq0RMCymHCUyB0fteenbku78J3x4fbMjkHcJ6A4cvpwekJSzwzWhTQfjyrfRcNzm54edkzTcY2Je+Jy0y6bIzcqDW8gYSAc2rEWzF9PzbyAhqbq7udfB+kAeNuTZmLivH9VU/p/z/XvBZGHAq715lT6jKTATWgqQFFlQjZbhlFJNw0kqwdxwejLOb3czLWYFpryMlRMhouW+r2/GqG8WAofTqDOEQ9SU1ss7dG0Bk71tHn6qZYXSO9Tcc9LNLfa+CXhMZjoOtKE/pRplU3kM05gCO6lBAMULaGV1663aM9PtZQwT21hJrrRh/97G2Y8sWe62YbZUA3yoCy5RkBZbloSgT7R0agBa1Kke9vYkkGbTIOYJVEHV5bJld/pqDK/KqMAVqL76dKDChMXLv1Vb2JRSVdR1ZG7+rGoU8zjXEoxJSBZkHtiTg2BHaSIUVCkU2MKMenIkGnijUmmjJWzYqvGUsLaGOZCR/k7Y7e9zsLpFwbA/oEGdCTAzpluQwlWZAfN60Zhuo9FuzUl80yasSbGpI0uUHGWIbVpW56wXysrHA8146/q5hoDMCxv7KA1vdIYWP3P/sznmZi2MUxifIS7B2BG/pU9NyEwgKPlQRhtaydfEAENjAmj8U3s4mcQlJOwiJacPz2ebgAj6gzGdBNMqDt7IBWeQYEdSXWXXjfqKKKPbydhgSs4R/VxR1C9zqdEo+wRFHlGdAWgz0OVVicGdBrcczmTge+0bA+yLLjbnWu3vsQyQLZGMQhfdBsgi+HpJOsoAwrGU5j0jVkFvQTDZH2COIy0xl9W6U7GoC2eQ6umz1ABnSTDOjpAUWtqAMa3p5BGLNfGduGpJcu8Jju7ZaUlErcNGIqG4EbQ5V+nsQ1YxjTTsAbm3q8yThNzbnwcFbu0qFPM5Wgs9M2FlB5RZe1FtRpiGxFYSanGGyijzIukUqwmFal9MKSWt4J2AVT5LHxsKNFIUnn4wTrA/pgQDfKgJ4a0KZvvE9ZK6gN/rTSHWEqHqLMGaZJiQwFictuuf8erq6UKFqU+P4KlqiSS+cU97WJxbURJd4hyOriSSDiTql7xlJT4hmRgtuFIzeSlTXjKjPf1pQhKnQMElfHUDFn0p1ZdSMPkuXzuiHnqZxnQJ8jA3qj4ZkAxdUHeZUVeJI3ZcEKswQAEbwlU8Sb/VOj20OGTnCrOjxOVd5neqIR9/XX133NH0KeM8SgDLpqhGtcNSQHKrc2irymnDZMK6iDYkWML6tQQ5Ewqd2V30D1sGrhoxXpz/gcB9YvdgbJV+7kETKgG2VApS2PnQvQyjflRlo7AkpQS+fOoRs1Dd7STnwnSW8oROVBnv7ULL4PbCmrMC3vvXg+/BgB6FXgGSxeH4qNvfYdGoMiPeKNP8AKNvE4s1SjxjgT35wDWLm+ENE+B6c6qEy6sANh6+2xTaJ1NnTdTY2r69R2/TcZ0CfIgJ4c0OCraLS1qh8xc2d1iWGMePmkLj7uwje6Ook4G9P5+BqgOLXJ/oyM3uhUXUE7+X/su/6ZFNCqiwt/ksUy50mFQ1r4fxEuEd4d08VdwuMvMqG4pHDUIs2Tahlvjca1eZIN9zWtkHNWdN32AxtSl5kMqAFNDejsxHlXPbiD5VGwZkvk9aPedEwXd6mOugT5++A1x2mIm7h0ts8K6FRtkCjmg7b1ZgWqfQzv39WRMajQVvACBANTpkrTNldNhHJJV1CujSPlUwqZYfSS2iiXNQTWHEO6kGcZcVdqUJPIua0D1DobtGqwewIa0E0yoNqwnRVQPA7CoWAdXm7Q82gfwHgdvgOa0wXW6fEXpbCNKhmfPhjNxdfXCBBSGtcVc44I3iknxdykrY/pxmExaNP1UP5/QfMGF9F15oT1Z3cMc4wqvxp5zEEp8o47RmW8fBXLJ+gsstSkZVQ8RFSUrjs7F9k0CDegz5QBZbN2SkAHebzP3ubcnN6x0xnNsadgtJO6+DZiTDpuKZqFB++f0ZyNo26fOYQBmgjLVvy1WwhWTeQ5BXf15MhXPgBowEc1PCpKjueaKDeSrjDold4pk6kXK488slRR+2SbJxrwF2Lo3H8NNKsspdqQpkw2GdAnyoBqQwOaTgZUG54SUMt6hAyolVoG1EotA2qllgG1UsuAWqllQK3UMqBWahlQK7UMqJVaBtRKLQNqpZYBtVLLgFqpZUCt1DKgVmoZUCu1DKiVWgbUSi0DaqWWAbVSy4BaqWVArdQyoFZqGVArtQyolVoG1EotA2qllgG1UsuAWqllQK3UMqBWahlQK7UMqJVaBtRKLQNqpZYBtVLLgFqpZUCt1DKgVmoZUCu1DKiVWgbUSi0DaqWWAbVSy4BaqWVArdQyoFZqGVArtQyolVoG1EotA2qllgG1UsuAWqllQK3UMqBWahlQK7UMqJVaBtRKLQNqpZYBtVLLgFqpZUCt1DKgVmr9H09eyRuvoDLVAAAAAElFTkSuQmCC" /></p>
+</div>
+<div id="original-reference-2" class="section level3">
+<h3>Original reference</h3>
+<p>This model is unpublished yet, but inherits most assumptions from:</p>
+<p>Kéfi, S., Rietkerk, M., van Baalen, M. &amp; Loreau, M. (2007). Local facilitation, bistability and transitions in arid ecosystems. Theoretical Population Biology, 71, 367379. <a href="http://dx.doi.org/10.1016/j.tpb.2006.09.003">doi: 10.1016/j.tpb.2006.09.003</a></p>
 </div>
 </div>
 <div id="conways-game-of-life" class="section level2">
@@ -321,13 +367,16 @@ r &lt;-<span class="st"> </span><span class="kw">ca</span>(l, <span class="dt">m
 </ul>
 <div id="example-4" class="section level3">
 <h3>Example</h3>
-<pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span><span class="kw">init_landscape</span>(<span class="kw">c</span>(<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>), <span class="kw">c</span>(<span class="fl">0.35</span>,<span class="fl">0.65</span>), <span class="dv">150</span>,<span class="dv">150</span>)
-run &lt;-<span class="st"> </span><span class="kw">ca</span>(l, life, )</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span><span class="kw">init_landscape</span>(<span class="kw">c</span>(<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>), <span class="kw">c</span>(<span class="fl">0.35</span>,<span class="fl">0.65</span>), <span class="dv">150</span>)
+r &lt;-<span class="st"> </span><span class="kw">ca</span>(l, life, <span class="dt">t_max =</span> <span class="dv">100</span> )
+<span class="kw">ca_animate</span>(r, <span class="dt">filename =</span> <span class="st">&quot;life&quot;</span>)</code></pre>
+</div>
+<div id="original-reference-3" class="section level3">
+<h3>Original reference</h3>
+<p>A detailled description can be found on [Wikipedia](<a href="https://en.wikipedia.org/wiki/Conway's_Game_of_Life">https://en.wikipedia.org/wiki/Conway's_Game_of_Life</a>). The first publication is:</p>
+<p>Gardner, Martin (1970). Mathematical Games  The fantastic combinations of John Conway’s new solitaire game “life”. Scientific American 223. pp. 120123. ISBN 0-89454-001-7.</p>
 </div>
 </div>
-</div>
-<div id="spatial-indicators" class="section level1">
-<h1>Spatial indicators</h1>
 </div>
 
 

@@ -10,9 +10,15 @@
 \item{x}{}
 }
 \value{
-Returns a list \code{out} containing the model name, the final time, the mean cover  and standard deviation after transitory dynamics.
+Returns a list \code{out} containing the model name, the final time,
+  the mean cover  and standard deviation in the last 10 timesteps.
 }
 \description{
 summary method for `ca_result`
+}
+\note{
+The mean and sd are supposed to depend on the model being in steady
+  state dynamics, i.e. beyond transitory. Lacking a universal criterion for
+  that, we report the final 10 timesteps.
 }
 
