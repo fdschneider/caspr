@@ -24,7 +24,11 @@
 #'   than \code{steadyparms$accept}.
 #' @param steadyparms a list of parameters that are required by the function
 #'   provided in \code{steady}.
-#' @param seed An integer number serving as seed for random number generation. 
+#' @param seed An integer number serving as seed for random number generation.
+#' @param plotting A binary variable. If TRUE, simulation is plotted into an animated gif.
+#' @param filename A character string. Filename of animated gif (defaults to "modelrun.gif") which will be placed in current working directory.
+#' 
+#'   
 #'   If not provided global seeds of R apply.
 #' @param ... Parameters handed over to update function in \code{model$update}.
 #'   
@@ -82,6 +86,8 @@ ca <- function(x, model = grazing, parms = "default",
                   stopifsteady = FALSE, 
                   steady = caspr::steady, 
                   steadyparms = list(t_eval = 200, accept = 0.001),
+                  plotting = FALSE,
+                  filename = "modelrun",
                   seed = NULL, ... )  {
   
   # checking fo valid input
@@ -185,6 +191,8 @@ ca <- function(x, model = grazing, parms = "default",
   #result$steady_state$issteady <- steadiness <= steady
   #result$steady_state$steadiness <- steadiness 
   class(result) <- "ca_result"
+  
+  if(plotting) ca_animate(result, filename = filename)
   return(result)
 }
 
