@@ -91,11 +91,16 @@ ca_array <- function(model,
     set.seed(iterations$seed[i])
     
     # get initial landscape
-    if(length(init) == length(model$states))  {
-      l <- init_landscape(model$states, init, width, height) 
-    } else { 
-      stop("Provide valid initial cover vector!")
+    if("landscape" %in% class(init) ) { 
+      l <- init 
+    } else {
+      if(length(init) == length(model$states))  {
+        l <- init_landscape(model$states, init, width, height) 
+      } else { 
+        stop("Provide valid initial cover vector!")
+      }
     }
+    
     
     # running the simulation for this iteration
     run <- ca(l, model, parms = iterations[i,, drop = TRUE], seed = iterations$seed[i], ...)
