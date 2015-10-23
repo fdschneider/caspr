@@ -276,14 +276,19 @@ plot.ca_result <- function(x, plotstates = c(TRUE, rep(FALSE, length(x$model$sta
 #'
 #' @param x 
 #'
-#' @return Returns a list \code{out} containing the model name, the final time, the mean cover  and standard deviation after transitory dynamics. 
-#'    
+#' @return Returns a list \code{out} containing the model name, the final time,
+#'   the mean cover  and standard deviation in the last 10 timesteps.
+#'   
+#' @note The mean and sd are supposed to depend on the model being in steady
+#'   state dynamics, i.e. beyond transitory. Lacking a universal criterion for
+#'   that, we report the final 10 timesteps.
+#'   
 #' @export
 
 summary.ca_result <- function(x) {
   out <- list()
   class(out) <- "ca_summary"
-  eval <- seq_along(x$time)
+  eval <- tail(seq_along(x$time),10)
   out$name <- x$model$name
   out$time <- c(min(x$time), max(x$time))
   out$mean_cover <- colMeans(x$cover[eval,])
@@ -320,7 +325,3 @@ as.array.ca_result <- function(x) {
   snaps <- length(x$landscapes)
   array(unlist(lapply(x$landscapes, as.matrix)), dim = c(width, height, snaps), dimnames = c("width", "height", "snaps"))
 }
-
-
-
-
