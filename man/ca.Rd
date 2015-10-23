@@ -6,7 +6,8 @@
 \usage{
 ca(x, model = grazing, parms = "default", t_max = 200, saveeach = 1,
   stopifsteady = FALSE, steady = caspr::steady, steadyparms = list(t_eval
-  = 200, accept = 0.001), seed = NULL, ...)
+  = 200, accept = 0.001), plotting = FALSE, filename = "modelrun",
+  seed = NULL, ...)
 }
 \arguments{
 \item{x}{A landscape object.}
@@ -39,8 +40,14 @@ than \code{steadyparms$accept}.}
 \item{steadyparms}{a list of parameters that are required by the function
 provided in \code{steady}.}
 
-\item{seed}{An integer number serving as seed for random number generation.
-If not provided global seeds of R apply.}
+\item{plotting}{A binary variable. If TRUE, simulation is plotted into an animated gif.}
+
+\item{filename}{A character string. Filename of animated gif (defaults to "modelrun.gif") which will be placed in current working directory.
+
+
+  If not provided global seeds of R apply.}
+
+\item{seed}{An integer number serving as seed for random number generation.}
 
 \item{...}{Parameters handed over to update function in \code{model$update}.}
 
