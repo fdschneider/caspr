@@ -86,8 +86,7 @@ In the following the objects and functions are described in a (somewhat) logical
 Cellular automata are lattice- or grid-based systems, where neighboring cells on the lattice are affecting each others transition rules. Those lattices are termed 'landscapes' within the framework of 'caspr' and are stored in objects of class `"landscape"`. 
 
 ### Generate landscape objects 
-
-landscape objects are created using the function `init_landscape()` , e.g. 
+Landscape objects are created using the function `init_landscape()` , e.g. 
 
 ```{r}
 l <- init_landscape(c("1", "0"), c(0.2,0.8), width = 100)
@@ -95,7 +94,7 @@ l <- init_landscape(c("1", "0"), c(0.2,0.8), width = 100)
 
 Landscapes are squared by default, but a height argument can be specified optionally. However, doing so **might disqualify the output to be spatially analysed!!!** 
 
-A landscape object is a list `l` that contains
+A landscape object is a list `l` of class `"landscape"` that contains
 
 - `l$dim` : a named vector of the default form `c(width = 50, height = 50)`
 - `l$cells` : a factorial vector of length `prod(l$dims)` that contains the state that each cell of the landscape matrix is in (row-wise from top to bottom). 
@@ -107,8 +106,19 @@ The vectorial storage of the grid is allowing for a more efficient memory use an
 For compatibility the landscape object can be translated into a matrix using `as.matrix(l)`. Any matrix `L` of *factorial* content can be reverted into a landscape object using `as.landscape(L, states)`. Ensure that the factors occuring in the matrix match the factor levels provided in the argument states, which is used to set the order of the states in the resulting landscape object (order is important in the further process!). 
 
 
-### Plot and summarize output
+### Binary matrix for spatial analysis
+The function `as.binary_matrix()` provides compatibility with the package ['spatialwarnings']() for spatial analysis of spatial patterns. By default the function assumes the primary cell state to be transferred into binary value `TRUE`, while all other states are set to `FALSE`. The parameter `is` specifies the state or a vector of states that should be set to `TRUE` in the resulting binary matrix.  
 
+```{r, eval = FALSE}
+library(spatialwarnings)
+
+L <- as.binary_matrix(l)
+L_gap <- as.binary_matrix(l, is = c("0","-"))
+
+spatialwarnings(L)
+```
+
+### Plot and summarize output
 Specific method for functions `plot`, `summary` and `print` do exist, which means the following calls will produce an optimized output: 
 
 ```{r, eval = FALSE}
@@ -150,7 +160,7 @@ grazing
 
 It is envisioned to provide a function that helps generating the backbone of a new model object. 
 
-## Running models
+## Running models: function `ca()`
 
 The function `ca(x, model, parms)` runs a cellular automata simulation starting from the landscape object provided in `x` and using the update function provided by `model` with the parameter set `parms` (a list of parameters). Before running the model, the function validates the parameter set provided against the template stored in `model$parms`. 
 
@@ -186,8 +196,7 @@ Thus the result of a simulation contains two major types of output:
 
 
 ### define frequency of snapshots
-
-The output object contains a list object `r$landscapes` which contains individual snapshots of the landscapes, by default taken each full timestep. The parameter `saveeach` reduces the frequency of snapshots to be saved in the output object. This is usefull to reduce size of the output objects or to produce time-lapse videos with the `animate()` function. 
+The output object contains a list object `r$landscapes` which contains individual snapshots of the landscapes, by default taken each full timestep. The parameter `saveeach` reduces the frequency of snapshots to be saved in the output object. This is usefull to reduce size of the output objects or to produce time-lapse videos with the `ca_animate()` function. 
 
 The following would only save the initial and final landscape.
 
@@ -197,13 +206,11 @@ r <- ca(l, musselbed, p, t_max = 500, saveeach = 500)
 
 
 ### define auto-stop function
-
 Alternatively to running the simulations until `t_max` is reached, the function `ca()` can automatically terminate the simulation if steady state is reached. The switch `stopifsteady = TRUE` activates this option and applies the default criterion for steady state, which is comparing the mean cover of the primary cell state in two subsequent periods of time. The simulation terminates if the  difference in means is below a threshold value.
 
 **(This method is still problematic and needs to be refined!)**
 
 ### realised timesteps
-
 The update functions of the models are defined to represent a full timestep. What that means depends on the model specifications. It can be one year, a day or any particular timespan that the model parameters refer to. However, the computational implementation of one update cycle is model specific. 
 
 For instance the predator--prey model applies an asynchronous updating, i.e. within each annual timestep, `width` $\times$ `height` random cells are updated, allowing for repeated draws. Each cell has the fair chance to be updated, but no guarantee. Thus, no substeps in that sense are implemented, but they could be. 
@@ -255,6 +262,8 @@ r <- ca_array(musselbed, init = c(0.7,0.15,0.15), parms = p,
               save = TRUE, filename = "output/musselbed")
 ```
 
+**Note:** If running in  parallel on a cluster, output files will be saved in the workers home directory!
+
 ### Random number seeds
 The function `ca_array()` sets the seed for random number generation for each iteration in the parameter array. The seeds of each initial run will be reported in the output table. To make things reproducible, it initiates the seeds of the array using a random number generator that is seeded to a value provided in the parameter `salt`. Thus, two runs of `ca_array()` that are supposed to differ from one another run must receive their own grain of salt.
 
@@ -263,9 +272,32 @@ r1 <- ca_array(musselbed, init = c(0.7,0.15,0.15), parms = p, salt = 378539)
 r2 <- ca_array(musselbed, init = c(0.7,0.15,0.15), parms = p, salt = 745283)
 ```
 
-## function `animate()`
+## function `ca_animate()`
 
+To visualize simulation runs the function `ca_animate()` provides a wrapper that generates an animated gif (default) or video of the landscapes development over time. 
+The function requires the ['animation' package](http://yihui.name/animation/), which uses 'ImageMagick' to convert the multiples into an animated gif or 'ffmpg' to convert into a video. Make sure that [ImageMagick](http://imagemagick.org/) and/or ffmpg are installed and properly found by the animation package functions (see ?saveGIF). 
+The animated gifs are tiny and represent one landscape cell per pixel. Use an image viewer that scales images without aliasing to view the animated gif at larger size. 
 
+The type of video generated can be specified by the `type` argument which can be `mp4`, `wmv` or `avi`. So far, `mp4` produces the nicest output. 
+
+```{r, eval = FALSE}
+l <- init_landscape(musselbed$states, cover = c(0.3,0.2,0.5), width = 100)
+r <- ca(l, musselbed,  t_max = 40)
+
+ca_animate(r, filename = "musselbed")
+ca_animate(r, filename = "musselbed", type = "mp4")
+```
+
+Note that the parameter `saveeach` in `ca()` can be used to produce timelapse effects.
+
+```{r, eval = FALSE}
+r <- ca(l, musselbed,  t_max = 200, saveeach = 3)
+ca_animate(r, filename = "musselbed", speed = 0.8)
+```
+
+Additionally, the speed of the output video or animation can be adjusted by setting the relative `speed` parameters (defaults to `speed = 1`).
+
+By default, output is saved in current working directory. The parameter `directory` allows specifying any relative or absolute target path. 
 
 # Model descriptions
 
@@ -305,12 +337,18 @@ In their original simulations, the authors of the model (Kubo et al. 1996) use a
 
 ### Example
 
+```{r, eval = FALSE}
+l <- init_landscape(c("+","0"), c(0.6,0.4), width = 100) # create initial landscape
+p <- list(alpha = 0.2, delta = 0.2, d = 0.01)   # set parameters
+r <- ca(l, model = forestgap, parms = p, t_max = 50)    # run simulation
+r
+plot(r)
+```
 
-
+### Original reference
+Kubo, T. et al. (1996) Forest spatial dynamics with gap expansion: total gap area and gap size distribution. J. Theor. Biol. 180, 229–246, [doi: 10.1006/jtbi.1996.0099](http://dx.doi.org/10.1006/jtbi.1996.0099)
 
 ## Predator-prey model
-
-Original model description: Pascual, M., Roy, M., Guichard, F., & Flierl, G. (2002). Cluster size distributions: signatures of self-organization in spatial ecologies. Philosophical Transactions of the Royal Society of London. Series B,  Biological Sciences, 357(1421), 657--666. doi: [10.1098/rstb.2001.0983](https://doi.org/10.1098/rstb.2001.0983)
 
 A spatially explicit predator prey model with three potential cell states: Occupied by prey (fish, `"f"`), occupied by predators (sharks, `"s"`) and empty (`"0"`).
 
@@ -333,6 +371,9 @@ plot(r$landscapes[[31]], main = "t = 30")
 plot(r$landscapes[[41]], main = "t = 40")
 
 ```
+
+### Original reference 
+Pascual, M., Roy, M., Guichard, F., & Flierl, G. (2002). Cluster size distributions: signatures of self-organization in spatial ecologies. Philosophical Transactions of the Royal Society of London. Series B,  Biological Sciences, 357(1421), 657--666. [doi: 10.1098/rstb.2001.0983](https://doi.org/10.1098/rstb.2001.0983)
 
 
 ## Grazing model
@@ -366,6 +407,11 @@ plot(r$landscapes[[25]], main = "t = 25")
 plot(r$landscapes[[50]], main = "t = 50")
 ```
 
+### Original reference
+This model is unpublished yet, but inherits most assumptions from:
+
+Kéfi, S., Rietkerk, M., van Baalen, M. & Loreau, M. (2007). Local facilitation, bistability and transitions in arid ecosystems. Theoretical Population Biology, 71, 367–379. [doi: 10.1016/j.tpb.2006.09.003](http://dx.doi.org/10.1016/j.tpb.2006.09.003)
+
 
 ## Conway's Game of Life
 
@@ -381,8 +427,13 @@ The possible cell states are alive, `"1"`, and dead, `"0"`. The transition rules
 ### Example
 
 ```{r, eval = FALSE}
-l <- init_landscape(c("1","0"), c(0.35,0.65), 150,150)
-run <- ca(l, life, )
+l <- init_landscape(c("1","0"), c(0.35,0.65), 150)
+r <- ca(l, life, t_max = 100 )
+ca_animate(r, filename = "life")
 ```
 
-# Spatial indicators
+
+### Original reference
+A detailled description can be found on [Wikipedia](https://en.wikipedia.org/wiki/Conway's_Game_of_Life). The first publication is:
+
+Gardner, Martin (1970). Mathematical Games – The fantastic combinations of John Conway's new solitaire game "life". Scientific American 223. pp. 120–123. ISBN 0-89454-001-7. 
