@@ -61,10 +61,10 @@ as.matrix.landscape <- function(x, as = "character") {
 as.binary_matrix <-  function (...) UseMethod("as.binary_matrix")
 
 #' @export
-as.binary_matrix.landscape <- function(x, is = levels(x$cells)[1]) as.matrix(x) == is
+as.binary_matrix.landscape <- function(x, is = levels(x$cells)[1]) as.matrix(x) %in% is
 
 #' @export
-as.binary_matrix.ca_result <- function(x, is = x$model$states[1]) lapply(x$landscapes, function(y) as.matrix(y) == is ) 
+as.binary_matrix.ca_result <- function(x, is = x$model$states[1]) lapply(x$landscapes, function(y) as.matrix(y) %in% is ) 
 
 
 
