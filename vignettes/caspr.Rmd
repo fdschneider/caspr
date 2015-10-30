@@ -306,10 +306,31 @@ We also added Conway's Game of Life as a test case for animation functions -- an
 
 ## Mussel bed model
 
+The model represents the spatial dynamics in mussel cover of rock substrate in intertidal systems. The stochastic wave disturbances will most likely remove mussels that are located next to a gap because of the losened byssal threads in their proximity. This causes a dynamic gap growth.
+
+The model describes the process by simplifying the system into three potential cell states: occupied by mussel ("+"),  empty but undisturbed ("0"), and disturbed, bare rock with loose byssal threads ("-"). 
+ 
+Mussel growth on empty cells is defined by parameter $r$ multiplied by the local density of mussels in the direct 4-cell neighborhood. 
+ 
+Any cell occupied by mussels has an intrinsic chance of $\delta$ to be disturbed from intrinsic cause, e.g. natural death or predation. Additionally, wave disturbance will remove mussels and leave only bare rock, i.e. disturbed sites, with probability $d$ if at least one disturbed cell is in the direct 4-cell neighborhood. This causes disturbances to cascade through colonies of mussels.  
+ 
+Disturbed sites will recover into empty sites with a constant rate of 1 per year, i.e. on average a disturbed site becomes recolonisable within one year after the disturbance happened. 
+
+
 ### Example
 
+```{r, eval = FALSE}
+# create initial landscape:
+l <- init_landscape(c("+","0","-"), c(0.6,0.2,0.2), width = 50) 
+# set parameters:
+p <- list(delta = 0.01, d = 09, r = 0.4)  
+# run simulation:
+r <- ca(l, musselbed, p, t_max = 100) 
+```
 
-### Source and References
+### Original reference
+
+Guichard, F., Halpin, P.M., Allison, G.W., Lubchenco, J. & Menge, B.A. (2003). Mussel disturbance dynamics: signatures of oceanographic forcing from local interactions. The American Naturalist, 161, 889--904. [doi: 10.1086/375300](http://dx.doi.org/10.1086/375300)
 
 
 ## Forest Gap model
@@ -338,15 +359,18 @@ In their original simulations, the authors of the model (Kubo et al. 1996) use a
 ### Example
 
 ```{r, eval = FALSE}
-l <- init_landscape(c("+","0"), c(0.6,0.4), width = 100) # create initial landscape
-p <- list(alpha = 0.2, delta = 0.2, d = 0.01)   # set parameters
-r <- ca(l, model = forestgap, parms = p, t_max = 50)    # run simulation
+# create initial landscape:
+l <- init_landscape(c("+","0"), c(0.6,0.4), width = 100) 
+# set parameters:
+p <- list(alpha = 0.2, delta = 0.2, d = 0.01)   
+# run simulation:
+r <- ca(l, model = forestgap, parms = p, t_max = 50)    
 r
 plot(r)
 ```
 
 ### Original reference
-Kubo, T. et al. (1996) Forest spatial dynamics with gap expansion: total gap area and gap size distribution. J. Theor. Biol. 180, 229–246, [doi: 10.1006/jtbi.1996.0099](http://dx.doi.org/10.1006/jtbi.1996.0099)
+Kubo, T. et al. (1996) Forest spatial dynamics with gap expansion: total gap area and gap size distribution. J. Theor. Biol. 180, 229--246, [doi: 10.1006/jtbi.1996.0099](http://dx.doi.org/10.1006/jtbi.1996.0099)
 
 ## Predator-prey model
 
@@ -356,13 +380,17 @@ The particular neighbourhood considered in the simulations consists of the four 
   
 ### Example
 
-```{r, eval = FALSE}
-l <- init_landscape(c("f","s","0"), c(0.3,0.2,0.5), width = 100) # create initial landscape
-p <- list(betaf = 0.01, betas = 0.1, delta =0.2)   # set parameters
-r <- ca(l, model = predprey, parms = p, t_max = 50)    # run simulation 
+```{r}
+# create initial landscape:
+l <- init_landscape(c("f","s","0"), c(0.3,0.2,0.5), width = 100)
+# set parameters:
+p <- list(betaf = 0.01, betas = 0.1, delta =0.2)   
+# run simulation:
+r <- ca(l, model = predprey, parms = p, t_max = 50)    
 r
-plot(r)
+```
 
+```{r, echo = FALSE, fig.width = 7, fig.height = 2}
 par(mfrow = c(1,5), mar = c(1,1,1,1))
 plot(r$landscapes[[1]], main = "t = 0")
 plot(r$landscapes[[11]], main = "t = 10")
@@ -395,22 +423,36 @@ where the additional mortality due to grazing is maximized to $g_0$ if  a plant 
 ### Example
 
 ```{r}
-l <- init_landscape(c("+","0","-"), c(0.6,0.2,0.2), width = 50) # create initial landscape
-p <- list(del = 0.9, b = 0.4, c_ = 0.2, m0 = 0.05, g = 0.25, r = 0.01, f = 0.9, d = 0.1, p = 1)   # set parameters
+# create initial landscape:
+l <- init_landscape(c("+","0","-"), c(0.6,0.2,0.2), width = 50) 
+# set parameters:
+p <- list(del = 0.1, # global proportion of seed dispersal
+          b = 0.4, # environmental quality
+          c_ = 0.2, # global competition
+          m0 = 0.05, # intrinsic plant mortality
+          g = 0.25, # grazing rate
+          r = 0.01, # intrinsic regeneration rate
+          f = 0.9, # local facilitation
+          d = 0.1,  # 
+          p = 1 # intensity of associational protection
+          )   
 r <- ca(l, model = grazing, parms = p, t_max = 100)    # run simulation 
+r
 ```
 
 ```{r, echo = FALSE, fig.width = 7, fig.height = 2}
-par(mfrow = c(1,3))
+par(mfrow = c(1,5), mar = c(1,1,1,1))
 plot(r$landscapes[[5]], main = "t = 5")
 plot(r$landscapes[[25]], main = "t = 25")
 plot(r$landscapes[[50]], main = "t = 50")
+plot(r$landscapes[[75]], main = "t = 75")
+plot(r$landscapes[[100]], main = "t = 100")
 ```
 
 ### Original reference
 This model is unpublished yet, but inherits most assumptions from:
 
-Kéfi, S., Rietkerk, M., van Baalen, M. & Loreau, M. (2007). Local facilitation, bistability and transitions in arid ecosystems. Theoretical Population Biology, 71, 367–379. [doi: 10.1016/j.tpb.2006.09.003](http://dx.doi.org/10.1016/j.tpb.2006.09.003)
+Kéfi, S., Rietkerk, M., van Baalen, M. & Loreau, M. (2007). Local facilitation, bistability and transitions in arid ecosystems. Theoretical Population Biology, 71, 367--379. [doi: 10.1016/j.tpb.2006.09.003](http://dx.doi.org/10.1016/j.tpb.2006.09.003)
 
 
 ## Conway's Game of Life
@@ -436,4 +478,4 @@ ca_animate(r, filename = "life")
 ### Original reference
 A detailled description can be found on [Wikipedia](https://en.wikipedia.org/wiki/Conway's_Game_of_Life). The first publication is:
 
-Gardner, Martin (1970). Mathematical Games – The fantastic combinations of John Conway's new solitaire game "life". Scientific American 223. pp. 120–123. ISBN 0-89454-001-7. 
+Gardner, Martin (1970). Mathematical Games -- The fantastic combinations of John Conway's new solitaire game "life". Scientific American 223. pp. 120--123. ISBN 0-89454-001-7. 
