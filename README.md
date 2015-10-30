@@ -24,7 +24,7 @@ devtools::install_github("fdschneider/caspr")
 
 ## Details 
 
-Further description of the functions of the package, the models provided and the application of spatial indicators can be found in the [package vignette](http://htmlpreview.github.io/?https://github.com/fdschneider/caspr/blob/master/inst/doc/caspr.html) and the package [manual](https://github.com/fdschneider/caspr/blob/master/inst/doc/caspr-manual.pdf).
+Further description of the functions of the package, the models provided and the application of spatial indicators can be found in the [package vignette](http://htmlpreview.github.io/?https://github.com/fdschneider/caspr/blob/master/inst/doc/caspr.html) ([pdf download](https://github.com/fdschneider/caspr/raw/master/inst/doc/caspr.pdf)) and the [package manual (pdf)](https://github.com/fdschneider/caspr/raw/master/inst/doc/caspr-manual.pdf).
 
 ## Contribute to the package
 
