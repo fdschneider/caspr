@@ -30,7 +30,7 @@ birthdeath$states <- c("+", "0")
 birthdeath$cols <- c("black", "white")
 
 # a list of default model parameters, used to validate input parameters. 
-birthdeath$parms <- list(  
+birthdeath$parms <- list(
   death = 0.5,
   birth = 0.5
 ) 
@@ -39,6 +39,8 @@ birthdeath$parms <- list(
 birthdeath$update <- function(x_old, parms) {
   
   x_new <- x_old
+  
+  p_death <- 
   
   # define update procedures depending on parms 
   
