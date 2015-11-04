@@ -78,7 +78,7 @@ vignette of the foreach -package}).
 
  registerDoMC(cores=7)
 
- musselgradient <- carray(musselbed, parms = p, init = c(0.6,0.2,0.2), t_max = 400, save = TRUE, file = "out/musselbed")
+ musselgradient <- ca_array(musselbed, parms = p, init = c(0.6,0.2,0.2), t_max = 400, save = TRUE, file = "out/musselbed")
 
  registerDoSEQ()
 

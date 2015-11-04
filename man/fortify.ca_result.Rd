@@ -4,7 +4,7 @@
 \alias{fortify.ca_result}
 \title{Fortify method for `ca_result`}
 \usage{
-fortify.ca_result(x)
+\method{fortify}{ca_result}(x)
 }
 \arguments{
 \item{x}{a ca_result object}
