@@ -57,7 +57,7 @@
 #' 
 #'  registerDoMC(cores=7)
 #'  
-#'  musselgradient <- carray(musselbed, parms = p, init = c(0.6,0.2,0.2), t_max = 400, save = TRUE, file = "out/musselbed")
+#'  musselgradient <- ca_array(musselbed, parms = p, init = c(0.6,0.2,0.2), t_max = 400, save = TRUE, file = "out/musselbed")
 #'  
 #'  registerDoSEQ()
 #' 
@@ -109,9 +109,10 @@ ca_array <- function(model,
     out <- c(summary(run)$mean_cover, summary(run)$sd_cover)
     names(out) <- paste0(rep(c("mean_cover", "sd_cover"), each = length(model$states) ), "_",names(out))
     out <- as.data.frame(t(out))
-    out <- cbind(out, run$steady_state)
     out$t_start <- as.integer(summary(run)$time[1])
     out$t_end <- as.integer(summary(run)$time[2])
+    # ca() does not return a steady_state component anymore
+    out <- data.frame(out, is_steady = run[['issteady']][summary(run)$time[2]]) 
     
     if(save) {
       dir.create(file.path(directory, sub(basename(filename), "", filename)), showWarnings = FALSE)
