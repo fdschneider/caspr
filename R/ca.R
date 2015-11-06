@@ -65,14 +65,14 @@
 #' 
 #' # 1. run simulation and save a snapshot each 50 timesteps. plot timeseries and snapshots.
 #' 
-#' l <- init_landscape(c("+","0","-"), c(0.6,0.2,0.2), width = 100) # create
-#' initial landscape
+#  # create initial landscape
+#' l <- init_landscape(c("+","0","-"), c(0.6,0.2,0.2), width = 100) 
 #' p <- list(r = 0.4, d = 0.9, delta = 0.01)   # set parameters
 #' r <- ca(l, model = musselbed, parms = p, t_max = 200)    # run simulation
 #' plot(r)
 #' 
 #' par(mfrow= c(2,3))
-#' lapply(c(0,25,50,100,150,200)+1, plot(r$landscapes[[i]]) )
+#' sapply(c(0,25,50,100,150,200)+1, function(i) plot(r$landscapes[[i]]) )
 #' 
 #' # 2. run simulation and save full landsape at each timestep. create animated gif.
 #' 
