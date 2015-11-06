@@ -112,8 +112,8 @@ as.landscape.matrix <- function(x, states = NA)  {
 #' @param x A landscape object
 #' @return A list containing the object dimensions, the number of cells in the different cell states, the global cover of the different cell states, the average local cover of the different cell states.
 #' @examples 
-#' obj <- init_landscape(c("+","0","-"), c(0.5,0.25,0.25)) 
-#' summary(obj)
+#' # obj <- init_landscape(c("+","0","-"), c(0.5,0.25,0.25)) 
+#' # summary(obj)
 #' @export
 
 

@@ -16,7 +16,7 @@ A list containing the object dimensions, the number of cells in the different ce
 Summary of landscape object.
 }
 \examples{
-obj <- init_landscape(c("+","0","-"), c(0.5,0.25,0.25))
-summary(obj)
+# obj <- init_landscape(c("+","0","-"), c(0.5,0.25,0.25))
+# summary(obj)
 }
 
