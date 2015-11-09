@@ -159,7 +159,7 @@ ca <- function(x, model = grazing, parms = "default",
   if(!is.null(seed)) set.seed(seed)  # get seed from function call
  
   # starting iterations:
-  while(i <= t_max | stopifsteady & steady(i, result, steadyparms) ) { 
+  while ( i <= t_max && ( !stopifsteady || !steady(i, result, steadyparms) ) ) {
     
     # call update function:
     
