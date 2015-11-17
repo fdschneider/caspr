@@ -153,10 +153,15 @@ summary.landscape <- function(x) {
 #' plot(obj)
 #' 
 
-plot.landscape <- function(x, cols = "auto", grid = FALSE, axis = FALSE, add = FALSE, ani = FALSE, ...) {
+plot.landscape <- function(x, cols = "auto", grid = FALSE, axis = FALSE, 
+                           add = FALSE, ani = FALSE, ...) {
   lvls <- levels(x$cells) 
   nlev <- length(lvls)
-  if(cols[1] == "auto") cols = grayscale(nlev)  # default color value
+  if(cols[1] == "auto") { 
+    cols = grayscale(nlev)  # default color value
+    warning('No colors provided for landscape plotting: choosing ad-hoc ', 
+            'grey levels')
+  }
   
   if(ani & Sys.info()[['sysname']] == "Windows") adj = -0.5 else adj = 0 #this adjustment constant is added when producing a pixel accurate png or gif file, requires TRUE when the function is used to plot animated figures. 
   
