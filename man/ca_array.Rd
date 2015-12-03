@@ -5,7 +5,8 @@
 \title{Run ca() over a parameter array.}
 \usage{
 ca_array(model, init, width = 50, height = width, parms = model$parms,
-  save = FALSE, filename = "sim", directory = "", salt = 345678, ...)
+  save = FALSE, filename = "sim", directory = "", salt = 345678,
+  stat_covers_length = 10, ...)
 }
 \arguments{
 \item{model}{A valid object of class 'ca_model'. Defaults to musselbed. Valid
