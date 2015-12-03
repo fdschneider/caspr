@@ -6,8 +6,8 @@
 \usage{
 ca(x, model = grazing, parms = "default", t_max = 200, saveeach = 1,
   stopifsteady = FALSE, steady = caspr::steady, steadyparms = list(t_eval
-  = 200, accept = 0.001), plotting = FALSE, filename = "modelrun",
-  seed = NULL, ...)
+  = 200, accept = 0.001), t_min = 0, plotting = FALSE,
+  filename = "modelrun", seed = NULL, ...)
 }
 \arguments{
 \item{x}{A landscape object.}

@@ -82,13 +82,14 @@
 
 
 ca <- function(x, model = grazing, parms = "default", 
-                  t_max = 200, saveeach = 1, 
-                  stopifsteady = FALSE, 
-                  steady = caspr::steady, 
-                  steadyparms = list(t_eval = 200, accept = 0.001),
-                  plotting = FALSE,
-                  filename = "modelrun",
-                  seed = NULL, ... )  {
+               t_max = 200, saveeach = 1, 
+               stopifsteady = FALSE, 
+               steady = caspr::steady, 
+               steadyparms = list(t_eval = 200, accept = 0.001),
+               t_min = 0, # min number of iterations
+               plotting = FALSE,
+               filename = "modelrun",
+               seed = NULL, ... )  {
   
   # checking fo valid input
   ## parms
@@ -155,11 +156,15 @@ ca <- function(x, model = grazing, parms = "default",
   # initialise simulation variables: 
   x_old <- x  # ghost matrix at t_i
   x_new <- x_old
-  i = 0  # iterator for simulation timesteps
+  i = 0  # iterator for simulation timesteps ([Alex] this should really start 
+         #   at 1 but I'm afraid of breaking something. The way it is now 
+         #   overwrites the initial state).
   if(!is.null(seed)) set.seed(seed)  # get seed from function call
  
   # starting iterations:
-  while ( i <= t_max && ( !stopifsteady || !steady(i, result, steadyparms) ) ) {
+  while ( i <= t_min || 
+          i <= t_max && 
+          ( !stopifsteady || !steady(i, result, steadyparms) ) ) {
     
     # call update function:
     
@@ -275,7 +280,10 @@ plot.ca_result <- function(x, plotstates = c(TRUE, rep(FALSE, length(x$model$sta
 #' summary method for `ca_result`
 #'
 #' @param x 
-#'
+#' 
+#' @param length.eval Number of time steps at the end of the simulation to consider
+#'   when computing mean and sd of covers
+#' 
 #' @return Returns a list \code{out} containing the model name, the final time,
 #'   the mean cover  and standard deviation in the last 10 timesteps.
 #'   
@@ -285,10 +293,10 @@ plot.ca_result <- function(x, plotstates = c(TRUE, rep(FALSE, length(x$model$sta
 #'   
 #' @export
 
-summary.ca_result <- function(x) {
+summary.ca_result <- function(x, length.eval = 10) {
   out <- list()
   class(out) <- "ca_summary"
-  eval <- tail(seq_along(x$time),10)
+  eval <- tail(seq_along(x$time), length.eval)
   out$name <- x$model$name
   out$time <- c(min(x$time), max(x$time))
   out$mean_cover <- colMeans(x$cover[eval,])
