@@ -4,7 +4,7 @@
 \name{musselbed}
 \alias{musselbed}
 \title{Musselbed Disturbance Model}
-\format{An object of class \code{ca_model} of length 6.}
+\format{An object of class \code{ca_model} of length 7.}
 \usage{
 ca(l, musselbed, parms = p)
 }
