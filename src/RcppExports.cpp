@@ -28,18 +28,18 @@ BEGIN_RCPP
 END_RCPP
 }
 // predprey_core
-IntegerMatrix predprey_core(IntegerMatrix grid, int subs, int NEIGHBORS, double betaf, double betas, double delta);
-RcppExport SEXP caspr_predprey_core(SEXP gridSEXP, SEXP subsSEXP, SEXP NEIGHBORSSEXP, SEXP betafSEXP, SEXP betasSEXP, SEXP deltaSEXP) {
+IntegerMatrix predprey_core(IntegerMatrix grid, int subs, double betaf, double betas, double delta, double m);
+RcppExport SEXP caspr_predprey_core(SEXP gridSEXP, SEXP subsSEXP, SEXP betafSEXP, SEXP betasSEXP, SEXP deltaSEXP, SEXP mSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< IntegerMatrix >::type grid(gridSEXP);
     Rcpp::traits::input_parameter< int >::type subs(subsSEXP);
-    Rcpp::traits::input_parameter< int >::type NEIGHBORS(NEIGHBORSSEXP);
     Rcpp::traits::input_parameter< double >::type betaf(betafSEXP);
     Rcpp::traits::input_parameter< double >::type betas(betasSEXP);
     Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
-    __result = Rcpp::wrap(predprey_core(grid, subs, NEIGHBORS, betaf, betas, delta));
+    Rcpp::traits::input_parameter< double >::type m(mSEXP);
+    __result = Rcpp::wrap(predprey_core(grid, subs, betaf, betas, delta, m));
     return __result;
 END_RCPP
 }

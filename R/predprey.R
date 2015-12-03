@@ -50,8 +50,9 @@ predprey$states <- c("f", "s", "0") # fish/shark/empty /!\ ORDER MATTERS
 predprey$cols <- c("gray50", "black", "white" )
 predprey$parms  <- list(
   betaf = 0.01,  # growth rate of fish
-  betas = 0.1, # growth rate of predator
-  delta = 0.2 # death rate of predator (if starved)
+  betas = 0.1,   # growth rate of predator
+  delta = 0.2,   # death rate of predator (if starved)
+  m     = 0.1    # death rate of prey 
   # The original publication refers to a nu parameter that fixes the mixing 
   #   rate (?). However, it is not used in the c code provided but maybe that is 
   #   because publication always show results where it is set to 1.
@@ -60,20 +61,20 @@ predprey$parms  <- list(
 
 predprey$update <- function(x,               # landscape object
                             parms,           # set of parms 
-                            subs = prod(x$dim)) {     # number of iterations/time step ?
+                            subs = 10) {     # temporal resolution
   
   # Adjust data (makes copy)
-  #x_old <- matrix(as.integer(x$cells), nrow=x$dim[1], byrow=TRUE)
+#   x_old <- matrix(as.integer(x$cells), nrow = x$dim[1], byrow = TRUE)
   x_old <- as.matrix(x, as = "integer")
-  
+
   x_new <- predprey_core(x_old, 
                          subs, 
-                         length(interact), # global variable
                          parms$betaf, 
                          parms$betas,
-                         parms$delta)
+                         parms$delta,
+                         parms$m)
   
-  x$cells <- factor(predprey$states[t(x_new)], levels = predprey$states)
+  x$cells <- factor(predprey$states[x_new], levels = predprey$states)
 
   ## end of single update call
   return(x)

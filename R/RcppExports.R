@@ -9,7 +9,7 @@ randp <- function() {
     .Call('caspr_randp', PACKAGE = 'caspr')
 }
 
-predprey_core <- function(grid, subs, NEIGHBORS, betaf, betas, delta) {
-    .Call('caspr_predprey_core', PACKAGE = 'caspr', grid, subs, NEIGHBORS, betaf, betas, delta)
+predprey_core <- function(grid, subs, betaf, betas, delta, m) {
+    .Call('caspr_predprey_core', PACKAGE = 'caspr', grid, subs, betaf, betas, delta, m)
 }
 
