@@ -90,7 +90,9 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
                steadyparms = list(t_eval = 200, accept = 0.001),
                plotting = FALSE,
                filename = "modelrun",
-               seed = NULL, ... )  {
+               seed = NULL, 
+               length.stat = 10,
+               ... )  {
   
   # checking fo valid input
   ## parms
@@ -168,7 +170,7 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
     
     # save stats of new landscape
     
-    xstats <- summary(x_new)
+    xstats <- summary(x_new, length.stat)
     result$cover[i,] <- xstats$cover
     result$local[i,] <- xstats$local
     
@@ -178,7 +180,12 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
   }
   
   # starting iterations:
-  while ( i <= t_max && ( !stopifsteady || !steady(i, result, steadyparms) ) ) {
+  # We need to have at least length.stat iterations after t_min to make 
+  # sure the mean cover values we save are only based on covers around 
+  # steady state.
+  while ( i <= t_min + length.stat || 
+          i <= t_max && 
+          ( !stopifsteady || !steady(i, result, steadyparms) ) ) {
     
     # call update function:
     
@@ -191,7 +198,7 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
     
     # save stats of new landscape
     
-    xstats <- summary(x_new)
+    xstats <- summary(x_new, length.stat)
     result$cover[i,] <- xstats$cover
     result$local[i,] <- xstats$local
     
@@ -225,9 +232,9 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
     c = cor(xcomp, as.integer(x_new$cells))
     # save stats of new landscape
     
-    xstats <- summary(x_new)
-    result$cover[i,] <- xstats$cover
-    result$local[i,] <- xstats$local
+    xstats <- summary(x_new, length.stat = length.stat)
+    result$cover[i, ] <- xstats$cover
+    result$local[i, ] <- xstats$local
     
     
     #result$steadyval[i] <- steady(i, result, steadyparms, returnvalue = TRUE)
@@ -250,7 +257,7 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
       
       # save stats of new landscape
       
-      xstats <- summary(x_new)
+      xstats <- summary(x_new, length.stat = length.stat)
       result$cover[i,] <- xstats$cover
       result$local[i,] <- xstats$local
       

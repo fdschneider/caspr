@@ -108,7 +108,8 @@ ca_arraySS <- function(model,
             
             
             # running the simulation for this iteration
-            run <- ca_snapsSS(l, model, parms = iterations[i,, drop = TRUE], seed = iterations$seed[i], ...)
+            run <- ca_snapsSS(l, model, parms = iterations[i,, drop = TRUE], 
+                              seed = iterations$seed[i], ...)
             
             # get summary for output
             out <- c(summary(run)$mean_cover, summary(run)$sd_cover)
