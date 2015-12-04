@@ -198,7 +198,7 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
     
     # save stats of new landscape
     
-    xstats <- summary(x_new, length.stat)
+    xstats <- summary(x_new)
     result$cover[i,] <- xstats$cover
     result$local[i,] <- xstats$local
     
