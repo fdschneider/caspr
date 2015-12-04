@@ -136,6 +136,3 @@ ca_array <- function(model,
   return(cbind(iterations, out) )
 }
 
-
-#' @export
-carray <- ca_array
