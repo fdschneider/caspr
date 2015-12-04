@@ -91,6 +91,7 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
                plotting = FALSE,
                filename = "modelrun",
                seed = NULL, 
+               length.stat = 10,
                ... )  {
   
   # checking fo valid input

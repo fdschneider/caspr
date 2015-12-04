@@ -7,7 +7,8 @@
 ca_snapsSS(x, model = grazing, parms = "default", t_min = 50,
   t_max = 200, nsnaps = 10, stopifsteady = FALSE,
   steady = caspr::steady, steadyparms = list(t_eval = 200, accept = 0.001),
-  plotting = FALSE, filename = "modelrun", seed = NULL, ...)
+  plotting = FALSE, filename = "modelrun", seed = NULL,
+  length.stat = 10, ...)
 }
 \arguments{
 \item{x}{A landscape object.}
