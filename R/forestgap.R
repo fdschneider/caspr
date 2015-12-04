@@ -110,7 +110,7 @@ forestgap$update <- function(x,               # landscape object
     rnum <- runif(prod(x$dim), 0, 1)
 
     # 3 - set transition probabilities
-    p_to_vegetated <- with(parms, (alpha * rho_plus) / subs
+    p_to_vegetated <- with(parms, (alpha * rho_plus) / subs )
     p_to_empty     <- with(parms, (d + delta * localempty) / subs )
 
     # check for sum of probabilities to be inferior 1 and superior 0
