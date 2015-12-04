@@ -202,11 +202,12 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
   }
   
   result$landscapes[[1]] <- x_new
-  xcomp<-as.integer(x_new$cells)
-  c<-cor(xcomp,as.integer(x_new$cells))
+  xcomp <- as.integer(x_new$cells)
+  c <- cor(xcomp, as.integer(x_new$cells))
+  
   tsnaps<-0
   
-  while (c >= 0.1) {
+  while (is.na(c) || c >= 0.1) {
     
     # call update function:
     
