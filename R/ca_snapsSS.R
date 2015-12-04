@@ -205,9 +205,14 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
   xcomp <- as.integer(x_new$cells)
   c <- cor(xcomp, as.integer(x_new$cells))
   
-  tsnaps<-0
+  single_state <- length(unique(xcomp)) == 1
   
-  while (is.na(c) || c >= 0.1) {
+  if ( single_state ) { 
+    tsnaps <- 1
+  } else { 
+    tsnaps <- 0
+  }
+  while ( !single_state && c >= 0.1 ) {
     
     # call update function:
     
@@ -229,6 +234,7 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
     result$issteady[i] <- steady(i, result, steadyparms)
     tsnaps <- tsnaps + 1
   }
+  
   result$landscapes[[2]]<-x_new
   for (k in 3:nsnaps){
     for (j in 1:tsnaps){
