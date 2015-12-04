@@ -81,7 +81,7 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
             grid(i1, j1) = FISH; // grow
           }
           
-        } else if ( rtest > 1 - m_ ) {
+        } else if ( rtest > (1 / subs) - m_ ) {
           grid(i, j) = EMPTY;
         }
         
@@ -99,12 +99,16 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
           if ( grid(i1, j1) == FISH ) { 
             // eat
             found_prey = true;
-            grid(i1, j1) = SHARK; 
-            // and maybe reproduce 
-            if ( randp() >= betas_ ) { 
-  //             Rcout << "shark reproduces\n";
-              grid(i, j) = EMPTY;
-            } 
+            // Note that the probability of eating is "one" but we need to 
+            //   divide it by subs
+            if ( randp() < 1 / subs ) { 
+              grid(i1, j1) = SHARK; 
+              // and maybe reproduce 
+              if ( randp() >= betas_ ) { 
+    //             Rcout << "shark reproduces\n";
+                grid(i, j) = EMPTY;
+              } 
+            }
           }
           k++; // consider next neighbor
         }
@@ -120,18 +124,20 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
       // Note: we do this for two pair of cells as in the original code, but this
       //   is not mentioned in Pascual2002.
       // Note2: [!!] This mixes two pairs of cell: 
-      for (rep=0;rep<1;rep++) { 
-        i  = randn(0, h);
-        j  = randn(0, w);
-        k  = randn(0, NEIGHBORS);
-        i1 = (i + X[k] + h) % h; 
-        j1 = (j + Y[k] + w) % w;
-        
-        if ( grid(i, j) != grid(i1, j1) ) { 
-          tmp = grid(i, j);
-          grid(i1, j1) = grid(i, j);
-          grid(i, j) = tmp;
-        }
+      if ( randp() < 1 / subs ) {  
+//        for (rep=0;rep<1;rep++) { 
+          i  = randn(0, h);
+          j  = randn(0, w);
+          k  = randn(0, NEIGHBORS);
+          i1 = (i + X[k] + h) % h; 
+          j1 = (j + Y[k] + w) % w;
+          
+          if ( grid(i, j) != grid(i1, j1) ) { 
+            tmp = grid(i, j);
+            grid(i1, j1) = grid(i, j);
+            grid(i, j) = tmp;
+          }
+//        }
       }
       
       update++;
