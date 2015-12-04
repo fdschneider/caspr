@@ -68,7 +68,7 @@ predprey$update <- function(x,               # landscape object
   x_old <- as.matrix(x, as = "integer")
 
   x_new <- predprey_core(x_old, 
-                         subs, 
+                         1,  # DO NOT USE THE SUBS PARAMETER !
                          parms$betaf, 
                          parms$betas,
                          parms$delta,
