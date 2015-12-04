@@ -5,7 +5,8 @@
 \title{Run ca_snapsSS() over a parameter array.}
 \usage{
 ca_arraySS(model, init, width = 50, height = width, parms = model$parms,
-  save = FALSE, filename = "sim", directory = "", salt = 345678, ...)
+  save = FALSE, filename = "sim", directory = "", salt = 345678,
+  length.stat = 10, ...)
 }
 \arguments{
 \item{model}{A valid object of class 'ca_model'. Defaults to musselbed. Valid

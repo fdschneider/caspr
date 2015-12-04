@@ -170,7 +170,7 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
     
     # save stats of new landscape
     
-    xstats <- summary(x_new, length.stat)
+    xstats <- summary(x_new)
     result$cover[i,] <- xstats$cover
     result$local[i,] <- xstats$local
     
@@ -232,7 +232,7 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
     c = cor(xcomp, as.integer(x_new$cells))
     # save stats of new landscape
     
-    xstats <- summary(x_new, length.stat = length.stat)
+    xstats <- summary(x_new)
     result$cover[i, ] <- xstats$cover
     result$local[i, ] <- xstats$local
     
@@ -257,7 +257,7 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
       
       # save stats of new landscape
       
-      xstats <- summary(x_new, length.stat = length.stat)
+      xstats <- summary(x_new)
       result$cover[i,] <- xstats$cover
       result$local[i,] <- xstats$local
       
@@ -286,132 +286,3 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
   return(result)
 }
 
-
-
-#' @export
-
-print.ca_result <- function(x) {
-  
-  obj <- deparse(substitute(x))
-  
-  cat(" \n ")
-  cat("Model run of ", x$model$name, " over ", max(x$time),
-      " timesteps. \n", sep = "")
-  
-  #if(x$steady_state$issteady == TRUE) {
-  # cat("\n average cover reached steady state ('steadiness' <= ", 
-  #    x$steady_state$steady ,"): \n", sep = "")
-  #} else {
-  #  cat("\n average cover did not reach steady state ('steadiness' = ", 
-  #      round(x$steady_state$steadiness, 6) ,"): \n", sep = "")
-  #}
-  cat("\n average cover: \n")
-  cat( "  ", formatC(names(summary(x)$mean_cover), width = 6, flag = " " ) , "\n")
-  cat( "  ", formatC(round(summary(x)$mean_cover, digits = 3), width = 6, flag = " " ) )
-  cat(" \n \n")
-  cat(" for more details call 'summary(", obj,")' or 'plot(", obj,")'! \n", sep = "")
-  
-  cat( " access simulation results: \n")
-  cat( "   '", obj,"$model$parms' : simulation parameters \n", sep = "")
-  cat( "   '", obj,"$time' : a vector of timesteps \n", sep = "")
-  cat( "   '", obj,"$cover' : a dataframe of the states' timeseries \n", sep = "")
-  cat( "   '", obj,"$ini_landscape' : the initial landscape object \n", sep = "")
-  cat( "   '", obj,"$snaps' : an index table of saved snapshots \n", sep = "")
-  cat( "   '", obj,"$landscapes[[i]]' : extract snapshot from list of snapshots \n", sep = "")
-  cat(" \n ")
-  
-}
-
-#' plot method for 'ca_result' objects
-#' 
-#' @param x An output object obtained from running function \code{ca()}.
-#' @param plotstates A logical vector of the same length as 
-#'   \code{x$model$states}. TRUE activates plotting of other cell state populations. 
-#' @param cols A vector of valid colors to replace the default color vector.
-#' @param lwd Line width for timeseries plot.
-#' @param ... Parameters handed to standard plot function, e.g. `bty`, `xlab`.
-#'   See \link{par}.
-#' @details This prompts a (series of) summary plot for the simulation run. By
-#' default this is a timeseries of the primary cell state (i.e. the first state
-#' given in \code{x$model$states}).
-#' 
-#' @export
-
-plot.ca_result <- function(x, plotstates = c(TRUE, rep(FALSE, length(x$model$states)-1)), snapshots = FALSE, cols = x$model$cols , lwd = 1, ...) {
-  
-  if(snapshots) {
-    
-  }
-  
-  plot(NA,NA,  
-       type = "l", 
-       col = x$model$cols[1], 
-       xlab = "time", ylab = paste("cover of", x$model$states[1]) , 
-       xlim = c(1, max(x$time)), ylim = c(0,1), 
-       ...)
-  
-  if(length(plotstates) == length(x$model$states)  ) {
-    for(i in (1:length(plotstates))[plotstates]) {
-      lines(x$time,x$cover[[i]], col = cols[i], lwd = lwd)
-      
-    }
-    
-  }
-  
-}
-
-
-
-#' summary method for `ca_result`
-#'
-#' @param x 
-#'
-#' @return Returns a list \code{out} containing the model name, the final time,
-#'   the mean cover  and standard deviation in the last 10 timesteps.
-#'   
-#' @note The mean and sd are supposed to depend on the model being in steady
-#'   state dynamics, i.e. beyond transitory. Lacking a universal criterion for
-#'   that, we report the final 10 timesteps.
-#'   
-#' @export
-
-summary.ca_result <- function(x) {
-  out <- list()
-  class(out) <- "ca_summary"
-  eval <- tail(seq_along(x$time),10)
-  out$name <- x$model$name
-  out$time <- c(min(x$time), max(x$time))
-  out$mean_cover <- colMeans(x$cover[eval,])
-  out$sd_cover <- sapply(x$cover[eval,], sd)
-  
-  return(out)
-}
-
-
-#' Transfer output of ca() into a list of matrices. 
-#'
-#' @param x 
-#'
-#' @return a list of matrices.
-#' @export
-#'
-
-as.list.ca_result <- function(x) {
-  lapply(x$landscapes, as.matrix)
-}
-
-
-#' Transfer output of runca() into an array. 
-#'
-#' @param x 
-#'
-#' @return an array with dimensions 'width', 'height' and 'snaps'.
-#' @export
-#'
-
-as.array.ca_result <- function(x) {
-  width <- x$landscapes[[1]]$dim[1]
-  height <- x$landscapes[[1]]$dim[2]
-  snaps <- length(x$landscapes)
-  array(unlist(lapply(x$landscapes, as.matrix)), dim = c(width, height, snaps), dimnames = c("width", "height", "snaps"))
-}

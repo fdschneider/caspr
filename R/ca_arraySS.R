@@ -76,6 +76,7 @@ ca_arraySS <- function(model,
                      save = FALSE, 
                      filename = "sim", directory = "", 
                      salt = 345678, 
+                     length.stat = 10,
                      ... ) {
   
   iterations <- expand.grid(parms)
@@ -109,10 +110,12 @@ ca_arraySS <- function(model,
             
             # running the simulation for this iteration
             run <- ca_snapsSS(l, model, parms = iterations[i,, drop = TRUE], 
-                              seed = iterations$seed[i], ...)
+                              seed = iterations$seed[i], 
+                              length.stat = length.stat, ...)
             
             # get summary for output
-            out <- c(summary(run)$mean_cover, summary(run)$sd_cover)
+            out <- c(summary(run, length.stat = length.stat)$mean_cover, 
+                     summary(run, length.stat = length.stat)$sd_cover)
             names(out) <- paste0(rep(c("mean_cover", "sd_cover"), each = length(model$states) ), "_",names(out))
             out <- as.data.frame(t(out))
             out$t_start <- as.integer(summary(run)$time[1])
