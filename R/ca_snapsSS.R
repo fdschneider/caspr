@@ -219,7 +219,9 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
   } else { 
     tsnaps <- 0
   }
-  while ( !single_state && c >= 0.1 ) {
+  while ( !single_state && 
+          c >= 0.1 && 
+          i <= (2*t_max) ) { # Hard condition not to get in an infinite loop
     
     # call update function:
     
