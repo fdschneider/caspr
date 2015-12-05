@@ -214,11 +214,7 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
   
   single_state <- length(unique(xcomp)) == 1
   
-  if ( single_state ) { 
-    tsnaps <- 1
-  } else { 
-    tsnaps <- 0
-  }
+  tsnaps <- 0
   while ( !single_state && 
           c >= 0.1 && 
           i <= (2*t_max) ) { # Hard condition not to get in an infinite loop
@@ -232,6 +228,10 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
     x_old <- x_new 
     i = i+1
     c = cor(xcomp, as.integer(x_new$cells))
+    
+    # Handle the case where the next iteration is one state and identical
+    single_state <- length(unique(x_new$cells)) == 1
+    
     # save stats of new landscape
     
     xstats <- summary(x_new)
@@ -243,6 +243,10 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
     result$issteady[i] <- steady(i, result, steadyparms)
     tsnaps <- tsnaps + 1
   }
+  
+  if ( single_state ) { 
+    tsnaps <- 1
+  } 
   
   result$landscapes[[2]]<-x_new
   for (k in 3:nsnaps){
