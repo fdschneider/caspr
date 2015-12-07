@@ -61,8 +61,14 @@ as.matrix.landscape <- function(x, as = "character") {
 as.binary_matrix <-  function (...) UseMethod("as.binary_matrix")
 
 #' @export
-as.binary_matrix.landscape <- function(x, is = levels(x$cells)[1]) as.matrix(x) %in% is
-
+as.binary_matrix.landscape <- function(x, is = levels(x$cells)[1]) { 
+  # The use of %in% does not keep the matrix format => use a == instead (/!\ 
+  #   this means we cannot consider two states as 1).
+  if ( length(is) > 1 ) stop('Please specify only one state')
+  tmp <- as.matrix(x) == is
+  class(tmp) <- c("binary_matrix", "matrix")
+  tmp
+}
 #' @export
 as.binary_matrix.ca_result <- function(x, is = x$model$states[1]) lapply(x$landscapes, function(y) as.matrix(y) %in% is ) 
 
