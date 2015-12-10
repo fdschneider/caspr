@@ -83,7 +83,7 @@
 
 
 ca_snapsSS <- function(x, model = grazing, parms = "default", 
-               t_min = 50,
+               t_min = 500,
                t_max = 200, nsnaps = 10,
                stopifsteady = FALSE, 
                steady = caspr::steady, 
@@ -91,7 +91,7 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
                plotting = FALSE,
                filename = "modelrun",
                seed = NULL, 
-               length.stat = 10,
+               length.stat = 100,
                ... )  {
   
   # checking fo valid input
@@ -159,7 +159,7 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
   # running untill tmin
   while ( i <= t_min ){
 
-        # call update function:
+    # call update function:
     
     model$update(x_old, parms, ...) -> x_new
     
