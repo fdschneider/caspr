@@ -58,7 +58,9 @@ as.matrix.landscape <- function(x, as = "character") {
 }
 
 #' @export
-as.binary_matrix <-  function (...) UseMethod("as.binary_matrix")
+as.binary_matrix <- function (...) { 
+  UseMethod("as.binary_matrix")
+}
 
 #' @export
 as.binary_matrix.landscape <- function(x, is = levels(x$cells)[1]) { 
@@ -70,8 +72,9 @@ as.binary_matrix.landscape <- function(x, is = levels(x$cells)[1]) {
   tmp
 }
 #' @export
-as.binary_matrix.ca_result <- function(x, is = x$model$states[1]) lapply(x$landscapes, function(y) as.matrix(y) %in% is ) 
-
+as.binary_matrix.ca_result <- function(x, is = x$model$states[1]) { 
+  lapply(x$landscapes, as.binary_matrix.landscape, is)
+}
 
 
 #' generic S3 function
