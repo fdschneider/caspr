@@ -12,7 +12,7 @@ using namespace Rcpp;
 // [[Rcpp::export]] // for debug purposes only
 int randn(double min, double max) { 
   NumericVector result = runif(1, 0, 1);
-  return floor( min + result[0] * (max - min) );
+  return floor( min + result[0] * ((max+1) - min) );
 }
 
 // Generate random number between 0 and 1 as scalar using runif function in 
