@@ -38,7 +38,7 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
   int FISH  = 1;
   int SHARK = 2;
   int EMPTY = 3;
-  int NEIGHBORS = 4; // 4, the max number of neighbors 
+  int NEIGHBORS = 4; // 4 the max number of neighbors
   
   // Adjust probabilities so they match to the number of substeps
   double betas_ = betas / subs;
@@ -88,8 +88,8 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
       // if shark, then eat or die, and maybe grow
       } else if ( grid(i,j) == SHARK ) { 
         
-        // consider neighbors starting with a random one
-        randnb = randn(0, NEIGHBORS);
+        // consider neighbors starting with a random one (0, 1, 2 or 3)
+        randnb = randn(0, NEIGHBORS - 1);
         k = 0;
         found_prey = false;
         while ( !found_prey && k < NEIGHBORS) { 
@@ -128,7 +128,7 @@ IntegerMatrix predprey_core(IntegerMatrix grid, // grid matrix
 //        for (rep=0;rep<1;rep++) { 
           i  = randn(0, h);
           j  = randn(0, w);
-          k  = randn(0, NEIGHBORS);
+          k  = randn(0, NEIGHBORS - 1); // (0, 1, 2 or 3)
           i1 = (i + X[k] + h) % h; 
           j1 = (j + Y[k] + w) % w;
           
