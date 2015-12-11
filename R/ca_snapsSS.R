@@ -84,7 +84,7 @@
 
 ca_snapsSS <- function(x, model = grazing, parms = "default", 
                t_min = 500,
-               t_max = 200, nsnaps = 10,
+               t_max = 3000, nsnaps = 10,
                stopifsteady = FALSE, 
                steady = caspr::steady, 
                steadyparms = list(t_eval = 200, accept = 0.001),
