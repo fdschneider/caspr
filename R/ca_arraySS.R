@@ -140,15 +140,26 @@ ca_arraySS <- function(model,
             }
             #saving snapshots
             
-            return(list(out = out, Snaps = Snaps))
+            # Get time-series
+            covers <- list(global = run[['cover']], 
+                           local  = run[['local']])
+            
+            return(list(out = out, snaps = Snaps, time_series = covers))
           } -> outR
+  
+  # Extract summary stats and format to data.frame (looks unnecesarily 
+  #   complicated [Alex]).
   out<- lapply(outR, `[[`, "out")
   names<-names(out[[1]])
-  out<- data.frame(matrix(unlist(out), nrow=length(out), byrow=T),stringsAsFactors=FALSE)
+  out<- data.frame(matrix(unlist(out), nrow=length(out), byrow=T), 
+                   stringsAsFactors=FALSE)
   names(out) <- names
-  Snaps <- lapply(outR, `[[`, "Snaps")
   
-  return(list (DatBif = cbind(iterations, out),Snaps) )
+  # Extract time series
+  
+  return( list(DatBif = cbind(iterations, out), 
+               snaps  = lapply(outR, `[[`, "snaps"), 
+               time_series = lapply(outR, `[[`, "time_series")) )
 }
 
 

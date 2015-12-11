@@ -280,6 +280,7 @@ ca_snapsSS <- function(x, model = grazing, parms = "default",
     result$landscapes[[k]]<-x_new
   }
   
+  
   result$time <- seq(0, i-1) # add vector of realized timesteps
   
   # ------------ end simulation -----------------

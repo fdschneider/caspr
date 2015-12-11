@@ -5,7 +5,7 @@
 \title{Run cellular automata simulation.}
 \usage{
 ca_snapsSS(x, model = grazing, parms = "default", t_min = 500,
-  t_max = 200, nsnaps = 10, stopifsteady = FALSE,
+  t_max = 3000, nsnaps = 10, stopifsteady = FALSE,
   steady = caspr::steady, steadyparms = list(t_eval = 200, accept = 0.001),
   plotting = FALSE, filename = "modelrun", seed = NULL,
   length.stat = 100, ...)
