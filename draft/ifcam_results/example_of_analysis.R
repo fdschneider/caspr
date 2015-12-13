@@ -4,7 +4,7 @@
 # 
 
 # Adjust to the folder containing the data on _your_ computer 
-setwd("/home/alex/work/2014-2015/SpatialStress/ifcam_results/")
+setwd("/home/alex/work/2014-2015/SpatialStress/caspr/draft/ifcam_results/")
 
 # Use this to use the proxy at IISC
 Sys.setenv(https_proxy = "proxy.iisc.ernet.in:3128")
