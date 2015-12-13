@@ -126,6 +126,10 @@ ca_arraySS <- function(model,
             # Get snapshots
             Snaps <- run$landscapes
             
+            # Get time-series
+            covers <- list(global = run[['cover']], 
+                           local  = run[['local']])
+            
             if(save) {
               dir.create(file.path(directory, sub(basename(filename), "", filename)), showWarnings = FALSE)
               path <- normalizePath(file.path(directory, sub(basename(filename), "", filename))) 
@@ -140,24 +144,26 @@ ca_arraySS <- function(model,
             }
             #saving snapshots
             
-            # Get time-series
-            covers <- list(global = run[['cover']], 
-                           local  = run[['local']])
-            
-            return(list(out = out, snaps = Snaps, time_series = covers))
+            rm(run)
+            gc()
+            return( list(out = out, snaps = Snaps, time_series = covers) )
           } -> outR
+  
+  gc()
   
   # Extract summary stats and format to data.frame (looks unnecesarily 
   #   complicated [Alex]).
-  out<- lapply(outR, `[[`, "out")
-  names<-names(out[[1]])
-  out<- data.frame(matrix(unlist(out), nrow=length(out), byrow=T), 
-                   stringsAsFactors=FALSE)
-  names(out) <- names
+  output <- lapply(outR, `[[`, "out")
+  names <- names(output[[1]])
+  output <- data.frame(matrix(unlist(output), 
+                              nrow = length(output), 
+                              byrow = TRUE), 
+                       stringsAsFactors = FALSE)
+  names(output) <- names
   
   # Extract time series
   
-  return( list(DatBif = cbind(iterations, out), 
+  return( list(DatBif = cbind(iterations, output), 
                snaps  = lapply(outR, `[[`, "snaps"), 
                time_series = lapply(outR, `[[`, "time_series")) )
 }
