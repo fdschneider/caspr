@@ -54,8 +54,7 @@ livestock$update <- function(x_old, parms, subs = 12) {
   x_new <- x_old
   
   climate <- parms$b 
-  if(parms$sigma != 0)  climate <- rnorm(1, climate, parms$sigma)
-  if(climate < 0) climate <- 0
+  if(parms$sigma != 0)  climate <- climate * abs(rnorm(1, 1, parms$sigma))
   
   for(s in 1:subs) {
     
