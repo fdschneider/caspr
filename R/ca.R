@@ -91,11 +91,18 @@ ca <- function(x, model = grazing, parms = "default",
                filename = "modelrun",
                seed = NULL, ... )  {
   
-  # checking fo valid input
+  # checking for valid input
   ## parms
-  if(parms[1] != "default") { 
-    if(!all(names(model$parms) %in% names(parms))) {
-      stop(paste("missing parameter(s): ", names(parms)[all(names(model$parms) %in% names(parms))] , "! please specify!"    ) )
+  
+  if(class(parms) == "parms_timeseries") {
+    parms_temp <- as.list(parms[1,]) 
+  } else {
+    parms_temp <- parms   # set temporary parameter object
+  }
+  
+  if(parms_temp[1] != "default") { 
+     if(!all(names(model$parms) %in% names(parms_temp))) {
+        stop(paste("missing parameter(s): ", names(parms_temp)[all(names(model$parms) %in% names(parms_temp))] , "! please specify!"    ) )
     }
   } else {
     parms <- model$parms
@@ -151,8 +158,7 @@ ca <- function(x, model = grazing, parms = "default",
   
   # --------------- start simulation -----------------
   
-  parms_temp <- parms   # set temporary parameter object
-  
+
   # initialise simulation variables: 
   x_old <- x  # ghost matrix at t_i
   x_new <- x_old
@@ -168,12 +174,11 @@ ca <- function(x, model = grazing, parms = "default",
     
     # call update function:
     
-    model$update(x_old, parms, ...) -> x_new
-    
     # replace ghost matrix for next iteration
 
     x_old <- x_new 
     i = i+1
+    model$update(x_old, parms_temp, ...) -> x_new
     
     # save stats of new landscape
     
