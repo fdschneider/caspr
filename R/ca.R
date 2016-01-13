@@ -162,6 +162,11 @@ ca <- function(x, model = grazing, parms = "default",
   # initialise simulation variables: 
   x_old <- x  # ghost matrix at t_i
   x_new <- x_old
+  
+  if(0 %in% snaps) {  
+    result$landscapes[[match(0, snaps)]] <- x_new
+  }
+  
   i = 1  # iterator for simulation timesteps ([Alex] this should really start 
          #   at 1 but I'm afraid of breaking something. The way it is now 
          #   overwrites the initial state).
@@ -180,8 +185,8 @@ ca <- function(x, model = grazing, parms = "default",
     # save stats of new landscape
     
     xstats <- summary(x_new)
-    result$cover[i,] <- xstats$cover
-    result$local[i,] <- xstats$local
+    result$cover[i+1,] <- xstats$cover
+    result$local[i+1,] <- xstats$local
 
     # save landscape if snapshot
     
@@ -189,8 +194,7 @@ ca <- function(x, model = grazing, parms = "default",
       result$landscapes[[match(i, snaps)]] <- x_new
     }
 
-    #result$steadyval[i] <- steady(i, result, steadyparms, returnvalue = TRUE)
-    result$issteady[i] <- steady(i, result, steadyparms)
+    result$issteady[i+1] <- steady(i, result, steadyparms)
 
     # replace ghost matrix for next iteration
     
