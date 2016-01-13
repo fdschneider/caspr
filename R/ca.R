@@ -162,7 +162,7 @@ ca <- function(x, model = grazing, parms = "default",
   # initialise simulation variables: 
   x_old <- x  # ghost matrix at t_i
   x_new <- x_old
-  i = 0  # iterator for simulation timesteps ([Alex] this should really start 
+  i = 1  # iterator for simulation timesteps ([Alex] this should really start 
          #   at 1 but I'm afraid of breaking something. The way it is now 
          #   overwrites the initial state).
   if(!is.null(seed)) set.seed(seed)  # get seed from function call
@@ -173,11 +173,8 @@ ca <- function(x, model = grazing, parms = "default",
           ( !stopifsteady || !steady(i, result, steadyparms) ) ) {
     
     # call update function:
+    if(class(parms) == "parms_timeseries") parms_temp <- as.list(parms[i,]) 
     
-    # replace ghost matrix for next iteration
-
-    x_old <- x_new 
-    i = i+1
     model$update(x_old, parms_temp, ...) -> x_new
     
     # save stats of new landscape
@@ -185,15 +182,20 @@ ca <- function(x, model = grazing, parms = "default",
     xstats <- summary(x_new)
     result$cover[i,] <- xstats$cover
     result$local[i,] <- xstats$local
-    
+
     # save landscape if snapshot
     
     if(i %in% snaps) {  
       result$landscapes[[match(i, snaps)]] <- x_new
     }
-    
+
     #result$steadyval[i] <- steady(i, result, steadyparms, returnvalue = TRUE)
     result$issteady[i] <- steady(i, result, steadyparms)
+
+    # replace ghost matrix for next iteration
+    
+    x_old <- x_new 
+    i = i+1
     
   } 
   # ------------ end simulation -----------------
