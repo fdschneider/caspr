@@ -1,8 +1,8 @@
 Package: caspr
 Type: Package
 Title: Cellular Automata for Spatial Pressure in R
-Version: 0.2.0
-Date: 2015-10-30
+Version: 0.2.1
+Date: 2016-01-13
 Author: Alain Danet, Alex Genin, Vishwesha Guttal, Sonia Kefi, Sabiha Majumder,
     Sumithra Sankaran, Florian Schneider (Maintainer)
 Maintainer: Florian D. Schneider <florian.schneider@univ-montp2.fr>
